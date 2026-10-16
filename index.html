@@ -342,6 +342,7 @@ body:not(.ai-live) .ai-only{display:none!important}
 .sh-thread .ai-frame{margin-top:0}
 .sh-tips .chip{font-weight:500;text-align:left}
 @media (prefers-reduced-motion: reduce){.ai-frame.busy::before,.orb-ring{animation:none!important}}
+.ai-rush{margin:8px 0 0;font-size:12.5px;line-height:1.45;color:var(--ink-2,#6b6880);background:linear-gradient(110deg,rgba(255,79,163,.08),rgba(139,92,246,.08),rgba(59,130,246,.08));border:1px solid rgba(139,92,246,.22);border-radius:12px;padding:8px 10px}
 </style>
 <div class="splash" id="splash" aria-hidden="true"><div class="wm">SCODE</div><div class="tl">Atoms &amp; Molecules Lab</div></div>
 <div class="app">
@@ -362,7 +363,7 @@ body:not(.ai-live) .ai-only{display:none!important}
         Leave it empty ('') and every AI feature stays hidden.
    ===================================================================== */
 const TUTOR_CONFIG={
-  url:'https://chance-frames-improvements-department.trycloudflare.com',
+  url:'https://owns-melbourne-trucks-realm.trycloudflare.com',
   tier:'l2_5',               // General Plus (gemma3:4b)
   app:'chem-lab',            // lets the proxy recognize this site
   closedHours:[0,6],         // server sleeps 12–6 AM Pacific. Set to null to turn this off.
@@ -1281,6 +1282,14 @@ async function tutorStream(messages,extra,onDelta,signal){
     body:JSON.stringify({tier:TUTOR_CONFIG.tier,app:TUTOR_CONFIG.app,extra_context:extra,messages})});
   let res=await send();
   if(res.status===503){onDelta(null,'busy');await new Promise(r=>setTimeout(r,3000));res=await send()}
+  // SCODE Rush Hour: people with SCODE AI accounts go first. Wait and try again on our own.
+  while(res.status===409){
+    let j={};try{j=await res.clone().json()}catch(e){}
+    if(j.error!=='rush_hold')break;
+    onDelta(null,'rush');
+    await new Promise((ok,no)=>{const t=setTimeout(ok,8000);if(signal)signal.addEventListener('abort',()=>{clearTimeout(t);no(new DOMException('Stopped','AbortError'))},{once:true})});
+    res=await send();
+  }
   if(!res.ok){let j={};try{j=await res.json()}catch(e){}throw Object.assign(new Error(j.message||j.error||'HTTP '+res.status),{status:res.status,data:j})}
   const reader=res.body.getReader(),dec=new TextDecoder();let buf='';
   for(;;){
@@ -1353,7 +1362,8 @@ function mountThread(host,{mode='chat',context='',ask=null,showAsk=false,closabl
     box.insertAdjacentHTML('beforeend',`<div class="ai-a">${atomLoader()}</div>`);
     const bub=box.lastElementChild,lt=$('.ai-lt',bub),t0=Date.now();
     wrap.classList.add('busy');form.hidden=true;err.hidden=true;
-    const tick=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(lt)lt.textContent=s<4?'Thinking':`Thinking · ${s}s`},500);
+    let rush=false;
+    const tick=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(lt)lt.textContent=rush?'Rush Hour \u00b7 waiting for a turn':s<4?'Thinking':`Thinking · ${s}s`},500);
     let acc='',raf=0;
     const paint=()=>{raf=0;bub.innerHTML=mdLite(acc)+'<span class="ai-caret"></span>';scroll()};
     ctl=new AbortController();
@@ -1361,7 +1371,7 @@ function mountThread(host,{mode='chat',context='',ask=null,showAsk=false,closabl
     $('.ai-stop',bub).addEventListener('click',()=>ctl.abort());
     scroll();
     try{
-      await tutorStream(msgs,extra,(d,flag)=>{if(flag==='busy'){if(lt)lt.textContent='Server busy, retrying';return}if(!acc)clearInterval(tick);acc+=d;if(!raf)raf=requestAnimationFrame(paint)},ctl.signal);
+      await tutorStream(msgs,extra,(d,flag)=>{if(flag==='rush'){if(!rush){rush=true;bub.insertAdjacentHTML('beforeend','<p class="ai-rush">SCODE is in Rush Hour, so people with SCODE AI accounts go first. Your question will send by itself in a moment.</p>')}if(lt)lt.textContent='Rush Hour \u00b7 waiting for a turn';return}if(rush){rush=false;const n=bub.querySelector('.ai-rush');if(n)n.remove()}if(flag==='busy'){if(lt)lt.textContent='Server busy, retrying';return}if(!acc)clearInterval(tick);acc+=d;if(!raf)raf=requestAnimationFrame(paint)},ctl.signal);
       if(raf)cancelAnimationFrame(raf);
       if(!acc.trim())throw new Error('SCODE Tutor didn’t send an answer. Try again.');
       bub.innerHTML=mdLite(acc);msgs.push({role:'assistant',content:acc});
