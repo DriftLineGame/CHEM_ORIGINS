@@ -369,6 +369,7 @@ body:not(.ai-live) .ai-only{display:none!important}
 .lewis .ecount{fill:var(--accent-ink);font-family:var(--f-mono);font-weight:700}
 .lpctl{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--accent-soft);border-radius:12px;padding:8px 12px}
 .lpctl .btn{min-width:44px;font-size:20px}
+.lpctl[hidden]{display:none}
 .pillc{font-size:14px;padding:6px 12px;border-radius:999px;background:var(--sunk)}
 .pillc.okc{background:var(--good-soft);color:var(--good)}
 .opt svg.lewis{max-height:150px}
@@ -432,7 +433,7 @@ body.locked .app,body.locked .nav{visibility:hidden}
 const TUTOR_CONFIG={
   url:'auto',
   scodeSite:'/LindenAI/',
-  tier:'l2_5',               // General Plus (gemma3:4b)
+  tier:'l5',                 // General Ultra (gemma4:e4b)
   app:'chem-lab',            // lets the proxy recognize this site
   closedHours:[0,6],         // server sleeps 12–6 AM Pacific. Set to null to turn this off.
   timeZone:'America/Vancouver',
@@ -1676,7 +1677,7 @@ function closedNow(){
   const h=+new Intl.DateTimeFormat('en-CA',{hour:'numeric',hourCycle:'h23',timeZone:TUTOR_CONFIG.timeZone}).format(new Date());
   const [a,b]=TUTOR_CONFIG.closedHours;return h>=a&&h<b;
 }
-const TSTATUS={live:'Live · General Plus',offline:'Offline right now',closed:'Asleep from 12 to 6 AM',checking:'Connecting…'};
+const TSTATUS={live:'Live · General Ultra',offline:'Offline right now',closed:'Asleep from 12 to 6 AM',checking:'Connecting…'};
 function setTutorState(s){
   Tutor.state=s;
   document.body.classList.toggle('ai-live',s==='live');
@@ -1821,7 +1822,7 @@ const atomLoader=()=>`<span class="ai-load"><svg viewBox="0 0 48 48" width="34" 
 /* ---- conversation thread ---- */
 function mountThread(host,{mode='chat',context='',ask=null,showAsk=false,closable=true,placeholder='Ask a follow-up'}={}){
   const wrap=document.createElement('div');wrap.className='ai-frame';
-  wrap.innerHTML=`<div class="ai-thread"><div class="ai-head">${logoSVG(22)}<b>SCODE Tutor</b><span class="ai-tag">General Plus</span>${closable?'<button class="ai-x" type="button" aria-label="Close the tutor">×</button>':''}</div>
+  wrap.innerHTML=`<div class="ai-thread"><div class="ai-head">${logoSVG(22)}<b>SCODE Tutor</b><span class="ai-tag">General Ultra</span>${closable?'<button class="ai-x" type="button" aria-label="Close the tutor">×</button>':''}</div>
     <div class="ai-msgs" aria-live="polite"></div>
     <form class="ai-ask"><input type="text" maxlength="500" autocomplete="off" placeholder="${placeholder}" aria-label="Message SCODE Tutor"><button class="ai-send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></form>
     <div class="err ai-errin" hidden>Type a question first.</div></div>`;
@@ -1884,7 +1885,7 @@ function renderSheetBody(){
   }
   if(Tutor.thread&&Tutor.threadRoute===JSON.stringify(route))return;
   const c=sheetContext();
-  body.innerHTML=`<div class="row sh-ctx"><span class="eyebrow">About</span><span class="small"><b>${c.label}</b></span></div><div class="chips sh-tips">${c.tips.map(t=>`<button class="chip" type="button">${t}</button>`).join('')}</div><div class="sh-thread"></div><p class="note" style="text-align:center">Runs on SCODE AI · General Plus. Messages go to the SCODE server.</p>`;
+  body.innerHTML=`<div class="row sh-ctx"><span class="eyebrow">About</span><span class="small"><b>${c.label}</b></span></div><div class="chips sh-tips">${c.tips.map(t=>`<button class="chip" type="button">${t}</button>`).join('')}</div><div class="sh-thread"></div><p class="note" style="text-align:center">Runs on SCODE AI · General Ultra. Messages go to the SCODE server.</p>`;
   Tutor.thread=mountThread($('.sh-thread',body),{mode:'chat',context:c.ctx,showAsk:true,closable:false,placeholder:'Ask about this unit'});
   Tutor.threadRoute=JSON.stringify(route);
   $$('.sh-tips .chip',body).forEach(b=>b.addEventListener('click',()=>{$('.sh-tips',body).remove();Tutor.thread.send(b.textContent)}));
