@@ -14,7 +14,7 @@
   --accent:#6A45F5; --accent-ink:#4A2BD0; --accent-soft:#ECE8FF; --on-accent:#FFFFFF;
   --hl:#E9F84F; --hl-pink:#FF9CCE; --hl-ink:#151726;
   --good:#127F50; --good-soft:#DCF3E7; --bad:#CC2943; --bad-soft:#FCE2E6; --warn:#9A5B00; --warn-soft:#FFF0D6;
-  --u1:#2D68E0; --u1-soft:#E2ECFD; --u2:#C26A13; --u2-soft:#FDEEDD; --u3:#CB2A75; --u3-soft:#FCE4EF; --u4:#6A45F5; --u4-soft:#ECE8FF;
+  --u1:#2D68E0; --u1-soft:#E2ECFD; --u2:#C26A13; --u2-soft:#FDEEDD; --u3:#CB2A75; --u3-soft:#FCE4EF; --u4:#6A45F5; --u4-soft:#ECE8FF; --u5:#0E7C66; --u5-soft:#DDF3EC;
   --lp:#E23D93; --bond:#9AA0B8; --nav:rgba(255,255,255,.88);
   --f-display:'Unbounded','Arial Rounded MT Bold',system-ui,sans-serif;
   --f-body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -26,7 +26,7 @@
   --accent:#9C86FF; --accent-ink:#BCAFFF; --accent-soft:#272250; --on-accent:#120F2A;
   --hl:#E2F25A; --hl-pink:#FF95C8; --hl-ink:#151726;
   --good:#45D394; --good-soft:#12301F; --bad:#FF6E82; --bad-soft:#3B1720; --warn:#F2B04A; --warn-soft:#382810;
-  --u1:#74A6FF; --u1-soft:#17243F; --u2:#F2A65A; --u2-soft:#33240F; --u3:#FF72B3; --u3-soft:#3A1828; --u4:#A792FF; --u4-soft:#251F48;
+  --u1:#74A6FF; --u1-soft:#17243F; --u2:#F2A65A; --u2-soft:#33240F; --u3:#FF72B3; --u3-soft:#3A1828; --u4:#A792FF; --u4-soft:#251F48; --u5:#4FD1AE; --u5-soft:#123129;
   --lp:#FF7AB8; --bond:#5F6683; --nav:rgba(24,26,38,.9); --shadow:0 1px 0 rgba(0,0,0,.2); color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -34,7 +34,7 @@
   --accent:#9C86FF; --accent-ink:#BCAFFF; --accent-soft:#272250; --on-accent:#120F2A;
   --hl:#E2F25A; --hl-pink:#FF95C8; --hl-ink:#151726;
   --good:#45D394; --good-soft:#12301F; --bad:#FF6E82; --bad-soft:#3B1720; --warn:#F2B04A; --warn-soft:#382810;
-  --u1:#74A6FF; --u1-soft:#17243F; --u2:#F2A65A; --u2-soft:#33240F; --u3:#FF72B3; --u3-soft:#3A1828; --u4:#A792FF; --u4-soft:#251F48;
+  --u1:#74A6FF; --u1-soft:#17243F; --u2:#F2A65A; --u2-soft:#33240F; --u3:#FF72B3; --u3-soft:#3A1828; --u4:#A792FF; --u4-soft:#251F48; --u5:#4FD1AE; --u5-soft:#123129;
   --lp:#FF7AB8; --bond:#5F6683; --nav:rgba(24,26,38,.9); --shadow:0 1px 0 rgba(0,0,0,.2); color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -109,7 +109,7 @@ mark.hl.pink{background:linear-gradient(100deg,transparent 0 .15em,var(--hl-pink
 .tile .t{font-weight:700;font-size:16.5px;line-height:1.25}
 .tile .d{font-size:13.5px;color:var(--ink-3)}
 .tile .st{font-family:var(--f-mono);font-size:11px;font-weight:700;color:var(--good);display:flex;align-items:center;gap:4px}
-.u1{--uc:var(--u1);--uc-soft:var(--u1-soft)} .u2{--uc:var(--u2);--uc-soft:var(--u2-soft)} .u3{--uc:var(--u3);--uc-soft:var(--u3-soft)} .u4{--uc:var(--u4);--uc-soft:var(--u4-soft)}
+.u1{--uc:var(--u1);--uc-soft:var(--u1-soft)} .u2{--uc:var(--u2);--uc-soft:var(--u2-soft)} .u3{--uc:var(--u3);--uc-soft:var(--u3-soft)} .u4{--uc:var(--u4);--uc-soft:var(--u4-soft)} .u5{--uc:var(--u5);--uc-soft:var(--u5-soft)}
 
 /* key boxes */
 .key{position:relative;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
@@ -343,8 +343,73 @@ body:not(.ai-live) .ai-only{display:none!important}
 .sh-tips .chip{font-weight:500;text-align:left}
 @media (prefers-reduced-motion: reduce){.ai-frame.busy::before,.orb-ring{animation:none!important}}
 .ai-rush{margin:8px 0 0;font-size:12.5px;line-height:1.45;color:var(--ink-2,#6b6880);background:linear-gradient(110deg,rgba(255,79,163,.08),rgba(139,92,246,.08),rgba(59,130,246,.08));border:1px solid rgba(139,92,246,.22);border-radius:12px;padding:8px 10px}
+
+/* ===== books ===== */
+.booknav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bookchip{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:var(--uc-soft);color:var(--uc);text-decoration:none;border:1px solid transparent}
+.bookchip b{font-family:var(--f-display);font-size:14px}
+.bookchip span{font-family:var(--f-mono);font-size:12px;font-weight:700}
+.bookhead{display:flex;flex-direction:column;gap:2px;padding-top:6px}
+.bookhead .eyebrow{color:var(--uc)}
+.ladder{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lstep{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px;border-radius:13px;border:1.5px solid var(--uc,var(--line));background:var(--uc-soft,var(--surface));min-height:86px}
+.lstep b{font-size:15px}
+.lstep .small{color:var(--ink-2);font-size:12.5px}
+.lstep.locked{background:var(--sunk);border-color:var(--line);opacity:.7;cursor:not-allowed}
+.lstep.passed{border-color:var(--good)}
+.card .ladder{--uc:inherit}
+.drawcta{border:2px solid var(--u3);background:var(--u3-soft)}
+/* ===== draw editor ===== */
+.drawpad{display:flex;justify-content:center;background:var(--sunk);border-radius:14px;padding:6px;touch-action:manipulation;overflow-x:auto}
+.drawpad svg{width:100%}
+.lewis .hitb{stroke:transparent;stroke-width:22;cursor:pointer;stroke-linecap:round}
+.lewis .hita{fill:transparent;cursor:pointer}
+.lewis .selr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+.lewis .badr{fill:none;stroke:var(--bad);stroke-width:2;stroke-dasharray:4 3}
+.lewis .ecount{fill:var(--accent-ink);font-family:var(--f-mono);font-weight:700}
+.lpctl{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--accent-soft);border-radius:12px;padding:8px 12px}
+.lpctl .btn{min-width:44px;font-size:20px}
+.pillc{font-size:14px;padding:6px 12px;border-radius:999px;background:var(--sunk)}
+.pillc.okc{background:var(--good-soft);color:var(--good)}
+.opt svg.lewis{max-height:150px}
+/* ===== VSEPR chart ===== */
+.vchart{border-collapse:separate;border-spacing:3px;width:100%;min-width:330px;table-layout:fixed;font-size:12px}
+.vchart th{font-family:var(--f-mono);font-size:10px;font-weight:700;color:var(--ink-3);text-align:center;padding:4px 2px;line-height:1.2}
+.vchart .vtitle{font-family:var(--f-body);font-size:13px;color:var(--ink);background:var(--sunk);border-radius:6px}
+.vchart .vcorner{width:26px}
+.vchart .vcorner span{display:none}
+.vchart .vrh{background:var(--sunk);border-radius:6px;font-size:14px;color:var(--ink)}
+.vchart td{padding:0}
+.vchart td.vx{background:repeating-linear-gradient(135deg,transparent 0 5px,var(--sunk) 5px 7px);border-radius:6px}
+.vc{width:100%;min-height:44px;border-radius:7px;border:1.5px solid var(--line);background:var(--surface);font-size:10px;letter-spacing:-.2px;overflow-wrap:normal;word-break:normal;font-weight:700;line-height:1.15;padding:3px 1px}
+.vc.hi{border-color:var(--accent);background:var(--accent-soft)}
+.vc.right{border-color:var(--good);background:var(--good-soft)}
+.vc.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.vchart-wrap{border:0}
+/* ===== IMF checker ===== */
+.imfl{display:flex;flex-direction:column;gap:8px}
+.imfr{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--sunk);opacity:.65}
+.imfr.on{background:var(--u5-soft);opacity:1}
+.imfk{font-weight:700;width:18px;flex:none;color:var(--ink-3)}
+.imfr.on .imfk{color:var(--u5)}
+/* ===== access gate ===== */
+.gate{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:24px max(16px,env(safe-area-inset-left,0px));background:radial-gradient(120% 80% at 50% 0%,rgba(139,92,246,.18),transparent 60%),var(--paper);transition:opacity .4s}
+.gate.out{opacity:0;pointer-events:none}
+body.locked .app,body.locked .nav{visibility:hidden}
+.gate-card{position:relative;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:28px 20px;box-shadow:0 30px 60px -30px rgba(80,40,200,.45)}
+.gate.shake .gate-card{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.gate-digits{position:relative;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;width:100%;cursor:text}
+.gd{height:44px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);display:grid;place-items:center;font-family:var(--f-mono);font-size:19px;font-weight:700}
+.gd.on{border-color:var(--accent);background:var(--accent-soft)}
+.gd.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.gate-in{position:absolute;inset:0;width:100%;height:100%;opacity:.01;color:transparent;caret-color:transparent;background:transparent;border:0;font-size:16px;letter-spacing:22px;padding:0 8px}
+@media (max-width:360px){.gd{height:38px;font-size:16px}}
+.prompt svg.lewis{max-height:130px;width:auto;max-width:100%}
+.vchart{min-width:0}
 </style>
 <div class="splash" id="splash" aria-hidden="true"><div class="wm">SCODE</div><div class="tl">Atoms &amp; Molecules Lab</div></div>
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t"><form class="gate-card" id="gate-form" autocomplete="off"><span class="gate-logo" aria-hidden="true"></span><h1 class="h2" id="gate-t">Atoms &amp; Molecules Lab</h1><p class="small muted">Enter your 10-digit access code.</p><div class="gate-digits"><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><input id="gate-in" class="gate-in" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="one-time-code" aria-label="Access code"></div><div class="err" id="gate-err" hidden></div><button class="btn primary block" type="submit">Enter</button><p class="note">Chem 11 · Unit 1 study site</p></form></div>
 <div class="app">
   <header class="top"><span class="lg" aria-hidden="true"></span><div><div class="name">Atoms &amp; Molecules Lab</div><div class="sub">Chem 11 · Unit 1</div></div><span class="spacer"></span><button class="orb" id="orb" type="button" hidden data-state="checking" aria-label="SCODE Tutor"><span class="orb-ring" aria-hidden="true"></span><span class="orb-logo"></span><span class="orb-dot" aria-hidden="true"></span></button></header>
   <main id="main"></main>
@@ -359,16 +424,23 @@ body:not(.ai-live) .ai-only{display:none!important}
 <script>
 /* =====================================================================
    SCODE TUTOR SETTINGS. Edit these when you put the site on GitHub.
-   url: your Cloudflare tunnel URL, no slash at the end.
-        Leave it empty ('') and every AI feature stays hidden.
+   url: 'auto' reads the tunnel link from the SCODE AI site (the PROXY_URL you
+        paste there), so you never have to paste it here too. You can also put a
+        link here by hand (no slash at the end). '' turns every AI feature off.
+   scodeSite: where the SCODE AI site lives on the same GitHub Pages.
    ===================================================================== */
 const TUTOR_CONFIG={
-  url:'https://owns-melbourne-trucks-realm.trycloudflare.com',
+  url:'auto',
+  scodeSite:'/LindenAI/',
   tier:'l2_5',               // General Plus (gemma3:4b)
   app:'chem-lab',            // lets the proxy recognize this site
   closedHours:[0,6],         // server sleeps 12–6 AM Pacific. Set to null to turn this off.
   timeZone:'America/Vancouver',
 };
+
+/* Access codes. Anyone with one of these 10-digit codes can open the site.
+   Change or add codes here. (It's a basic gate, not real security.) */
+const ACCESS_CODES=['7075071417','5432291405','0013615902','8345331755','2754519314'];
 /* ================= helpers ================= */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -382,6 +454,8 @@ const sup=s=>String(s).replace(/\d/g,d=>SUPD[d]);
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const chargeStr=q=>q===0?'':(Math.abs(q)>1?sup(Math.abs(q)):'')+(q>0?'⁺':'⁻');
 const fmt2=n=>(Math.round(n*100)/100).toFixed(2);
+const fmt1=n=>(Math.round(n*10)/10).toFixed(1);
+const dEN=(a,b)=>Math.round(Math.abs(ENV[a]-ENV[b])*10)/10;
 
 /* ================= elements ================= */
 const NAMES='H Hydrogen,He Helium,Li Lithium,Be Beryllium,B Boron,C Carbon,N Nitrogen,O Oxygen,F Fluorine,Ne Neon,Na Sodium,Mg Magnesium,Al Aluminum,Si Silicon,P Phosphorus,S Sulfur,Cl Chlorine,Ar Argon,K Potassium,Ca Calcium,Sc Scandium,Ti Titanium,V Vanadium,Cr Chromium,Mn Manganese,Fe Iron,Co Cobalt,Ni Nickel,Cu Copper,Zn Zinc,Ga Gallium,Ge Germanium,As Arsenic,Se Selenium,Br Bromine,Kr Krypton,Rb Rubidium,Sr Strontium,Y Yttrium,Zr Zirconium,Nb Niobium,Mo Molybdenum,Tc Technetium,Ru Ruthenium,Rh Rhodium,Pd Palladium,Ag Silver,Cd Cadmium,In Indium,Sn Tin,Sb Antimony,Te Tellurium,I Iodine,Xe Xenon,Cs Cesium,Ba Barium'.split(',');
@@ -400,7 +474,7 @@ NAMES.forEach((s,i)=>{
   e.val=z===2?2:g<=2?g:g>=13?g-10:null;
   EL[sym]=e; ELZ.push(e);
 });
-const ENV={H:2.20,Li:0.98,Be:1.57,B:2.04,C:2.55,N:3.04,O:3.44,F:3.98,Na:0.93,Mg:1.31,Al:1.61,Si:1.90,P:2.19,S:2.58,Cl:3.16,K:0.82,Ca:1.00,Ga:1.81,Ge:2.01,As:2.18,Se:2.55,Br:2.96,Rb:0.82,Sr:0.95,In:1.78,Sn:1.96,Sb:2.05,Te:2.10,I:2.66,Cs:0.79,Ba:0.89};
+const ENV={H:2.1,Li:1.0,Be:1.5,B:2.0,C:2.5,N:3.0,O:3.5,F:4.0,Na:0.9,Mg:1.2,Al:1.5,Si:1.8,P:2.1,S:2.5,Cl:3.0,K:0.8,Ca:1.0,Sc:1.3,Ti:1.5,V:1.6,Cr:1.6,Mn:1.5,Fe:1.8,Co:1.9,Ni:1.8,Cu:1.9,Zn:1.6,Ga:1.6,Ge:1.8,As:2.0,Se:2.4,Br:2.8,Rb:0.8,Sr:1.0,Y:1.2,Zr:1.4,Nb:1.6,Mo:1.8,Tc:1.9,Ru:2.2,Rh:2.2,Pd:2.2,Ag:1.9,Cd:1.7,In:1.7,Sn:1.8,Sb:1.9,Te:2.1,I:2.5,Cs:0.7,Ba:0.9};
 const IEV={H:1312,He:2372,Li:520,Be:900,B:801,C:1086,N:1402,O:1314,F:1681,Ne:2081,Na:496,Mg:738,Al:578,Si:787,P:1012,S:1000,Cl:1251,Ar:1521,K:419,Ca:590,Ga:579,Ge:762,As:947,Se:941,Br:1140,Kr:1351,Rb:403,Sr:550,In:558,Sn:709,Sb:834,Te:869,I:1008,Xe:1170};
 const RADV={H:31,He:28,Li:128,Be:96,B:84,C:76,N:71,O:66,F:57,Ne:58,Na:166,Mg:141,Al:121,Si:111,P:107,S:105,Cl:102,Ar:106,K:203,Ca:176,Ga:122,Ge:120,As:119,Se:120,Br:120,Kr:116,Rb:220,Sr:195,In:142,Sn:139,Sb:139,Te:138,I:139,Xe:140};
 for(const s in ENV)EL[s].en=ENV[s];
@@ -484,6 +558,16 @@ const MOL_RAW=[
   ['I3-','I₃⁻','I','I1 I1',-1,'exp','All three atoms are I, so any one could be in the middle. The middle I carries the extra electrons.'],
   ['BrF5','BrF₅','Br','F1 F1 F1 F1 F1',0,'exp'],
   ['ICl4-','ICl₄⁻','I','Cl1 Cl1 Cl1 Cl1',-1,'exp'],
+  ['SO3','SO₃','S','O1 O1 O2',0,'core'],
+  ['SO3-2','SO₃²⁻','S','O1 O1 O1',-2,'ion'],
+  ['SeF2','SeF₂','Se','F1 F1',0,'core'],
+  ['SeCl2','SeCl₂','Se','Cl1 Cl1',0,'core'],
+  ['PBr3','PBr₃','P','Br1 Br1 Br1',0,'core'],
+  ['SiS2','SiS₂','Si','S2 S2',0,'core'],
+  ['CF4','CF₄','C','F1 F1 F1 F1',0,'core'],
+  ['CH3Cl','CH₃Cl','C','Cl1 H1 H1 H1',0,'core'],
+  ['BCl3','BCl₃','B','Cl1 Cl1 Cl1',0,'exp'],
+  ['BeH2','BeH₂','Be','H1 H1',0,'exp'],
 ];
 const MOLS={}, MOL_LIST=[];
 for(const r of MOL_RAW){
@@ -550,11 +634,14 @@ const CPK={H:'#E9EBF2',C:'#3B3E4C',N:'#3D5FE0',O:'#E03A3A',F:'#5DBB3A',Cl:'#2EAD
 
 /* ================= topics ================= */
 const TOPICS={
-  elec:{name:'Electrons',u:'u1'},
-  trend:{name:'Periodic trends',u:'u2'},
-  bond:{name:'Bond types',u:'u2'},
-  lewis:{name:'Lewis structures',u:'u3'},
-  vsepr:{name:'VSEPR shapes',u:'u4'},
+  elec:{name:'Electron structure',u:'u1',book:1},
+  trend:{name:'Periodic trends',u:'u1',book:1},
+  bond:{name:'Electronegativity & bonds',u:'u1',book:1},
+  ionic:{name:'Ionic bonds',u:'u1',book:1},
+  lewis:{name:'Lewis structures',u:'u3',book:2},
+  vsepr:{name:'VSEPR shapes',u:'u3',book:2},
+  polar:{name:'Polarity',u:'u5',book:3},
+  imf:{name:'Intermolecular forces',u:'u5',book:3},
 };
 
 /* ================= static question bank ================= */
@@ -573,7 +660,7 @@ const BANK=[
  ['elec','An atom is 1s² 2s² 2p⁶ 3s² 3p³. How many valence electrons does it have?',['5','3','15','2'],'The valence electrons are in the outer shell (n = 3): 3s² 3p³ gives 2 + 3 = 5. It is phosphorus.'],
  ['trend','Why does atomic radius decrease across a period?',['More protons pull the same shell in tighter','More shells are added','Electrons are lost','Neutrons push the electrons out'],'Across a period the shell number stays the same but the nucleus gains protons, so it pulls harder.'],
  ['trend','Why does atomic radius increase down a group?',['Each period adds another shell of electrons','The nucleus gets weaker','Atoms lose protons','Electrons get heavier'],'Each step down a group adds a new energy level, farther from the nucleus.'],
- ['trend','Which element has the highest electronegativity?',['Fluorine','Oxygen','Chlorine','Helium'],'Fluorine sits at the top right (leaving out noble gases), with EN 3.98.'],
+ ['trend','Which element has the highest electronegativity?',['Fluorine','Oxygen','Chlorine','Helium'],'Fluorine sits at the top right (leaving out noble gases), with EN 4.0. The lowest is francium at 0.7.'],
  ['trend','What is ionization energy?',['The energy needed to remove an electron from an atom','The energy released when a bond forms','How strongly an atom pulls shared electrons','The energy stored in the nucleus'],'Ionization energy is the energy needed to pull an electron off an atom.'],
  ['trend','Which is smaller: Na or Na⁺?',['Na⁺','Na','They are the same size'],'Na⁺ lost its only 3s electron, and with it the whole third shell.'],
  ['trend','Metals tend to…',['lose electrons and form positive ions','gain electrons and form negative ions','share electrons equally','never form ions'],'Metals have low ionization energies, so they give up electrons and become cations.'],
@@ -633,12 +720,14 @@ const DECKS=[
   {id:'trends',name:'Trends & bonds',u:'u2',cards:[
     ['Atomic radius trend','Bigger going down and to the left'],
     ['Ionization energy trend','Bigger going up and to the right'],
-    ['Electronegativity trend','Bigger going up and to the right. F is highest (3.98).'],
+    ['Electronegativity trend','Bigger going up and to the right. F is highest (4.0), Fr lowest (0.7).'],
     ['Cation size','Smaller than its atom'],
     ['Anion size','Bigger than its atom'],
-    ['ΔEN 0 to 0.4','Nonpolar covalent'],
-    ['ΔEN 0.5 to 1.7','Polar covalent'],
+    ['ΔEN = 0','Nonpolar covalent'],
+    ['ΔEN under 0.4','Mostly covalent (treated as nonpolar)'],
+    ['ΔEN 0.4 to 1.7','Polar covalent'],
     ['ΔEN over 1.7','Ionic'],
+    ['The H–F exception','ΔEN is 1.9, but H–F is polar covalent, not ionic'],
     ['δ− goes on…','The more electronegative atom'],
     ['Metal + nonmetal','Ionic: electrons are transferred'],
     ['Nonmetal + nonmetal','Covalent: electrons are shared'],
@@ -669,6 +758,198 @@ const DECKS=[
     ['Axial','The 2 positions at the top and bottom of a 5-group shape'],
   ]},
 ];
+/* ================= books ================= */
+const BOOKS=[
+  {n:1,code:'1b',name:'Electron Structure & Electronegativity',short:'Book 1b',u:'u1'},
+  {n:2,code:'1c',name:'Covalent Bonds',short:'Book 1c',u:'u3'},
+  {n:3,code:'3',name:'Intermolecular Forces',short:'Book 3',u:'u5'},
+];
+const bookTopics=n=>Object.keys(TOPICS).filter(k=>TOPICS[k].book===n);
+CPK.Mg='#8ED16A';CPK.Na='#AB5CF2';CPK.K='#8F40D4';CPK.Ca='#3DFF9A';CPK.Li='#CC80FF';
+
+/* ================= polarity of single-centre molecules ================= */
+const SYM_SHAPES=new Set(['AX2','AX3','AX4','AX5','AX6','AX4E2','AX2E3']);
+function molPolarity(m){
+  if(m.charge)return {polar:null};
+  if(!ENV[m.center]||m.outers.some(o=>!ENV[o.el]))return {polar:null};
+  const same=m.outers.every(o=>o.el===m.outers[0].el);
+  const ds=m.outers.map(o=>dEN(m.center,o.el));
+  const hb=['N','O','F'].includes(m.center)&&m.outers.some(o=>o.el==='H');
+  if(SYM_SHAPES.has(m.axe)&&same){
+    const pb=ds[0]>0.4;
+    return {polar:false,hb:false,why:`${pb?`The ${m.center}–${m.outers[0].el} bonds are polar (ΔEN ${fmt1(ds[0])}), but`:`The bonds are nonpolar or mostly covalent, and`} the ${SHAPES[m.axe].name.toLowerCase()} shape is symmetric with identical outer atoms, so the dipoles cancel. Net dipole = 0.`};
+  }
+  const maxd=Math.max(...ds);
+  if(maxd>0.4){
+    const b=m.outers[ds.indexOf(maxd)].el;
+    return {polar:true,hb,why:`It has polar bonds (${m.center}–${b}, ΔEN ${fmt1(maxd)}) arranged ${same?`in a ${SHAPES[m.axe].name.toLowerCase()} shape, which isn't symmetric`:'unevenly, because the outer atoms are different'}, so the dipoles don't cancel. There's a net dipole.`};
+  }
+  return {polar:null};
+}
+MOL_LIST.forEach(m=>Object.assign(m,{pol:molPolarity(m)}));
+
+/* ================= molecules with more than one central atom ================= */
+// [id, html, name, atoms "El x y" (y grows downward), bonds "i-j-order", charge, polar(true/false/null), hydrogen bonding, set]
+const GMOL_RAW=[
+  ['H2','H₂','hydrogen','H 0 0|H 1 0','0-1-1',0,false,false,'di'],
+  ['F2','F₂','fluorine','F 0 0|F 1 0','0-1-1',0,false,false,'di'],
+  ['Cl2','Cl₂','chlorine','Cl 0 0|Cl 1 0','0-1-1',0,false,false,'di'],
+  ['Br2','Br₂','bromine','Br 0 0|Br 1 0','0-1-1',0,false,false,'di'],
+  ['I2','I₂','iodine','I 0 0|I 1 0','0-1-1',0,false,false,'di'],
+  ['N2','N₂','nitrogen','N 0 0|N 1 0','0-1-3',0,false,false,'di'],
+  ['O2','O₂','oxygen','O 0 0|O 1 0','0-1-2',0,false,false,'di'],
+  ['CO','CO','carbon monoxide','C 0 0|O 1 0','0-1-3',0,true,false,'di'],
+  ['HCl','HCl','hydrogen chloride','H 0 0|Cl 1 0','0-1-1',0,true,false,'di'],
+  ['HF','HF','hydrogen fluoride','H 0 0|F 1 0','0-1-1',0,true,true,'di'],
+  ['HBr','HBr','hydrogen bromide','H 0 0|Br 1 0','0-1-1',0,true,false,'di'],
+  ['C2H4','C₂H₄','ethene','C 0 0|C 1 0|H -0.6 -0.8|H -0.6 0.8|H 1.6 -0.8|H 1.6 0.8','0-1-2|0-2-1|0-3-1|1-4-1|1-5-1',0,false,false,'multi'],
+  ['C2H2','C₂H₂','ethyne','H -1 0|C 0 0|C 1 0|H 2 0','0-1-1|1-2-3|2-3-1',0,false,false,'multi'],
+  ['C2H6','C₂H₆','ethane','C 0 0|C 1 0|H -1 0|H 0 -1|H 0 1|H 2 0|H 1 -1|H 1 1','0-1-1|0-2-1|0-3-1|0-4-1|1-5-1|1-6-1|1-7-1',0,false,false,'multi'],
+  ['C3H8','CH₃CH₂CH₃','propane','C 0 0|C 1 0|C 2 0|H -1 0|H 0 -1|H 0 1|H 1 -1|H 1 1|H 3 0|H 2 -1|H 2 1','0-1-1|1-2-1|0-3-1|0-4-1|0-5-1|1-6-1|1-7-1|2-8-1|2-9-1|2-10-1',0,false,false,'multi'],
+  ['N2Br4','N₂Br₄','dinitrogen tetrabromide','N 0 0|N 1 0|Br -0.75 -0.85|Br -0.75 0.85|Br 1.75 -0.85|Br 1.75 0.85','0-1-1|0-2-1|0-3-1|1-4-1|1-5-1',0,null,false,'multi'],
+  ['CH3OH','CH₃OH','methanol','C 0 0|O 1 0|H -1 0|H 0 -1|H 0 1|H 1.8 0.6','0-1-1|0-2-1|0-3-1|0-4-1|1-5-1',0,true,true,'multi'],
+  ['C2H5OH','CH₃CH₂OH','ethanol','C 0 0|C 1 0|O 2 0|H -1 0|H 0 -1|H 0 1|H 1 -1|H 1 1|H 2.8 0.6','0-1-1|1-2-1|0-3-1|0-4-1|0-5-1|1-6-1|1-7-1|2-8-1',0,true,true,'multi'],
+  ['H2O2','H₂O₂','hydrogen peroxide','H -0.8 0.6|O 0 0|O 1 0|H 1.8 -0.6','0-1-1|1-2-1|2-3-1',0,true,true,'multi'],
+  ['H2SO4','H₂SO₄','sulfuric acid','S 0 0|O 0 -1|O 0 1|O -1 0|O 1 0|H -1.8 0.6|H 1.8 -0.6','0-1-1|0-2-1|0-3-1|0-4-1|3-5-1|4-6-1',0,true,true,'multi'],
+];
+const GMOLS={},GMOL_LIST=[];
+for(const [id,html,name,as,bs,charge,polar,hb,set] of GMOL_RAW){
+  const atoms=as.split('|').map(t=>{const [el,x,y]=t.split(' ');return {el,x:+x,y:+y}});
+  const bonds=bs.split('|').map(t=>{const [a,b,o]=t.split('-').map(Number);return {a,b,o}});
+  atoms.forEach((at,i)=>{const bo=bonds.filter(b=>b.a===i||b.b===i).reduce((s,b)=>s+b.o,0);at.lp=at.el==='H'?0:Math.max(0,(8-2*bo)/2)});
+  const ve=atoms.reduce((s,a)=>s+EL[a.el].val,0)-charge;
+  const drawn=bonds.reduce((s,b)=>s+2*b.o,0)+atoms.reduce((s,a)=>s+2*a.lp,0);
+  if(ve!==drawn)console.warn('bad graph molecule',id,ve,drawn);
+  const counts={};atoms.forEach(a=>counts[a.el]=(counts[a.el]||0)+1);
+  const g={id,html,name,atoms,bonds,charge,ve,counts,multi:true,set,pol:{polar,hb,why:''}};
+  GMOLS[id]=g;GMOL_LIST.push(g);
+}
+// every single-centre molecule as a graph too (used by the drawing tool)
+function molGraph(m){
+  if(m.multi)return m;
+  const ang=LANG[m.X],R=Math.PI/180;
+  const atoms=[{el:m.center,x:0,y:0,lp:m.cLP},...m.outers.map((o,i)=>({el:o.el,x:+Math.cos(ang[i]*R).toFixed(3),y:+(-Math.sin(ang[i]*R)).toFixed(3),lp:o.lp}))];
+  const bonds=m.outers.map((o,i)=>({a:0,b:i+1,o:o.bo}));
+  return {id:m.id,html:m.html,atoms,bonds,charge:m.charge,ve:m.ve,counts:m.counts,multi:false,mol:m};
+}
+const anyMol=id=>MOLS[id]||GMOLS[id];
+
+/* ================= ionic compounds ================= */
+// [id, html, metal, metal charge, how many, nonmetal, nonmetal charge, how many]
+const IONIC_RAW=[
+  ['KBr','KBr','K',1,1,'Br',-1,1],['NaCl','NaCl','Na',1,1,'Cl',-1,1],['LiF','LiF','Li',1,1,'F',-1,1],['KI','KI','K',1,1,'I',-1,1],
+  ['MgO','MgO','Mg',2,1,'O',-2,1],['CaS','CaS','Ca',2,1,'S',-2,1],
+  ['MgCl2','MgCl₂','Mg',2,1,'Cl',-1,2],['CaF2','CaF₂','Ca',2,1,'F',-1,2],['BaBr2','BaBr₂','Ba',2,1,'Br',-1,2],['SrCl2','SrCl₂','Sr',2,1,'Cl',-1,2],
+  ['Li2S','Li₂S','Li',1,2,'S',-2,1],['Na2O','Na₂O','Na',1,2,'O',-2,1],
+  ['AlCl3','AlCl₃','Al',3,1,'Cl',-1,3],['K3P','K₃P','K',1,3,'P',-3,1],['Na3N','Na₃N','Na',1,3,'N',-3,1],
+  ['Mg3N2','Mg₃N₂','Mg',2,3,'N',-3,2],['Al2O3','Al₂O₃','Al',3,2,'O',-2,3],
+];
+const IONIC={},IONIC_LIST=[];
+for(const [id,html,m,mq,mn,n,nq,nn] of IONIC_RAW){const c={id,html,m,mq,mn,n,nq,nn};IONIC[id]=c;IONIC_LIST.push(c)}
+
+/* ================= the VSEPR chart from Book 1c ================= */
+const CHART={2:{0:'linear'},3:{0:'trigonal planar',1:'bent'},4:{0:'tetrahedral',1:'trigonal pyramidal',2:'bent'},5:{0:'trigonal bipyramid',1:'seesaw',2:'T-shape',3:'linear'},6:{0:'octahedral',1:'square pyramidal',2:'square planar',3:'T-shape',4:'linear'}};
+const chartName=(g,e)=>CHART[g]&&CHART[g][e];
+
+/* ================= boiling / melting point comparisons ================= */
+// [higher, lower, kind, reason]
+const BPP=[
+  ['CH₃OH','CH₃CH₂CH₃','bp','Methanol has an O–H group, so it hydrogen bonds. Propane is nonpolar and only has London forces.'],
+  ['CH₃CH₂CH₂CH₂CH₂CH₃','CH₃CH₂CH₃','bp','Both are nonpolar, so both only have London forces. Hexane is much bigger, with more electrons, so its London forces are stronger.'],
+  ['H₂O','H₂S','bp','Water hydrogen bonds (H on O). H₂S can’t, since S isn’t N, O, or F.'],
+  ['HF','HCl','bp','HF hydrogen bonds (H on F). HCl only has dipole-dipole forces. That’s why HF boils far higher than the other hydrogen halides.'],
+  ['NH₃','PH₃','bp','NH₃ hydrogen bonds (H on N). PH₃ can’t.'],
+  ['I₂','F₂','bp','Both are nonpolar. I₂ has far more electrons, so its London forces are much stronger. That’s why I₂ is a solid and F₂ is a gas at room temperature.'],
+  ['Br₂','Cl₂','bp','Both are nonpolar. Br has a larger atomic number, so Br₂ has stronger London forces.'],
+  ['CH₃Cl','CH₄','bp','CH₃Cl is polar, so it has dipole-dipole forces. CH₄ is nonpolar and only has London forces.'],
+  ['C₂H₆','CH₄','bp','Both are nonpolar. Ethane is bigger with more electrons, so stronger London forces.'],
+  ['CH₃OH','CH₄','bp','Methanol hydrogen bonds. Methane only has London forces.'],
+  ['NaCl','H₂O','mp','NaCl is an ionic crystal lattice. Melting it means breaking strong ionic bonds, not weak forces between molecules.'],
+  ['Diamond','NaCl','mp','Diamond is a covalent network: melting it means breaking covalent bonds, which are even stronger than ionic bonds.'],
+  ['MgO','NaF','mp','Both are ionic with ions of similar size, but Mg²⁺ and O²⁻ have double the charges, so the ionic bond is much stronger.'],
+  ['LiF','KBr','mp','Both are 1+ and 1− ions, but Li⁺ and F⁻ are much smaller. Smaller ions sit closer together, so the ionic bond is stronger.'],
+  ['CaBr₂','SrI₂','mp','Same charges, but Sr²⁺ and I⁻ are bigger ions. Bigger ions make a weaker ionic bond, so SrI₂ melts lower.'],
+  ['NaF','NaCl','mp','Same charges, but F⁻ is smaller than Cl⁻, so the ionic bond in NaF is stronger.'],
+  ['CaO','BaO','mp','Same charges, but Ca²⁺ is smaller than Ba²⁺, so the ionic bond in CaO is stronger.'],
+];
+
+/* ================= more banked questions ================= */
+const BANK2=[
+ ['elec','By Ms. James’s definition, the valence electrons of a main group element are…',['the electrons in the highest principal energy level','all of its electrons','the electrons in the d sublevel','the electrons in the noble gas core'],'Main group: valence = electrons in the highest energy level (the biggest number in front). Everything else is core.'],
+ ['elec','By Ms. James’s definition, the core electrons of a transition element are…',['the electrons in the noble gas configuration of the previous period','the electrons in the highest energy level only','only the 4s electrons','the d electrons'],'Transition elements: core = the previous noble gas. Everything after it, s and d, counts as valence.'],
+ ['elec','Which block are transition elements in?',['The d block','The s block','The p block','The f block'],'Main group (representative) elements are in the s and p blocks. Transition elements are the d block.'],
+ ['trend','What is the shielding effect?',['Core electrons repel valence electrons and block some of the nucleus’s pull','Valence electrons pulling the nucleus closer','Protons repelling each other','Electrons leaving the atom'],'More core electrons means more shielding, so outer electrons feel less pull and the atom is bigger.'],
+ ['trend','Going across a period, why doesn’t shielding grow much?',['New electrons go into the same shell, and same-shell electrons barely shield each other','Core electrons are removed','The nucleus loses protons','Shielding only happens in noble gases'],'Across a period the core stays the same, so the extra protons win and the atom shrinks.'],
+ ['trend','Why is atomic radius hard to define exactly?',['The electron cloud has no sharp edge','Atoms are always moving','Nuclei are too small to see','Electrons have no charge'],'Because of uncertainty in the size of the electron cloud, radius is often defined as half the distance between two bonded nuclei.'],
+ ['bond','Electronegativity depends on two properties of an atom. Which two?',['Ionization energy and electron affinity','Atomic mass and density','Number of neutrons and protons','Melting point and boiling point'],'Ionization energy is how strongly an atom holds its own electrons. Electron affinity is how strongly it attracts other electrons. High in both means high EN.'],
+ ['bond','On Ms. James’s table, electronegativity ranges from…',['0.7 (Fr) to 4.0 (F)','0 to 1','1.0 (Li) to 3.5 (O)','0.9 (Na) to 3.0 (Cl)'],'Francium is the lowest at 0.7 and fluorine the highest at 4.0.'],
+ ['bond','H–F has ΔEN = 1.9. What kind of bond is it?',['Polar covalent (it’s the exception)','Ionic','Nonpolar covalent','Mostly covalent'],'By the numbers it would be ionic, but H–F is the exception: it’s a polar covalent bond.'],
+ ['ionic','What holds an ionic bond together?',['Electrostatic attraction between a cation and an anion','A shared pair of electrons','Temporary dipoles','Hydrogen bonds'],'Opposite charges attract. The metal ion is positive and the nonmetal ion is negative.'],
+ ['ionic','“Isoelectronic” means an ion…',['has the same number of electrons as its nearest noble gas','has no electrons','has the same number of protons as electrons','is neutral'],'Na⁺ and F⁻ both have 10 electrons, the same as neon.'],
+ ['ionic','Ionic bond strength depends on…',['the sizes (radii) and charges of the ions','the number of neutrons','the colour of the compound','how many covalent bonds there are'],'Smaller ions and bigger charges make a stronger ionic bond.'],
+ ['ionic','In the Lewis structure of an ionic compound, the metal ion shows…',['no dots, in brackets with its charge','8 dots','its valence dots','a dash to the nonmetal'],'The metal gave away all its valence electrons, so [Mg]²⁺ has no dots.'],
+ ['ionic','Which pair would form an ionic bond?',['Ca and O (ΔEN 2.5)','P and Cl (ΔEN 0.9)','S and O (ΔEN 1.0)','O and H (ΔEN 1.4)'],'Only Ca and O have ΔEN over 1.7.'],
+ ['lewis','As two H atoms approach each other, what is stored as the chemical bond?',['Potential energy','Kinetic energy','Heat only','Light'],'The atoms speed up as they attract, then the repulsion slows them and turns kinetic energy into potential energy. That potential energy is the bond.'],
+ ['lewis','A covalent bond is…',['a shared pair of electrons','a transferred electron','attraction between ions','a temporary dipole'],'Shared electron pair = covalent bond.'],
+ ['lewis','How many electrons are in a triple bond?',['6','3','4','2'],'Three shared pairs: 3 × 2 = 6.'],
+ ['lewis','In Ms. James’s steps, what do you do if the central atom has less than an octet?',['Have an outer atom share another pair to make a double (or triple) bond','Add extra electrons','Remove an outer atom','Move H to the center'],'Step 5: an adjacent atom shares an extra non-bonding pair with the electron-deficient atom.'],
+ ['lewis','Which central atom can hold up to 10 electrons?',['P','N','C','O'],'P can hold up to 10 (PCl₅). S can hold up to 12 (SF₆). Period 2 atoms stop at 8.'],
+ ['lewis','Which central atom can hold up to 12 electrons?',['S','O','B','N'],'S can hold up to 12, as in SF₆. P can hold up to 10.'],
+ ['lewis','Expanded valence works for central atoms from which periods?',['The third period and below','Only period 2','Only period 1','Only noble gases'],'Their extra electrons go into low-energy d orbitals.'],
+ ['vsepr','On the VSEPR chart, what does each row mean?',['The number of electron groups around the central atom','The number of outer atoms only','The period of the central atom','The number of double bonds'],'Rows are electron groups (bonded atoms + lone pairs). Columns are lone pairs on the central atom.'],
+ ['vsepr','On the chart, 5 groups with 2 lone pairs is…',['T-shape','seesaw','trigonal planar','bent'],'Row 5, column 2: T-shape (like ClF₃).'],
+ ['vsepr','On the chart, 6 groups with 2 lone pairs is…',['square planar','square pyramidal','octahedral','T-shape'],'Row 6, column 2: square planar (like XeF₄).'],
+ ['vsepr','SO₃ has 3 bonded O atoms and no lone pairs on S. What is its shape?',['Trigonal planar','Trigonal pyramidal','Bent','Tetrahedral'],'AX₃ with no lone pairs is trigonal planar. SO₃²⁻ is the one with a lone pair (AX₃E, trigonal pyramidal).'],
+ ['polar','A molecule is polar only if…',['it has polar bonds arranged asymmetrically','it has any polar bond','it contains oxygen','it is a gas'],'Both are needed: polar bonds, and a shape that doesn’t let the dipoles cancel.'],
+ ['polar','CO₂ has polar C=O bonds. Why is the molecule nonpolar?',['It’s linear, so the two bond dipoles cancel','C has a lone pair','The bonds are nonpolar','It’s ionic'],'The dipoles point in opposite directions, so the net dipole is zero.'],
+ ['polar','In a polar covalent bond, the electron density is enriched around…',['the more electronegative atom','the less electronegative atom','both atoms equally','the bigger atom'],'That atom gets a partial negative charge (δ−).'],
+ ['polar','Which hydrogen halide bond is the least polar?',['H–I (ΔEN 0.4)','H–Br (ΔEN 0.7)','H–Cl (ΔEN 0.9)','H–F (ΔEN 1.9)'],'The smaller the ΔEN, the less polar the bond.'],
+ ['polar','ΔEN for Cl–Br is 3.0 − 2.8 = 0.2. What kind of bond is it?',['Mostly covalent (nonpolar)','Polar covalent','Ionic','Hydrogen bond'],'Under 0.4 is mostly covalent: the electrons spend no more time near one nucleus than the other.'],
+ ['polar','A bond dipole is drawn as an arrow pointing…',['toward the more electronegative atom','toward the less electronegative atom','away from both atoms','up'],'The arrow points toward δ−, the atom that pulls the electrons closer.'],
+ ['imf','Intramolecular forces are…',['forces within a molecule, like covalent and ionic bonds','forces between molecules','only hydrogen bonds','London forces'],'“Intra” = inside. “Inter” = between.'],
+ ['imf','Intermolecular forces are also called…',['Van der Waals forces','covalent bonds','ionic bonds','nuclear forces'],'The three types are London forces, dipole-dipole, and hydrogen bonds.'],
+ ['imf','When ice melts, what breaks?',['The weak forces between water molecules','The covalent O–H bonds','The hydrogen atoms','The oxygen nuclei'],'Melting a molecular substance breaks intermolecular forces, not covalent bonds.'],
+ ['imf','London forces are caused by…',['temporary dipoles from shifting electrons','permanent dipoles','H bonded to N, O, or F','ions'],'Electrons shift for a moment, making a temporary dipole that induces one in the neighbouring molecule.'],
+ ['imf','London forces get stronger as…',['molecules get bigger (more electrons)','molecules get smaller','temperature rises','molecules become ions'],'The greater the atomic number, the stronger the London force.'],
+ ['imf','Dipole-dipole forces are about how strong compared with a covalent bond?',['About 1/100 as strong','About the same','10 times stronger','Twice as strong'],'They’re much weaker than covalent bonds, but they still raise boiling points.'],
+ ['imf','Hydrogen bonds form when H is bonded to…',['N, O, or F','C','any metal','Cl, Br, or I'],'N, O, and F are so electronegative that H becomes very positive and links to a lone pair on a neighbouring molecule.'],
+ ['imf','Which is the strongest type of Van der Waals force?',['Hydrogen bonds','London forces','Dipole-dipole forces (not H bonds)','They are all equal'],'Hydrogen bonds are the strongest type of dipole-dipole force.'],
+ ['imf','Why do many covalent compounds have low melting points?',['Their molecules are held together by weak intermolecular forces','Covalent bonds are weak','They are ionic','They contain metals'],'The covalent bonds inside are strong, but the forces between molecules are weak and easy to break.'],
+ ['imf','Which type of force increases in strength going down a group (between atoms or molecules of the same element)?',['London forces','Covalent bond strength','Ionic bond strength','Metallic bond strength'],'Atoms get bigger with more electrons going down, so their London forces get stronger.'],
+ ['imf','Which type of force decreases in strength going down a group?',['Bonds between atoms (like metallic or covalent bonds), because the atoms get bigger','London forces','Hydrogen bonds, always','None of them'],'Bigger atoms hold bonding electrons farther from the nucleus, so the bonds get weaker. For example, Li has a higher melting point than Na and K.'],
+];
+BANK2.forEach(([topic,q,o,ex],i)=>BANKQ.push({t:'mcq',topic,q,o,ex,id:'c'+i}));
+
+/* ================= more flashcards ================= */
+DECKS.push(
+  {id:'chart',name:'The VSEPR chart',u:'u3',cards:Object.entries(CHART).flatMap(([g,r])=>Object.entries(r).map(([e,n])=>[`${g} electron groups<br>${e} lone pair${e==='1'?'':'s'}`,`<b>${n}</b><br><span class="muted small">${axeHtml('AX'+((g-e)>1?(g-e):'')+(+e?'E'+(+e>1?e:''):''))}</span>`]))},
+  {id:'ionic',name:'Ionic bonds',u:'u1',cards:[
+    ['What is an ionic bond?','Electrostatic attraction between a cation and an anion'],
+    ['ΔEN for an ionic bond','Over 1.7 (usually a metal and a nonmetal)'],
+    ['Two ways ionic bonds form','A) Ions that already exist come together<br>B) Atoms transfer electrons, then the ions combine'],
+    ['Isoelectronic','Same number of electrons as the nearest noble gas'],
+    ['What makes an ionic bond stronger?','Smaller ions and bigger charges'],
+    ['Lewis structure of a metal ion','No dots, in [ ] with its charge, e.g. [Mg]²⁺'],
+    ['Lewis structure of a nonmetal ion','8 dots, in [ ] with its charge, e.g. [:Cl:]⁻'],
+    ['Valence electrons (main group)','Electrons in the highest energy level'],
+    ['Core electrons (transition elements)','The noble gas configuration of the previous period'],
+    ['Shielding effect','Core electrons repel outer electrons and block some of the nucleus’s pull'],
+  ]},
+  {id:'imf',name:'Polarity & IMFs',u:'u5',cards:[
+    ['Intramolecular forces','Forces within molecules: covalent and ionic bonds'],
+    ['Intermolecular forces','Forces between molecules (Van der Waals forces)'],
+    ['London forces','Temporary dipoles. In every molecule. Stronger with more electrons.'],
+    ['Dipole-dipole forces','Permanent dipoles between polar molecules. About 1/100 of a covalent bond.'],
+    ['Hydrogen bonds','H bonded to N, O, or F. The strongest Van der Waals force.'],
+    ['Polar molecule needs…','Polar bonds AND an asymmetric shape'],
+    ['Why is CO₂ nonpolar?','It’s linear, so the two C=O dipoles cancel'],
+    ['Why is H₂O polar?','Bent shape, so the O–H dipoles don’t cancel'],
+    ['Bond dipole arrow points…','Toward the more electronegative atom (δ−)'],
+    ['Highest melting points','Covalent networks (diamond) and ionic lattices (NaCl)'],
+    ['Why is I₂ a solid but F₂ a gas?','I₂ has many more electrons, so stronger London forces'],
+    ['Same type of IMF: who boils higher?','The bigger molecule (more electrons)'],
+  ]},
+);
 /* ================= lessons ================= */
 // block types: text, key, check (question), widget
 const T=html=>({type:'text',html});
@@ -719,7 +1000,7 @@ const LESSONS=[
   K(`<p><mark class="hl">Radius gets bigger going down and to the left.</mark></p>`),
   MC('Which atom is larger: Na or K?',['K','Na'],'K is below Na in group 1, so it has one more shell.'),
   T(`<p><b>Ionization energy</b> is the energy needed to pull one electron off an atom. <b>Electronegativity</b> (EN) is how strongly an atom pulls on electrons it shares in a bond.</p><p>Both run opposite to size. Small atoms hold their electrons close, so it takes more energy to remove one, and they pull harder on shared electrons.</p>`),
-  K(`<p><mark class="hl">Ionization energy and electronegativity get bigger going up and to the right.</mark></p><p>Fluorine is the most electronegative element (3.98). Noble gases are usually left out of EN tables.</p>`),
+  K(`<p><mark class="hl">Ionization energy and electronegativity get bigger going up and to the right.</mark></p><p>Fluorine is the most electronegative element (4.0) and francium the least (0.7). Noble gases are usually left out of EN tables.</p>`),
   T(`<p>Switch between the three trends and tap any element to see its value.</p>`),
   W('heat'),
   MC('Which has the higher electronegativity: N or P?',['N','P'],'N is above P in group 15, so it is smaller and pulls harder on shared electrons.'),
@@ -729,22 +1010,26 @@ const LESSONS=[
   MC('Which is bigger: Cl or Cl⁻?',['Cl⁻','Cl','They are the same size'],'Cl⁻ has one extra electron. The added repulsion spreads the electron cloud out.'),
   MC('Which has the higher ionization energy: Mg or Ca?',['Mg','Ca'],'Mg is higher up group 2, so its outer electrons are closer to the nucleus and harder to remove.'),
 ]},
-{id:'en',unit:2,sym:'En',topic:'bond',title:'Electronegativity & bond types',desc:'ΔEN, polar bonds, ionic vs covalent',blocks:[
-  T(`<p>When two atoms share electrons, the one with the higher electronegativity pulls them closer. To see how lopsided the sharing is, find the <b>difference in electronegativity</b>.</p><p class="eq">ΔEN = bigger EN − smaller EN</p>`),
-  K(`<div class="tbl-wrap"><table class="tbl"><tr><th>ΔEN</th><th>Bond type</th><th>Electrons</th></tr><tr><td class="k">0 to 0.4</td><td>Nonpolar covalent</td><td>shared equally</td></tr><tr><td class="k">0.5 to 1.7</td><td>Polar covalent</td><td>shared unequally</td></tr><tr><td class="k">over 1.7</td><td>Ionic</td><td>transferred</td></tr></table></div>
-     <p>The quick check from your periodic table sheet: <mark class="hl">metal + nonmetal = ionic (transfer)</mark> and <mark class="hl">nonmetal + nonmetal = covalent (share)</mark>.</p>
-     <p class="note">Some textbooks put the cutoffs at slightly different numbers. If Ms. James uses different ones, go with hers.</p>`),
-  T(`<p>Pick any two elements and see how the shared electrons shift.</p>`),
+{id:'en',unit:2,sym:'En',topic:'bond',title:'Electronegativity & bond types',desc:'Ms. James’s ΔEN chart, polar bonds, ionic vs covalent',blocks:[
+  T(`<p><b>Electronegativity</b> (χ, or EN) is the ability of an atom in a molecule to “steal” electrons from another atom. It depends on two properties of the atom:</p><ul><li><b>Ionization energy</b>: how strongly it holds onto its own electrons</li><li><b>Electron affinity</b>: how strongly it attracts other electrons</li></ul><p>High in both means highly electronegative: it attracts electrons from other atoms and resists having its own taken away.</p>`),
+  K(`<p><mark class="hl">EN goes from 0.7 (francium) to 4.0 (fluorine).</mark> It gets bigger going up and to the right.</p><p>On the test, use the values on your periodic table: H 2.1, C 2.5, N 3.0, O 3.5, F 4.0, Cl 3.0, Br 2.8, I 2.5, S 2.5, P 2.1, Na 0.9, K 0.8, Mg 1.2, Ca 1.0.</p>`),
+  MC('Which is more electronegative: K or Be?',['Be','K'],'Be is higher up and farther right than K, so it pulls harder. On the table: Be 1.5, K 0.8.'),
+  T(`<p>The <b>difference in electronegativity</b>, Δχ, tells you what type of bond will form between two atoms.</p><p class="eq">ΔEN = bigger EN − smaller EN</p>`),
+  K(`<div class="tbl-wrap"><table class="tbl"><tr><th>ΔEN</th><th>Bond description</th></tr><tr><td class="k">0</td><td>Nonpolar covalent</td></tr><tr><td class="k">under 0.4</td><td>Mostly covalent (counts as nonpolar)</td></tr><tr><td class="k">0.4 – 1.7</td><td>Polar covalent</td></tr><tr><td class="k">over 1.7</td><td>Ionic</td></tr></table></div>
+     <p>From your periodic table sheet: <mark class="hl">metal + nonmetal = ionic (transfer)</mark>, <mark class="hl">nonmetal + nonmetal = covalent (share)</mark>.</p>
+     <p><mark class="hl pink">Exception: H–F has ΔEN 1.9 but is polar covalent.</mark></p>`,'Ms. James’s ΔEN chart'),
+  T(`<p>Pick any two elements and see how the shared electrons shift. The values are the ones on your periodic table.</p>`),
   W('meter'),
-  MC('H has an EN of 2.20 and Cl has 3.16. What kind of bond is H–Cl?',['Polar covalent','Nonpolar covalent','Ionic'],'ΔEN = 3.16 − 2.20 = 0.96, which is between 0.5 and 1.7.'),
-  NUM('Na has an EN of 0.93 and Cl has 3.16. What is ΔEN for NaCl?',2.23,'3.16 − 0.93 = 2.23. That is more than 1.7, so NaCl is ionic.',0.011),
+  MC('H has an EN of 2.1 and Cl has 3.0. What kind of bond is H–Cl?',['Polar covalent','Nonpolar covalent','Ionic'],'ΔEN = 3.0 − 2.1 = 0.9, which is between 0.4 and 1.7.'),
+  NUM('Na has an EN of 0.9 and Cl has 3.0. What is ΔEN for NaCl?',2.1,'3.0 − 0.9 = 2.1. That is more than 1.7, so NaCl is ionic.',0.05),
   T(`<p>In a polar bond, the more electronegative atom becomes slightly negative, written <b>δ−</b> (delta minus). The other atom becomes slightly positive, <b>δ+</b>.</p><p class="eq">H<sup>δ+</sup> — Cl<sup>δ−</sup></p>`),
-  MC('In an O–H bond, which atom gets δ−?',['O','H','Neither, because the bond is nonpolar'],'O (3.44) pulls harder than H (2.20), so the shared electrons sit closer to O.'),
-  C({t:'sort',q:'Sort each bond by type. ΔEN is in brackets.',buckets:['Nonpolar','Polar','Ionic'],items:[['Cl–Cl (0)',0],['C–H (0.35)',0],['N–H (0.84)',1],['C–O (0.89)',1],['K–F (3.16)',2],['Mg–O (2.13)',2]],ex:'0 to 0.4 is nonpolar, 0.5 to 1.7 is polar, and more than 1.7 is ionic.'}),
+  MC('In an O–H bond, which atom gets δ−?',['O','H','Neither, because the bond is nonpolar'],'O (3.5) pulls harder than H (2.1), so the shared electrons sit closer to O.'),
+  C({t:'sort',q:'Sort each bond by type. ΔEN is in brackets.',buckets:['Nonpolar / mostly covalent','Polar covalent','Ionic'],items:[['Cl–Cl (0)',0],['Cl–Br (0.2)',0],['N–H (0.9)',1],['Ba–S (1.6)',1],['K–F (3.2)',2],['Ca–O (2.5)',2]],ex:'Under 0.4 counts as nonpolar (mostly covalent), 0.4 to 1.7 is polar covalent, and over 1.7 is ionic. Ba–S is 1.6, so it just misses ionic.'}),
 ]},
 {id:'lewis',unit:3,sym:'Lw',topic:'lewis',title:'Drawing Lewis structures',desc:'The step-by-step method that always works',blocks:[
   T(`<p>A Lewis structure shows every valence electron in a molecule. Each line is a bond (2 shared electrons) and each pair of dots is a lone pair. You never have to guess where things go: the same steps work every time.</p>`),
   K(`<ol><li>Count the total valence electrons.</li><li>Work out the number of bonds: (wanted − have) ÷ 2.</li><li>Put the least electronegative atom in the center (never H).</li><li>Draw single bonds to the outer atoms and compare with step 2.</li><li>Give the outer atoms lone pairs until each has 8 (H gets none).</li><li>Put any leftover electrons on the center.</li><li>Check: every atom has 8 (H has 2), and the dots add up to step 1.</li></ol>`,'The 7 steps'),
+  K(`<ol><li>Find the total valence electrons. For an ion, adjust for the charge.</li><li>Decide which atoms are bonded together and put two electrons in each bond. The central atom is usually the least electronegative. Unless you have to, don’t exceed an atom’s valence.</li><li>Use the remaining electrons to complete the octets of the surrounding atoms.</li><li>Put any electrons still left in pairs on the central atom.</li><li>If the central atom has less than an octet, have an outer atom share another pair to make a double bond. Make a triple bond if you need to.</li><li>Replace every bonding pair with a dash.</li></ol><p class="note">These are the same moves as the 7 steps above. The (wanted − have) ÷ 2 shortcut just tells you in advance how many bonds you’ll end up with.</p>`,'Ms. James’s 6 steps'),
   K(`<p><mark class="hl">Wanted = 8 for each atom, 2 for each H</mark></p><p><mark class="hl">Bonds = (wanted − have) ÷ 2</mark></p>`),
   C({t:'order',q:'Put the first four steps in order.',o:['Count total valence electrons','Find the bonds: (wanted − have) ÷ 2','Pick the central atom','Draw single bonds to the outer atoms'],ex:'Count, find the bonds, pick the center, then draw the skeleton.'}),
   T(`<p>Try it on ammonia, NH₃. Answer each step, and the builder checks you as you go.</p>`),
@@ -770,7 +1055,7 @@ const LESSONS=[
 ]},
 {id:'exceptions',unit:3,sym:'Ex',topic:'lewis',title:'Octet exceptions',desc:'H, B, Be, and expanded octets',blocks:[
   T(`<p>The octet rule works for most atoms, but a few break it. They're easy to spot once you know them.</p>`),
-  K(`<p><mark class="hl">H wants 2.</mark> It makes 1 bond and has no lone pairs.</p><p><mark class="hl">B stays at 6. Be stays at 4.</mark> In BF₃, boron has 3 bonds and no lone pairs. Don't add a double bond to "fix" it.</p><p><mark class="hl pink">Expanded octet:</mark> a central atom from period 3 or below (P, S, Cl, Br, I, Xe…) can hold 10 or 12 electrons. Period 2 atoms (C, N, O, F) never expand.</p>`),
+  K(`<p><mark class="hl">H wants 2.</mark> It makes 1 bond and has no lone pairs.</p><p><mark class="hl">B stays at 6. Be stays at 4.</mark> In BF₃, boron has 3 bonds and no lone pairs. Don't add a double bond to "fix" it.</p><p><mark class="hl pink">Expanded octet:</mark> a central atom from period 3 or below (P, S, Cl, Br, I, Xe…) can hold 10 or 12 electrons. Period 2 atoms (C, N, O, F) never expand.</p><p>The two to remember: <mark class="hl">P can hold up to 10 electrons</mark> (PCl₅) and <mark class="hl">S can hold up to 12</mark> (SF₆, SCl₆).</p><p class="note">Your booklet left these two blanks empty. P and S are the standard answers, but check with Ms. James.</p>`),
   W('lewis','BF3'),
   C({t:'multi',q:'Tap every atom that can have an expanded octet.',o:['S','N','P','O','Xe','C','I','F'],a:[0,2,4,6],ex:'S, P, Xe, and I are in period 3 or lower, so they have room for extra electrons. C, N, O, and F are in period 2 and stop at 8.'}),
   T(`<p>How do you know you need an expanded octet? <b>The bond formula gives fewer bonds than there are outer atoms.</b></p><p>SF₄ has 6 + 28 = 34 electrons. Wanted is 5 × 8 = 40, so the formula says (40 − 34) ÷ 2 = 3 bonds. But you need 4 bonds to attach 4 F atoms. S is in period 3, so it can expand: draw 4 single bonds, and the leftover pair goes on S.</p>`),
@@ -812,9 +1097,144 @@ const LESSONS=[
   MC('NH₃ and BF₃ both have 3 atoms around the center. Why is NH₃ trigonal pyramidal but BF₃ trigonal planar?',['N has a lone pair, so it has 4 groups; B has none, so it has 3','N is bigger than B','F is more electronegative than H','NH₃ has double bonds'],'The lone pair on N makes a fourth group. The groups spread out like a tetrahedron, and the three H atoms form a pyramid under the lone pair.'),
   MC('Which molecule has the same shape as H₂O?',['SF₂','CO₂','BeCl₂','XeF₂'],'SF₂ is AX₂E₂, the same as H₂O, so it is bent. The other three are all linear.'),
   MC('CO₂ and SO₂ both have 2 O atoms. Why is SO₂ bent?',['S has a lone pair, and C has none','S is heavier than C','SO₂ only has single bonds','O pulls harder on S than on C'],'C uses all 4 electrons in two double bonds (AX₂, linear). S has 6, so a lone pair is left over (AX₂E, bent).'),
-  T(`<p>That's every lesson. Next, run the Lewis builder on your Hand-In 1–4 molecules in the Practice tab, or try the mock test.</p>`),
+  T(`<p>That’s the end of the VSEPR lessons. Next up is the chart Ms. James will hand out on the test.</p>`),
 ]},
 ];
+/* ================= lessons for books 1b, 1c and 3 ================= */
+LESSONS.forEach(l=>{l.unit={1:1,2:1,3:2,4:2}[l.unit]});
+UNITS.length=0;BOOKS.forEach(b=>UNITS.push(b));
+
+const NEW_LESSONS={
+core:{id:'core',unit:1,sym:'Co',topic:'elec',title:'Valence & core electrons',desc:'Main group vs transition elements, the booklet way',blocks:[
+  T(`<p>Your booklet sorts the periodic table into two kinds of elements, and the rule for valence electrons is different for each.</p><ul><li><b>Main group</b> (also called <b>representative</b>) elements are in the <b>s block and p block</b>.</li><li><b>Transition</b> elements are in the <b>d block</b>.</li></ul>`),
+  K(`<p><mark class="hl">Main group: valence electrons are the electrons in the highest principal energy level.</mark> Everything else is core.</p><p class="eq">P: 1s² 2s² 2p⁶ <b>3s² 3p³</b> → highest level is 3 → 2 + 3 = 5 valence, 10 core</p>`),
+  NUM('Carbon is 1s² 2s² 2p². How many valence electrons does it have?',4,'The highest energy level is 2: 2s² 2p² gives 2 + 2 = 4.'),
+  NUM('How many core electrons does carbon have?',2,'Only the 1s² electrons are below the highest level, so carbon has 2 core electrons.'),
+  MC('Calcium is 1s² 2s² 2p⁶ 3s² 3p⁶ 4s². How many valence and core electrons does it have?',['2 valence, 18 core','8 valence, 12 core','20 valence, 0 core','4 valence, 16 core'],'The highest level is 4, and only 4s² is in it. The other 18 are core.'),
+  K(`<p><mark class="hl">Transition elements: core electrons are the noble gas configuration of the previous period.</mark> Everything after it, both s and d, is valence.</p><p class="eq">Mn: [Ar] <b>4s² 3d⁵</b> → 2 + 5 = 7 valence, 18 core</p>`),
+  NUM('Nickel is [Ar] 4s² 3d⁸. How many valence electrons does it have by this rule?',10,'Everything after [Ar] counts: 2 + 8 = 10.'),
+  NUM('Yttrium is [Kr] 5s² 4d¹. How many valence electrons does it have?',3,'After [Kr]: 2 + 1 = 3.'),
+  MC('Why is the rule different for transition elements?',['Their d electrons are in a lower energy level than the outer s electrons but still take part in bonding','They have no core electrons','They are not on the periodic table','They only have s electrons'],'In Mn, 3d is a lower level number than 4s, but those d electrons are still outer electrons, so the booklet counts everything after the noble gas.'),
+]},
+shield:{id:'shield',unit:1,sym:'Sf',topic:'trend',title:'The shielding effect',desc:'Why atoms grow down a group but shrink across',blocks:[
+  T(`<p>An outer electron feels two things at once:</p><ul><li>A <b>pull</b> from the positive nucleus. More protons means a stronger pull.</li><li>A <b>push</b> from the core electrons underneath it. Like charges repel.</li></ul><p>That push from the core electrons is the <b>shielding effect</b>.</p>`),
+  W('shield'),
+  K(`<p><mark class="hl">Core electrons repel the outer electrons and block some of the nucleus’s pull.</mark> This repulsion pushes the outer electrons farther out, so the atom is bigger.</p><p>Electrons in the <b>same</b> shell (valence electrons) barely repel each other. Most of the shielding comes from core electrons.</p>`),
+  MC('Why is K bigger than Na?',['K has an extra shell and more core electrons shielding its valence electron','K has fewer protons','K’s valence electrons repel each other more','Na has more core electrons'],'Going down a group adds a new shell and more core electrons, which shield the valence electron from the nucleus.'),
+  MC('Across period 2 from Li to F, why do atoms get smaller?',['Protons are added but the core stays the same, so the stronger nucleus pulls the same shell in','Shielding increases a lot','Electrons are removed','A new shell is added each time'],'New electrons go into the same shell and barely shield each other. The extra protons win.'),
+  T(`<p>The <b>atomic radius</b> is the distance from the centre of the nucleus to the valence shell. It’s hard to define exactly because the electron cloud has no sharp edge, so it’s often measured as <b>half the distance between two bonded nuclei</b>, which X-ray diffraction can measure.</p>`),
+  MC('Why is the atomic radius often given as half the distance between two bonded nuclei?',['The electron cloud has no sharp edge, but the distance between nuclei can be measured','Atoms are always half-sized','Nuclei are bigger than atoms','It makes the numbers smaller'],'There’s uncertainty over the size of the electron cloud, so chemists use something they can measure.'),
+]},
+ionic:{id:'ionic',unit:1,sym:'Io',topic:'ionic',title:'Ionic bonds',desc:'Transfer, isoelectronic ions, strength, ionic Lewis structures',blocks:[
+  T(`<p>An <b>ionic bond</b> is the electrostatic attraction between a positive ion (cation) and a negative ion (anion).</p>`),
+  K(`<ul><li>Forms when <mark class="hl">ΔEN is over 1.7</mark></li><li>Usually a metal (low χ) and a nonmetal (high χ)</li><li>Relatively strong. <mark class="hl">Strength depends on the ionic radii and charges of the ions.</mark></li></ul>`),
+  NUM('Ca (1.0) and O (3.5) bond. What is ΔEN?',2.5,'3.5 − 1.0 = 2.5. That is over 1.7, so CaO is ionic.',0.05),
+  T(`<p>There are two ways ionic bonds form:</p><ol><li><b>Ions that already exist come together.</b> For example, Na⁺(aq) and Cl⁻(aq) in salt water form solid NaCl when the water evaporates.</li><li><b>Atoms transfer electrons, then the ions combine.</b> The metal loses one or more electrons and the nonmetal gains them. Both end up with a closed outer shell.</li></ol>`),
+  K(`<p>After the transfer, both ions are <mark class="hl">isoelectronic</mark>: they have the same number of electrons as their nearest noble gas.</p><p class="eq">Na⁺ (10 e⁻) and F⁻ (10 e⁻) both match neon</p>`),
+  MC('Which ion is isoelectronic with argon?',['K⁺','Na⁺','F⁻','Li⁺'],'K has 19 electrons. K⁺ has 18, the same as argon. Na⁺, F⁻ match neon and Li⁺ matches helium.'),
+  K(`<p><mark class="hl">Smaller ions and bigger charges make a stronger ionic bond.</mark> LiF is stronger than KBr because Li⁺ and F⁻ are smaller, so they sit closer together.</p>`),
+  MC('Which has the stronger ionic bond: MgO or NaF?',['MgO','NaF'],'The ions are about the same size, but Mg²⁺ and O²⁻ carry double the charge.'),
+  MC('Which has the lower melting temperature: CaBr₂ or SrI₂?',['SrI₂','CaBr₂'],'Same charges, but Sr²⁺ and I⁻ are bigger ions. A weaker ionic bond means a lower melting point.'),
+  T(`<p>Ionic Lewis structures are simple. The metal gives away all its valence electrons, so its ion has <b>no dots</b>. The nonmetal fills up to <b>8 dots</b>. Each ion goes in square brackets with its charge, and you draw enough of each ion for the charges to cancel.</p>`),
+  W('ionic','MgCl2'),
+  T(`<p>Now build one yourself.</p>`),
+  W('ionicbuilder','Li2S'),
+  NUM('How many dots are in the Lewis structure of Cl⁻?',8,'Cl has 7 valence electrons and gains 1, so [:Cl:]⁻ has 8 dots.'),
+  NUM('How many dots are in the Lewis structure of Mg²⁺?',0,'Mg gave away both valence electrons, so [Mg]²⁺ has no dots.'),
+  MC('What is the formula of the ionic compound of potassium and phosphorus?',['K₃P','KP','KP₃','K₂P₃'],'K forms K⁺ and P forms P³⁻. It takes three K⁺ to cancel one P³⁻.'),
+]},
+covform:{id:'covform',unit:2,sym:'Cb',topic:'lewis',title:'How covalent bonds form',desc:'Colliding atoms, energy, and shared pairs',blocks:[
+  T(`<p>Bond formation begins with atoms <b>colliding</b>. As two hydrogen atoms approach each other, their <b>kinetic energy increases</b>, because each electron cloud is attracted to the other atom’s nucleus.</p><p>They keep moving together until the <b>repulsion</b> of the two electron clouds and the two nuclei slows them down, converting their kinetic energy into <b>potential energy</b>.</p>`),
+  W('bondcurve'),
+  K(`<p><mark class="hl">The potential energy is stored as a chemical bond.</mark></p><p><mark class="hl">Shared electron pair = covalent bond.</mark> Two valence electrons move into the space between the nuclei, and both nuclei are attracted to them.</p>`),
+  MC('As two H atoms come together, what is stored as the chemical bond?',['Potential energy','Kinetic energy','Light energy','Nothing is stored'],'The atoms slow down as they get close, turning kinetic energy into potential energy, which is stored as the bond.'),
+  K(`<ul><li>Covalent bonds form when <mark class="hl">ΔEN is under 1.7</mark></li><li>Usually two nonmetals (not always)</li><li>Both nuclei are attracted to more electrons, and both atoms complete their valence shells</li><li>Covalent bonds are <b>very strong</b></li></ul>`),
+  T(`<p>All nonmetals except H and He are in the p block, so they complete a noble gas valence shell (an octet) by sharing electrons.</p><p class="eq">single bond — 2 electrons · double bond = 4 · triple bond ≡ 6</p>`),
+  NUM('How many electrons are shared in a triple bond?',6,'Three shared pairs: 3 × 2 = 6.'),
+  MC('Why do two nonmetals usually share electrons instead of transferring them?',['Both pull strongly on electrons (ΔEN under 1.7), so neither can take them completely','They have no valence electrons','They are both metals','Sharing only happens in ions'],'When neither atom can win the tug-of-war, they share.'),
+]},
+bigmol:{id:'bigmol',unit:2,sym:'Mm',topic:'lewis',title:'Bigger molecules & diatomics',desc:'C₂H₄, N₂, CH₃CH₂CH₃, N₂Br₄ and more',blocks:[
+  T(`<p>Not every molecule has one central atom. The rules don’t change: count the valence electrons, connect the atoms, give everyone 8 (H gets 2), and use double or triple bonds if you run short.</p><p>The formula usually tells you the order. CH₃CH₂CH₃ means C–C–C with the H atoms around them. H always goes on the outside.</p>`),
+  K(`<ul><li><b>N₂</b>: :N≡N: (triple bond, 10 electrons)</li><li><b>O₂</b>: O=O with 2 lone pairs on each O (12 electrons)</li><li><b>CO</b>: :C≡O: (triple bond, 10 electrons)</li><li><b>F₂, Cl₂, Br₂, I₂</b>: single bond, 3 lone pairs on each atom</li></ul>`,'Diatomics to know'),
+  NUM('How many valence electrons does N₂ have?',10,'5 + 5 = 10. To give each N an octet with only 10 electrons, they share three pairs: a triple bond.'),
+  T(`<p>Now draw ethene, C₂H₄, yourself. Tap a bond to make it double or triple, and tap an atom to give it lone pairs.</p>`),
+  W('draw','C2H4'),
+  MC('In CH₃CH₂CH₃ (propane), how many bonds does each carbon make?',['4','3','2','1'],'Carbon has 4 valence electrons and always makes 4 bonds when it follows the octet rule.'),
+  T(`<p>One more: N₂Br₄. The two N atoms bond to each other, and each N holds two Br atoms.</p>`),
+  W('draw','N2Br4'),
+  MC('In N₂Br₄, how many lone pairs are on each N?',['1','0','2','3'],'Each N makes 3 single bonds (6 electrons), so it needs 1 lone pair to reach 8.'),
+]},
+chart:{id:'chart',unit:2,sym:'Ch',topic:'vsepr',title:'Using the VSEPR chart',desc:'The chart you’ll get on the test, and how to read it',blocks:[
+  T(`<p>On the unit test you <b>won’t</b> have to draw VSEPR shapes. You’ll draw a Lewis structure perfectly, then use it to name the shape. Ms. James gives you this chart to help, so the skill is reading it fast and correctly.</p>`),
+  W('chart'),
+  K(`<ol><li>Draw the Lewis structure.</li><li>Look at the <b>central atom</b>. Count the electron groups around it: bonded atoms + lone pairs. A double or triple bond counts as <b>one</b> group. That’s your <mark class="hl">row</mark>.</li><li>Count only the lone pairs on the central atom. That’s your <mark class="hl">column</mark>.</li><li>Read the name where they meet.</li></ol>`,'How to use the chart'),
+  MC('SF₄ has 4 bonded F atoms and 1 lone pair on S. Which row and column?',['Row 5, column 1 → seesaw','Row 4, column 1 → trigonal pyramidal','Row 5, column 0 → trigonal bipyramid','Row 4, column 0 → tetrahedral'],'4 + 1 = 5 groups, 1 lone pair.'),
+  MC('CO₂ is O=C=O. Which row is it?',['Row 2','Row 4','Row 6','Row 3'],'Each double bond counts as one group, and C has no lone pairs: 2 groups, so linear.'),
+  T(`<p>Practise until it’s automatic. You’ll see a Lewis structure; tap the cell in the chart that names its shape.</p>`),
+  W('charttrainer'),
+  MC('On the chart, what is 6 groups with 3 lone pairs?',['T-shape','Linear','Square planar','Seesaw'],'Row 6, column 3. It has the same name as 5 groups with 2 lone pairs.'),
+]},
+lattice:{id:'lattice',unit:3,sym:'La',topic:'imf',title:'Crystals & melting points',desc:'Ionic lattices, covalent networks, and simple molecules',blocks:[
+  T(`<p>Compare two crystals:</p><ul><li><b>Sodium chloride</b> is an <b>ionic crystal lattice</b>: Na⁺ and Cl⁻ ions alternate in every direction. It melts at <b>801 °C</b>.</li><li><b>Diamond</b> is a <b>covalent crystal lattice</b> (a covalent network): every carbon is covalently bonded to its neighbours. It melts at roughly <b>3500 – 4000 °C</b>.</li></ul>`),
+  K(`<p><mark class="hl">The melting point of a covalent network is much higher than an ionic lattice</mark>, because covalent bonds are stronger than ionic bonds.</p>`),
+  MC('Which has the higher melting point: diamond or NaCl?',['Diamond','NaCl'],'Melting diamond means breaking covalent bonds, which are stronger than the ionic bonds in NaCl.'),
+  T(`<p>So why do so many covalent compounds have very low melting points? CH₄ melts at −182 °C, O₂ at −218 °C, and F₂ at −220 °C.</p><p>Because they <b>aren’t</b> crystal lattices like diamond. They’re separate molecules, and the forces <b>between</b> the molecules are weak. Melting only breaks those weak forces. The strong covalent bonds inside each molecule stay intact.</p>`),
+  K(`<p><mark class="hl">Intramolecular forces</mark> act <b>within</b> molecules: covalent and ionic bonds. Strong.</p><p><mark class="hl">Intermolecular forces</mark> act <b>between</b> molecules. Much weaker, but they add up in large numbers (like in DNA).</p>`),
+  MC('When ice melts at 0 °C, what breaks?',['The weak forces between water molecules','The covalent O–H bonds','The ionic bonds','The oxygen atoms'],'Melting a molecular substance never breaks its covalent bonds.'),
+  C({t:'sort',q:'Sort each substance by melting point.',buckets:['Very high (lattice)','Very low (molecules)'],items:[['Diamond',0],['NaCl',0],['MgO',0],['CH₄',1],['O₂',1],['F₂',1]],ex:'Lattices (ionic or covalent network) need strong bonds broken. Small molecules only need weak intermolecular forces broken.'}),
+]},
+bondpolar:{id:'bondpolar',unit:3,sym:'Dp',topic:'polar',title:'Bond polarity & dipoles',desc:'Nonpolar, mostly covalent, polar, ionic',blocks:[
+  T(`<p>Ionic (complete transfer) and nonpolar covalent (equal sharing) are the two extremes. Between them are bonds with <b>unequal sharing</b>. It’s more accurate to think of bonds on a scale than as two separate types.</p>`),
+  K(`<ul><li><b>Nonpolar covalent</b> (ΔEN = 0): identical atoms, like I₂ (2.5 − 2.5 = 0). The electron density is spread evenly.</li><li><b>Mostly covalent</b> (ΔEN under 0.4): the electrons spend no more time near one nucleus than the other. Cl–Br = 3.0 − 2.8 = 0.2. Count it as <mark class="hl">nonpolar</mark>.</li><li><b>Polar covalent</b> (<mark class="hl">0.4 < ΔEN < 1.7</mark>): the electrons sit closer to the more electronegative atom.</li><li><b>Ionic</b> (over 1.7): electrons transferred.</li></ul>`),
+  T(`<p>In a polar bond, the electron density is <b>enriched</b> around the more electronegative atom and <b>deficient</b> around the other. That makes a partial negative pole (δ−) and a partial positive pole (δ+). The bond now has a <b>bond dipole</b>, drawn as an arrow pointing toward δ−.</p><p class="eq">H<sup>δ+</sup> ⟶ Cl<sup>δ−</sup> &nbsp; (ΔEN = 3.0 − 2.1 = 0.9)</p>`),
+  W('meter'),
+  K(`<div class="tbl-wrap"><table class="tbl"><tr><th>Bond</th><th>H–F</th><th>H–Cl</th><th>H–Br</th><th>H–I</th></tr><tr><th>ΔEN</th><td>1.9</td><td>0.9</td><td>0.7</td><td>0.4</td></tr></table></div><p>The greater the ΔEN, the more polarized the bond. <mark class="hl pink">H–F is the exception: 1.9, but polar covalent, not ionic.</mark></p>`,'Hydrogen halides'),
+  C({t:'order',q:'Put the hydrogen halides from most polar to least polar bond.',o:['H–F','H–Cl','H–Br','H–I'],ex:'ΔEN shrinks from 1.9 to 0.9 to 0.7 to 0.4.'}),
+  MC('Which way does the bond dipole arrow point in an O–H bond?',['Toward O','Toward H','It has no direction'],'The arrow points toward the more electronegative atom, O (3.5 vs 2.1).'),
+  NUM('What is ΔEN for a C–Cl bond? (C 2.5, Cl 3.0)',0.5,'3.0 − 2.5 = 0.5, so C–Cl is polar covalent.',0.05),
+]},
+polarmol:{id:'polarmol',unit:3,sym:'Pm',topic:'polar',title:'Polar & nonpolar molecules',desc:'Why polar bonds don’t always make a polar molecule',blocks:[
+  T(`<p>Having polar bonds isn’t enough. Compare water and carbon dioxide. Both have polar bonds.</p><ul><li><b>H₂O</b>: polar O–H bonds (ΔEN 1.4) arranged <b>asymmetrically</b> (bent). The dipoles don’t cancel, so there’s a <b>net dipole</b>. Polar molecule.</li><li><b>CO₂</b>: polar C=O bonds (ΔEN 1.0) arranged <b>symmetrically</b> (linear). The dipoles cancel, so the net dipole is <b>zero</b>. Nonpolar molecule.</li></ul>`),
+  W('dipole'),
+  K(`<p><mark class="hl">A molecule is polar only if it has polar bonds AND a shape that lets a net dipole exist.</mark></p><p>Symmetric shapes with identical outer atoms are nonpolar even with polar bonds: linear, trigonal planar, tetrahedral, trigonal bipyramid, octahedral, and square planar. Lone pairs on the central atom usually make a shape lopsided (bent, trigonal pyramidal).</p>`),
+  MC('CF₄ has polar C–F bonds. Is the molecule polar?',['Nonpolar','Polar'],'It’s tetrahedral with four identical F atoms, so the four dipoles cancel.'),
+  MC('Is CH₃Cl polar?',['Polar','Nonpolar'],'It’s tetrahedral, but one corner is Cl instead of H. The C–Cl dipole (0.5) isn’t cancelled.'),
+  MC('Is SCl₂ polar?',['Polar','Nonpolar'],'S has 2 lone pairs, so SCl₂ is bent (AX₂E₂). The S–Cl dipoles (0.5 each) don’t cancel.'),
+  C({t:'sort',q:'Sort each molecule.',buckets:['Polar','Nonpolar'],items:[['HCl',0],['H₂O',0],['NH₃',0],['CO₂',1],['BCl₃',1],['CCl₄',1]],ex:'HCl, bent H₂O, and pyramidal NH₃ have net dipoles. CO₂ (linear), BCl₃ (trigonal planar), and CCl₄ (tetrahedral) are symmetric.'}),
+]},
+imf:{id:'imf',unit:3,sym:'Vw',topic:'imf',title:'Intermolecular forces',desc:'London, dipole-dipole, and hydrogen bonds',blocks:[
+  T(`<p>Intermolecular forces are forces of attraction <b>between</b> molecules. They’re also called <b>Van der Waals forces</b>, and they exist because molecules are permanently or temporarily polar. There are three main types.</p>`),
+  K(`<div class="tbl-wrap"><table class="tbl"><tr><th>Force</th><th>Where it happens</th><th>Key facts</th></tr>
+    <tr><td><b>London forces</b></td><td>Every molecule. The <b>only</b> force between nonpolar molecules.</td><td>Temporary dipoles from shifting electrons. <mark class="hl">Stronger with bigger molecules (more electrons).</mark> Greater atomic number, stronger London force.</td></tr>
+    <tr><td><b>Dipole-dipole</b></td><td>Polar molecules (permanent dipoles), like HCl</td><td>δ+ of one molecule lines up with δ− of the next. About <mark class="hl">1/100</mark> the strength of a covalent bond. Raises boiling points.</td></tr>
+    <tr><td><b>Hydrogen bonds</b></td><td>Molecules with <mark class="hl">H bonded to N, O, or F</mark></td><td>The <b>strongest</b> Van der Waals force. The tiny, very positive H links to a lone pair on N, O, or F in the next molecule.</td></tr></table></div>`,'The three Van der Waals forces'),
+  W('imfcheck'),
+  MC('At room temperature F₂ is a gas but I₂ is a solid. Why?',['I₂ has far more electrons, so much stronger London forces','I₂ is polar','I₂ hydrogen bonds','F₂ has ionic bonds'],'Both are nonpolar, so London forces are all they have. I has a much bigger atomic number, so I₂’s London forces win.'),
+  MC('Which of these can form hydrogen bonds?',['CH₃OH','CH₄','HCl','CH₃Cl'],'Only methanol has H bonded directly to O. In CH₃Cl the H atoms are on C, not on Cl.'),
+  T(`<p>Hydrogen bonding explains some odd facts:</p><ul><li>Water melts and boils far higher than a molecule its size should.</li><li>Alcohols (with OH groups) boil much higher than alkanes (only C and H) of a similar size.</li><li>HF boils much higher than HCl, HBr, and HI, because fluorine’s high χ makes H–F molecules hydrogen bond.</li></ul>`),
+  MC('Why does HF have a much higher boiling point than the other hydrogen halides?',['HF molecules hydrogen bond to each other','HF is the biggest molecule','HF is ionic','HF has London forces only'],'Fluorine is so electronegative that HF hydrogen bonds, which takes more energy to overcome.'),
+  MC('What is the strongest intermolecular force between HCl molecules?',['Dipole-dipole','Hydrogen bonds','London forces only','Ionic bonds'],'HCl is polar, but H is bonded to Cl, not N, O, or F, so it can’t hydrogen bond.'),
+]},
+bp:{id:'bp',unit:3,sym:'Bp',topic:'imf',title:'Predicting boiling & melting points',desc:'Which substance boils higher, and why',blocks:[
+  T(`<p>The stronger the forces holding particles together, the more energy it takes to separate them, so the higher the melting and boiling points. Work through it in order.</p>`),
+  K(`<ol><li><b>Lattice?</b> Covalent networks (diamond) and ionic compounds (NaCl) are highest. For two ionic compounds, smaller ions and bigger charges win.</li><li><b>Molecules:</b> find each one’s strongest IMF. <mark class="hl">Hydrogen bonds > dipole-dipole > London only.</mark></li><li><b>Same strongest force?</b> <mark class="hl">The bigger molecule (more electrons) wins</mark>, because its London forces are stronger.</li></ol>`,'The boiling point ladder'),
+  MC('Which has the higher boiling point: CH₃CH₂CH₃ or CH₃CH₂CH₂CH₂CH₂CH₃?',['CH₃CH₂CH₂CH₂CH₂CH₃','CH₃CH₂CH₃'],'Both are nonpolar alkanes, so only London forces. Hexane is bigger with more electrons.'),
+  MC('Which has the higher boiling point: CH₃CH₂CH₃ or CH₃OH?',['CH₃OH','CH₃CH₂CH₃'],'Methanol hydrogen bonds through its O–H group. Propane only has London forces.'),
+  MC('Which has the higher boiling point: BCl₃ or BCl₂F?',['BCl₂F','BCl₃'],'BCl₃ is trigonal planar and symmetric, so nonpolar. Swapping one Cl for F breaks the symmetry, so BCl₂F is polar and adds dipole-dipole forces. That’s the reasoning your booklet is after.'),
+  T(`<p class="note">Booklet question 11b (NH₃ vs SbH₃) is a tricky one. The answer the booklet is after is NH₃, because it hydrogen bonds. In real life SbH₃ actually boils a little higher (−17 °C vs −33 °C), because antimony is so big that its London forces win. If it comes up, give the hydrogen-bond reasoning, and it’s worth asking Ms. James which answer she wants.</p>`),
+  MC('Which has the lower melting point: CaBr₂ or SrI₂?',['SrI₂','CaBr₂'],'Both are ionic with the same charges, but Sr²⁺ and I⁻ are bigger ions, so the ionic bond is weaker.'),
+  MC('Going down a group, which force gets stronger (between atoms or molecules of the same element)?',['London forces','Covalent bonds between the atoms','Ionic bonds','Hydrogen bonds'],'Bigger atoms have more electrons, so stronger London forces. That’s why the halogens go from gas (F₂, Cl₂) to liquid (Br₂) to solid (I₂).'),
+  MC('Going down a group, which gets weaker?',['Bonds between the atoms themselves, because the atoms get bigger','London forces','The number of electrons','The atomic number'],'Bigger atoms hold bonding electrons farther away, so bonds like the metallic bonds in group 1 get weaker. That’s why Li melts higher than Na and K.'),
+]},
+};
+// splice into the right places
+(function(){
+  const at=(after,id)=>{const i=LESSONS.findIndex(l=>l.id===after);LESSONS.splice(i+1,0,NEW_LESSONS[id])};
+  at('config','core');at('trends','shield');at('en','ionic');
+  LESSONS.splice(LESSONS.findIndex(l=>l.id==='lewis'),0,NEW_LESSONS.covform);
+  at('exceptions','bigmol');at('compare','chart');
+  ['lattice','bondpolar','polarmol','imf','bp'].forEach(id=>LESSONS.push(NEW_LESSONS[id]));
+})();
 /* ================= question generators ================= */
 const mk=(topic,q,o,ex,extra={})=>Object.assign({t:'mcq',topic,q,o:uniq(o).slice(0,4),ex},extra);
 const lc=s=>s.toLowerCase();
@@ -884,28 +1304,29 @@ function gIonSize(){
     ex:q>0?`${ion} lost its outer electrons (a whole shell), so it is smaller than the ${s} atom.`:`${ion} gained electrons. They repel each other and spread the cloud out, so it is bigger than the ${s} atom.`};
 }
 const BPOOL=['H','Li','Be','B','C','N','O','F','Na','Mg','Al','Si','P','S','Cl','K','Ca','Br','I','Rb','Sr','Cs','Ba','Se'];
-const BT={np:'Nonpolar covalent',p:'Polar covalent',i:'Ionic'};
+const BT={np:'Nonpolar (mostly covalent)',p:'Polar covalent',i:'Ionic'};
 function bondPair(cat){
   for(let i=0;i<800;i++){
     const a=pick(BPOOL), b=pick(BPOOL);
-    const d=Math.round(Math.abs(ENV[a]-ENV[b])*100)/100;
+    const d=dEN(a,b);
     const nmA=NONMETAL.has(a), nmB=NONMETAL.has(b);
     const covA=nmA||a==='B'||a==='Si', covB=nmB||b==='B'||b==='Si';
+    if((a==='H'&&b==='F')||(a==='F'&&b==='H'))continue;
     let c=null;
-    if(nmA&&nmB&&d<=0.35)c='np';
-    else if(covA&&covB&&d>=0.6&&d<=1.5)c='p';
+    if(nmA&&nmB&&d<=0.2)c='np';
+    else if(covA&&covB&&d>=0.5&&d<=1.5)c='p';
     else if(((METAL.has(a)&&nmB)||(METAL.has(b)&&nmA))&&d>=1.9)c='i';
     if(!c||(cat&&c!==cat))continue;
     if(a===b&&Math.random()<.6)continue;
     return {a,b,d,c};
   }
-  return {a:'H',b:'Cl',d:0.96,c:'p'};
+  return {a:'H',b:'Cl',d:0.9,c:'p'};
 }
-const enS=s=>ENV[s].toFixed(2);
+const enS=s=>ENV[s].toFixed(1);
 function bondWhy(p){
   const hi=ENV[p.a]>=ENV[p.b]?p.a:p.b, lo=hi===p.a?p.b:p.a;
-  const cut=p.c==='np'?'0.4 or less, so it is nonpolar covalent.':p.c==='p'?'between 0.5 and 1.7, so it is polar covalent.':'more than 1.7, so it is ionic.';
-  return `ΔEN = ${enS(hi)} − ${enS(lo)} = ${fmt2(p.d)}. That is ${cut}`;
+  const cut=p.c==='np'?(p.d===0?'zero, so it is nonpolar covalent.':'under 0.4, so it is mostly covalent (nonpolar).'):p.c==='p'?'between 0.4 and 1.7, so it is polar covalent.':'over 1.7, so it is ionic.';
+  return `ΔEN = ${enS(hi)} − ${enS(lo)} = ${fmt1(p.d)}. That is ${cut}`;
 }
 function gBondType(){
   const p=bondPair(pick(['np','p','p','i','i']));
@@ -914,7 +1335,7 @@ function gBondType(){
 function gDelta(){
   let p=bondPair(pick(['p','i']));
   if(p.a===p.b)p=bondPair('p');
-  return {t:'num',topic:'bond',q:`What is ΔEN for a ${p.a}–${p.b} bond? (${p.a}: ${enS(p.a)}, ${p.b}: ${enS(p.b)})`,a:p.d,tol:0.011,ex:bondWhy(p)};
+  return {t:'num',topic:'bond',q:`What is ΔEN for a ${p.a}–${p.b} bond? (${p.a}: ${enS(p.a)}, ${p.b}: ${enS(p.b)})`,a:p.d,tol:0.05,ex:bondWhy(p)};
 }
 function gDeltaNeg(){
   let p=bondPair('p');
@@ -936,7 +1357,10 @@ function pairsExplain(m){
   return `${m.ve} ÷ 2 = ${pairs} pairs. Bonds use ${m.bo}, the outer atoms’ lone pairs use ${m.outerLP}. ${pairs} − ${m.bo} − ${m.outerLP} = ${m.cLP} on ${m.center}.`;
 }
 function centerWhy(m){
-  return m.cnote||`It’s the least electronegative atom that isn’t H${m.counts[m.center]===1&&m.atoms.length>2?', and there’s only one of it':''}.`;
+  if(m.cnote)return m.cnote;
+  const tie=Object.keys(m.counts).some(e=>e!==m.center&&e!=='H'&&ENV[e]!=null&&ENV[m.center]!=null&&ENV[e]<=ENV[m.center]);
+  if(tie)return `There’s only one ${m.center}, and it can make the most bonds, so it goes in the middle.`;
+  return `It’s the least electronegative atom that isn’t H${m.counts[m.center]===1&&m.atoms.length>2?', and there’s only one of it':''}.`;
 }
 function gMolVE(){const m=pick(MOL_LIST);return {t:'num',topic:'lewis',q:`How many total valence electrons are in ${m.html}?`,a:m.ve,ex:veBreakdown(m)+'.'}}
 function gMolBonds(){
@@ -972,31 +1396,44 @@ function gAngle(){
 }
 function gGroups(){const m=pick(MOL_LIST);return {t:'num',topic:'vsepr',q:`How many electron groups surround ${m.center} in ${m.html}?`,a:m.X+m.cLP,ex:`${m.X} bonded atom${m.X>1?'s':''} + ${m.cLP} lone pair${m.cLP===1?'':'s'} = ${m.X+m.cLP}. A double or triple bond counts as one group.`}}
 
+// [generator, level]  1 warm-up, 2 core, 3 hard
 const GEN={
-  elec:[gValence,gConfig,gConfigWhich,gIon,gSubCount],
-  trend:[gTrend,gTrend,gIonSize],
-  bond:[gBondType,gBondType,gDelta,gDeltaNeg],
-  lewis:[gMolVE,gMolBonds,gCLP,gCase,gCenter],
-  vsepr:[gAXE,gShapeAXE,gShapeMol,gAngle,gGroups],
+  elec:[[gValence,1],[gCore,1],[gConfig,2],[gSubCount,2],[gTransVal,2],[gConfigWhich,3],[gIon,3]],
+  trend:[[gTrend,1],[gIonSize,1],[gTrend,2],[gTrend,3]],
+  bond:[[gBondType,1],[gDeltaNeg,2],[gBondType,2],[gDelta,2],[gFormulaPair,3]],
+  ionic:[[gIonCharge,1],[gIonDots,1],[gIonicFormula,2],[gIonicStrength,2],[gIonicPick,3],[gIonicStrength,3]],
+  lewis:[[gMolVE,1],[gGraphVE,1],[gCenter,1],[gMolBonds,2],[gCLP,2],[gDiatomic,2],[gCase,3],[gLewisPick,3],[gLewisError,3]],
+  vsepr:[[gAXE,1],[gChartCell,1],[gShapeAXE,2],[gGroups,2],[gChartMol,2],[gShapeMol,3],[gAngle,3],[gChartMol,3]],
+  polar:[[gBondDipole,1],[gMolPolar,2],[gMolPolar,3]],
+  imf:[[gIMFStrongest,2],[gHBcan,2],[gBP,3],[gBP,3]],
 };
-function genQ(topic){
+function genQ(topic,level=0){
   if(topic==='all')topic=pick(Object.keys(TOPICS));
   const bank=BANKQ.filter(q=>q.topic===topic);
-  if(Math.random()<.35&&bank.length){const b=pick(bank);return {t:b.t,topic:b.topic,q:b.q,o:b.o.slice(),ex:b.ex}}
-  return pick(GEN[topic])();
+  let gens=GEN[topic]||[];
+  if(level)gens=gens.filter(g=>g[1]<=level).sort((a,b)=>b[1]-a[1]);
+  const top=level?gens.filter(g=>g[1]===level):gens;
+  const bankP=level===3?.2:topic==='imf'||topic==='polar'?.45:.35;
+  for(let t=0;t<6;t++){
+    let q=null;
+    if(Math.random()<bankP&&bank.length){const b=pick(bank);q={t:b.t,topic:b.topic,q:b.q,o:b.o.slice(),ex:b.ex}}
+    else{const src=top.length&&Math.random()<.65?top:gens;if(src.length)q=pick(src)[0]()}
+    if(q)return q;
+  }
+  const b=pick(bank);return {t:b.t,topic:b.topic,q:b.q,o:b.o.slice(),ex:b.ex};
 }
-function genSet(plan){
+function genSet(plan,level=0){
   const out=[], seen=new Set();
   for(const [topic,n] of plan){
     let made=0, guard=0;
-    while(made<n&&guard++<200){const q=genQ(topic);if(seen.has(q.q))continue;seen.add(q.q);out.push(q);made++}
+    while(made<n&&guard++<200){const q=genQ(topic,level);if(seen.has(q.q))continue;seen.add(q.q);out.push(q);made++}
   }
   return out;
 }
 /* ================= storage ================= */
 const STORE_KEY='aml-lab-v1';
-const defaultS=()=>({done:{},stats:{elec:[0,0],trend:[0,0],bond:[0,0],lewis:[0,0],vsepr:[0,0]},best:{rush:0,battle:0,count:0},built:{},tests:[]});
-let S=(()=>{try{const s=JSON.parse(localStorage.getItem(STORE_KEY));if(s){const d=defaultS();return Object.assign(d,s,{stats:Object.assign(d.stats,s.stats||{}),best:Object.assign(d.best,s.best||{})})}}catch(e){}return defaultS()})();
+const defaultS=()=>({done:{},stats:{elec:[0,0],trend:[0,0],bond:[0,0],ionic:[0,0],lewis:[0,0],vsepr:[0,0],polar:[0,0],imf:[0,0]},best:{rush:0,battle:0,count:0,polsort:0,boil:0,chartdash:0},built:{},drawn:{},tests:[],ladder:{},review:[]});
+let S=(()=>{try{const s=JSON.parse(localStorage.getItem(STORE_KEY));if(s){const d=defaultS();return Object.assign(d,s,{stats:Object.assign(d.stats,s.stats||{}),best:Object.assign(d.best,s.best||{}),ladder:s.ladder||{},review:s.review||[],drawn:s.drawn||{}})}}catch(e){}return defaultS()})();
 function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S))}catch(e){}}
 function record(topic,ok){if(!S.stats[topic])return;S.stats[topic][1]++;if(ok)S.stats[topic][0]++;save()}
 
@@ -1157,7 +1594,7 @@ function mountQ(el,q,{mode='learn',onAnswer=()=>{},saved={},ctx=''}={}){
   el.innerHTML=`<div class="q"><div class="qt">${q.q}</div><div class="qb"></div><div class="qf"></div></div>`;
   const qb=$('.qb',el), qf=$('.qf',el);
   const done=(ok,ans,given)=>{
-    qf.innerHTML=fbHtml(ok,q,ans);onAnswer(ok);
+    qf.innerHTML=fbHtml(ok,q,ans);onAnswer(ok);if(!ok&&mode==='learn'&&!q._review)addReview(q);if(ok&&q._review)dropReview(q);
     if(!ok&&mode==='learn'&&TUTOR_CONFIG.url){
       qf.insertAdjacentHTML('beforeend',`<div class="ai-row">${aiBtn('Why was I wrong?')}</div>`);
       const row=qf.lastElementChild;
@@ -1248,22 +1685,49 @@ function setTutorState(s){
   const st=$('.sheet .sh-status');if(st)st.textContent=TSTATUS[s]||'';
   if(Tutor.sheetOpen)renderSheetBody();
 }
+/* The tunnel link changes every time the server restarts. With url:'auto' we read it
+   from the SCODE AI site's PROXY_URL (same GitHub Pages), and remember the last one. */
+async function tutorBase(fresh){
+  const u=TUTOR_CONFIG.url;
+  if(u&&u!=='auto')return u.replace(/\/+$/,'');
+  if(Tutor.base&&!fresh)return Tutor.base;
+  if(!fresh){try{const c=localStorage.getItem('scode-tutor-url');if(c){Tutor.base=c;return c}}catch(e){}}
+  try{
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),10000);
+    const r=await fetch(TUTOR_CONFIG.scodeSite+'index.html',{cache:'no-store',signal:ctl.signal});clearTimeout(t);
+    const m=r.ok&&(await r.text()).match(/PROXY_URL\s*=\s*["'](https?:\/\/[^"'\s]+?)\/?["']/);
+    if(m){Tutor.base=m[1];try{localStorage.setItem('scode-tutor-url',m[1])}catch(e){}}
+  }catch(e){}
+  return Tutor.base||'';
+}
+async function pingOnce(base){
+  try{
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),8000);
+    const r=await fetch(base+'/health',{signal:ctl.signal,cache:'no-store'});
+    clearTimeout(t);return r.status<500;
+  }catch(e){return false}
+}
 async function pingTutor(){
   if(!TUTOR_CONFIG.url){setTutorState('off');return}
   if(closedNow()){setTutorState('closed');return}
-  try{
-    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),8000);
-    const r=await fetch(TUTOR_CONFIG.url+'/health',{signal:ctl.signal,cache:'no-store'});
-    clearTimeout(t);setTutorState(r.status<500?'live':'offline');
-  }catch(e){setTutorState('offline')}
+  let base=await tutorBase();
+  if(base&&await pingOnce(base)){setTutorState('live');return}
+  if(TUTOR_CONFIG.url==='auto'){       // maybe the tunnel restarted with a new link
+    const nb=await tutorBase(true);
+    if(nb&&nb!==base&&await pingOnce(nb)){setTutorState('live');return}
+  }
+  setTutorState('offline');
 }
 
 /* ---- context the proxy appends to its system prompt ---- */
 const stripH=h=>{const d=document.createElement('div');d.innerHTML=String(h).replace(/<\/(td|th)>/g,' ').replace(/<\/(p|li|tr|div)>/g,'. ');return d.textContent.replace(/\s+/g,' ').replace(/(\.\s*){2,}/g,'. ').trim()};
-const TUTOR_RULES=`You are SCODE Tutor on Atoms & Molecules Lab, a study site for BC Chemistry 11, Unit 1: Atoms and Molecules. The student is in high school. Keep replies under 80 words unless they ask for more. Use short sentences and no headings. Stick to the course methods: valence electrons come from the group number (groups 13 to 18: group minus 10, He has 2). Wanted electrons = 8 per atom, 2 per H. Bonds = (wanted - have) / 2. A negative charge adds electrons, a positive charge subtracts them. Lone pairs on the central atom = total pairs - bond pairs - outer lone pairs. If the formula gives more bonds than the single-bond skeleton, add double or triple bonds (never to H or halogens). If it gives fewer bonds than there are outer atoms, the center has an expanded octet (only period 3 or lower). B stays at 6 electrons, Be at 4. AXE notation counts atoms and lone pairs on the central atom only, and a double or triple bond is one group. Delta EN: 0 to 0.4 nonpolar covalent, 0.5 to 1.7 polar covalent, over 1.7 ionic. If the facts here don't cover something, say you aren't sure instead of guessing.`;
+const TUTOR_RULES=`You are SCODE Tutor on Atoms & Molecules Lab, a study site for BC Chemistry 11, Unit 1: Atoms and Molecules (Book 1b electron structure and electronegativity, Book 1c covalent bonds, Lewis structures and VSEPR, Book 3 intermolecular forces). The student is in high school. Keep replies under 80 words unless they ask for more. Use short sentences and no headings. Stick to the course methods: valence electrons come from the group number (groups 13 to 18: group minus 10, He has 2). Wanted electrons = 8 per atom, 2 per H. Bonds = (wanted - have) / 2. A negative charge adds electrons, a positive charge subtracts them. Lone pairs on the central atom = total pairs - bond pairs - outer lone pairs. If the formula gives more bonds than the single-bond skeleton, add double or triple bonds (never to H or halogens). If it gives fewer bonds than there are outer atoms, the center has an expanded octet (only period 3 or lower). B stays at 6 electrons, Be at 4. AXE notation counts atoms and lone pairs on the central atom only, and a double or triple bond is one group. Use Ms. James's electronegativity table (one decimal: H 2.1, C 2.5, N 3.0, O 3.5, F 4.0, Cl 3.0, Br 2.8, I 2.5, S 2.5, P 2.1, Na 0.9, K 0.8, Mg 1.2, Ca 1.0, Li 1.0). Delta EN: 0 nonpolar covalent, under 0.4 mostly covalent (treated as nonpolar), 0.4 to 1.7 polar covalent, over 1.7 ionic. H-F (1.9) is the exception: it is polar covalent. P can hold up to 10 electrons and S up to 12. A molecule is polar only if it has polar bonds arranged asymmetrically. Intermolecular forces: London (all molecules, stronger with more electrons), dipole-dipole (polar molecules), hydrogen bonds (H bonded to N, O or F, the strongest). If the facts here don't cover something, say you aren't sure instead of guessing.`;
 const TUTOR_MODES={
   why:'The student just got a question wrong. Point out the specific mistake in their answer, then show the step that leads to the right answer. Be encouraging but direct.',
   nudge:'The student is stuck on one step of building a Lewis structure. Give ONE hint of one or two sentences that points at what to do next. Never state the answer to the step or any number that is the answer.',
+  draw:'The student is drawing a Lewis structure on the site and the checker found problems. Give ONE hint of one or two sentences about the most important problem: which atom to look at and what kind of change helps (a lone pair, a double bond, brackets). Never give the finished structure, a full list of bond orders, or the exact number of lone pairs on any atom.',
+  ionic:'The student is building an ionic compound step by step (ion charges, the ratio, then the Lewis structure). Give ONE hint of one or two sentences that points at how to work out this step. Never state the answer to the step.',
+  chart:'The student is using the VSEPR chart (rows are electron groups on the central atom, columns are lone pairs on it). Give ONE hint of one or two sentences about how to count the row or the column for this molecule. Never name the shape or the cell.',
   quiz:'Quiz the student on this lesson. Ask ONE short question at a time. When they answer, say whether they are right, explain in one or two sentences, then ask the next question. Only ask about the facts below.',
   plan:'The student just finished a 25-question mock test. Using their missed questions, name their two weakest skills, then give a plan of at most 3 bullet points of what to redo on this site (lessons by name, the Lewis builder, flashcards, or a practice topic).',
   chat:'Answer the student\'s question about this unit. For a homework-style question, walk them through the steps and let them do the last one, unless they ask you for the answer again.',
@@ -1274,11 +1738,21 @@ function lessonFacts(l){
 function molFacts(m){
   return `Molecule ${m.id} (charge ${m.charge}). Valence electrons ${m.ve}. Wanted ${m.wanted}. Formula bonds ${m.formula}. Central atom ${m.center}. Outer atoms: ${m.outers.map(o=>o.el+(o.bo>1?` (bond order ${o.bo})`:'')).join(', ')}. Bond plan: ${CASES[m.kase]}. Lone pairs on the center: ${m.cLP}. Notation ${m.axe}. Shape: ${SHAPES[m.axe].name}.`;
 }
+const atomTag=(g,i)=>g.atoms[i].el+(i+1);
+function graphFacts(g){
+  return `Molecule ${g.id}${g.name?` (${g.name})`:''}, charge ${g.charge||0}, valence electrons ${g.ve}. Atoms: ${g.atoms.map((a,i)=>atomTag(g,i)).join(', ')}. Skeleton bonds: ${g.bonds.map(b=>atomTag(g,b.a)+'-'+atomTag(g,b.b)).join(', ')}.`;
+}
+function drawingFacts(g,st){
+  const ord=['','single','double','triple'],e=atomElectrons(g,st);
+  return `Student's drawing: bonds ${g.bonds.map((b,k)=>`${atomTag(g,b.a)}-${atomTag(g,b.b)} ${ord[st.orders[k]]}`).join(', ')}. Lone pairs: ${g.atoms.map((a,i)=>`${atomTag(g,i)} ${st.lp[i]}`).join(', ')}. Electrons around each atom: ${g.atoms.map((a,i)=>`${atomTag(g,i)} ${e[i]}`).join(', ')}. Brackets ${st.bracket?'on':'off'}.`;
+}
+const IONIC_PICS={ok:'correct: metal ion with no dots, nonmetal ion with 8 dots in brackets, charges shown, right number of each ion',atoms:'neutral atoms with their valence dots and no charges',metaldots:'the metal ion still shows its valence dots',nocharge:'ions in brackets but no charges written',count:'only one of each ion, so the charges do not cancel'};
 function tutorContext(mode,ctx){return `${TUTOR_RULES}\nTask: ${TUTOR_MODES[mode]}\n${ctx||''}`.slice(0,3800)}
 
 /* ---- streaming call ---- */
 async function tutorStream(messages,extra,onDelta,signal){
-  const send=()=>fetch(TUTOR_CONFIG.url+'/chat',{method:'POST',signal,headers:{'Content-Type':'application/json','X-SCODE-Device':tutorDevice()},
+  const base=await tutorBase();
+  const send=()=>fetch(base+'/chat',{method:'POST',signal,headers:{'Content-Type':'application/json','X-SCODE-Device':tutorDevice()},
     body:JSON.stringify({tier:TUTOR_CONFIG.tier,app:TUTOR_CONFIG.app,extra_context:extra,messages})});
   let res=await send();
   if(res.status===503){onDelta(null,'busy');await new Promise(r=>setTimeout(r,3000));res=await send()}
@@ -1394,6 +1868,9 @@ function sheetContext(){
   const r=route;
   if(r.tab==='learn'&&r.view==='lesson'){const l=LESSONS.find(x=>x.id===r.arg);if(l)return {label:`Lesson ${LESSONS.indexOf(l)+1} · ${l.title}`,ctx:lessonFacts(l),tips:['Explain this lesson more simply','Quiz me on this lesson','Give me a trick to remember this']}}
   if(r.tab==='practice'&&r.view==='build'&&MOLS[r.arg]){const m=MOLS[r.arg];return {label:`Building ${m.html}`,ctx:`The student is building this molecule step by step. ${molFacts(m)} Help them reason it out instead of handing over the numbers.`,tips:[`Where do I start with ${m.html}?`,'How do I find the lone pairs on the center?','Why does this shape look the way it does?']}}
+  if(r.tab==='practice'&&r.view==='drawrun'&&anyMol(decodeURIComponent(r.arg||''))){const g=molGraph(anyMol(decodeURIComponent(r.arg)));return {label:`Drawing ${g.html}`,ctx:`The student is drawing the Lewis structure of this molecule. ${graphFacts(g)} Help them reason it out instead of giving the finished structure.`,tips:[`How do I start drawing ${g.html}?`,'When do I need a double bond?','How do I check my drawing?']}}
+  if(r.tab==='practice'&&r.view==='ionicrun'&&IONIC[r.arg]){const c=IONIC[r.arg];return {label:`Building ${c.html}`,ctx:`The student is building the ionic compound ${c.id} (metal ${c.m}, nonmetal ${c.n}). Help them reason it out instead of handing over the answers.`,tips:['How do I know what charge an ion has?','How do I get the ratio?','How do I draw an ionic Lewis structure?']}}
+  if(r.tab==='practice'&&r.view==='chart')return {label:'Chart trainer',ctx:'The student is practising the VSEPR chart: rows are electron groups on the central atom, columns are lone pairs on it.',tips:['How do I find the row?','Do double bonds count as one group?','What is the difference between bent and trigonal pyramidal?']};
   const names={learn:'the lesson list',memorize:'the memorize page',practice:'the practice zone',play:'the games',test:'the mock test page'};
   if(r.tab==='test'&&r.view==='run')return {label:'Mock test in progress',ctx:'The student is in the middle of the mock test. Do not answer test questions or confirm answers. Offer to help after they hand it in.',tips:['How much time should I spend per question?']};
   return {label:`Whole unit · ${names[r.tab]||'this site'}`,ctx:'',tips:['How do I find lone pairs on the center?','What’s the difference between AX₃ and AX₃E?','Quiz me on the whole unit']};
@@ -1432,7 +1909,7 @@ function startTutor(){
 }
 /* ================= widgets ================= */
 function mountWidget(el,name,arg){
-  ({dots:wDots,filler:wFiller,heat:wHeat,meter:wMeter,lewis:wLewis,shapes:wShapes,compare:wCompare,builder:(e,a)=>mountBuilder(e,a,{lesson:true})})[name](el,arg);
+  ({dots:wDots,filler:wFiller,heat:wHeat,meter:wMeter,lewis:wLewis,shapes:wShapes,compare:wCompare,builder:(e,a)=>mountBuilder(e,a,{lesson:true}),draw:(e,a)=>mountDraw(e,a,{lesson:true}),ionic:wIonic,ionicbuilder:(e,a)=>mountIonic(e,a,{lesson:true}),chart:wChart,charttrainer:wChartTrainer,shield:wShield,bondcurve:wBondCurve,dipole:wDipole,imfcheck:wIMF})[name](el,arg);
 }
 
 function wDots(el){
@@ -1503,23 +1980,23 @@ function wMeter(el){
   el.innerHTML=`<div class="selrow"><select id="mA" aria-label="First element">${opt('H')}</select><span class="muted">and</span><select id="mB" aria-label="Second element">${opt('Cl')}</select></div>
   <svg viewBox="0 0 280 120" style="width:100%;max-width:340px;display:block;margin:0 auto" role="img" aria-label="Electron sharing picture"><g class="mv"></g></svg>
   <div class="row" style="justify-content:space-between"><span class="h3 mt"></span><span class="eq md" style="padding:6px 10px"></span></div>
-  <div style="position:relative;padding-top:6px"><div class="meterbar"><span style="width:13.6%;background:var(--u1-soft)"></span><span style="width:37.9%;background:var(--u2-soft)"></span><span style="width:48.5%;background:var(--u3-soft)"></span></div><i class="mk"></i></div>
-  <div class="row small muted" style="justify-content:space-between;font-family:var(--f-mono);font-size:11.5px"><span>0</span><span>0.45</span><span>1.7</span><span>3.3</span></div>
+  <div style="position:relative;padding-top:6px"><div class="meterbar"><span style="width:12.1%;background:var(--u1-soft)"></span><span style="width:39.4%;background:var(--u2-soft)"></span><span style="width:48.5%;background:var(--u3-soft)"></span></div><i class="mk"></i></div>
+  <div class="row small muted" style="justify-content:space-between;font-family:var(--f-mono);font-size:11.5px"><span>0</span><span>0.4</span><span>1.7</span><span>3.3</span></div>
   <p class="cap mx"></p>`;
   const A=$('#mA',el),B=$('#mB',el);
   const draw=()=>{
-    const a=A.value,b=B.value,ea=ENV[a],eb=ENV[b],d=Math.round(Math.abs(ea-eb)*100)/100;
-    const type=d<=0.4?'np':d<0.5?'edge':d<=1.7?'p':'i';
-    const label={np:'Nonpolar covalent',edge:'Right on the line between nonpolar and polar',p:'Polar covalent',i:'Ionic'}[type];
+    const a=A.value,b=B.value,ea=ENV[a],eb=ENV[b],d=dEN(a,b);
+    const hf=(a==='H'&&b==='F')||(a==='F'&&b==='H');const type=hf?'hf':d===0?'np0':d<0.4?'np':d<=1.7?'p':'i';
+    const label={np0:'Nonpolar covalent',np:'Mostly covalent (nonpolar)',p:d===0.4||d===1.7?'Polar covalent (right on the line)':'Polar covalent',i:'Ionic',hf:'Polar covalent: the H–F exception'}[type];
     const dir=ea===eb?0:(eb>ea?1:-1), sh=Math.min(d/2.2,1);
     const cx=140+dir*sh*58, rx=86-sh*36;
     let lab='';
-    if(dir&&type!=='np'){const neg=dir>0?210:70,pos=dir>0?70:210,s1=type==='i'?'−':'δ−',s2=type==='i'?'+':'δ+';lab=`<text x="${neg}" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="var(--u3)">${s1}</text><text x="${pos}" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="var(--u1)">${s2}</text>`}
+    if(dir&&type!=='np'&&type!=='np0'){const neg=dir>0?210:70,pos=dir>0?70:210,s1=type==='i'?'−':'δ−',s2=type==='i'?'+':'δ+';lab=`<text x="${neg}" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="var(--u3)">${s1}</text><text x="${pos}" y="112" text-anchor="middle" font-size="15" font-weight="700" fill="var(--u1)">${s2}</text>`}
     $('.mv',el).innerHTML=`<ellipse cx="${cx}" cy="56" rx="${rx}" ry="${38-sh*6}" fill="var(--accent)" opacity=".16"/><ellipse cx="${cx}" cy="56" rx="${rx}" ry="${38-sh*6}" fill="none" stroke="var(--accent)" stroke-opacity=".5" stroke-dasharray="4 4"/>
       <circle cx="70" cy="56" r="24" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><circle cx="210" cy="56" r="24" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
       <text x="70" y="57" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="var(--ink)">${a}</text><text x="210" y="57" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="var(--ink)">${b}</text>${lab}`;
     $('.mt',el).textContent=label;
-    $('.md',el).textContent=`ΔEN = ${fmt2(d)}`;
+    $('.md',el).textContent=`ΔEN = ${fmt1(d)}`;
     $('.mk',el).style.left=Math.min(100,d/3.3*100)+'%';
     const metalPair=METAL.has(a)&&METAL.has(b);
     $('.mx',el).innerHTML=dir===0?'Same pull on both sides, so the electrons sit right in the middle.':metalPair?'Two metals don’t form covalent or ionic bonds with each other. ΔEN only applies to bonds involving a nonmetal.':`${dir>0?b:a} pulls harder, so the shared electrons shift toward it.${type==='i'?' The shift is so big that the electron is transferred.':''}`;
@@ -1631,6 +2108,516 @@ function mountBuilder(el,id,{lesson=false,onDone,onNext}={}){
     }
   }
   render();
+}
+/* ================= graph Lewis renderer (any molecule) ================= */
+const GS=62;
+function graphLayout(g,st){
+  const pts=g.atoms.map(a=>[a.x*GS,a.y*GS]);
+  const lpAng=g.atoms.map((a,i)=>{
+    const used=[];
+    g.bonds.forEach(b=>{if(b.a===i||b.b===i){const j=b.a===i?b.b:b.a;used.push((Math.atan2(-(pts[j][1]-pts[i][1]),pts[j][0]-pts[i][0])*180/Math.PI+360)%360)}});
+    return freeAngles(used,st.lp[i]);
+  });
+  const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+  const bx=[Math.min(...xs)-26,Math.max(...xs)+26],by=[Math.min(...ys)-26,Math.max(...ys)+26];
+  return {pts,lpAng,bx,by};
+}
+function answerState(g){return {orders:g.bonds.map(b=>b.o),lp:g.atoms.map(a=>a.lp),bracket:!!g.charge}}
+function gLewisSVG(g,st,{edit=false,sel=-1,counts=false,bad=new Set(),maxW=320,label}={}){
+  st=st||answerState(g);
+  const {pts,lpAng,bx,by}=graphLayout(g,st),f=n=>n.toFixed(1),R=Math.PI/180;
+  const dr=s=>s.length>1?16:13;
+  let s='';
+  g.bonds.forEach((b,k)=>{
+    const [x1,y1]=pts[b.a],[x2,y2]=pts[b.b],L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L;
+    const sa=dr(g.atoms[b.a].el)+1,sb=dr(g.atoms[b.b].el)+1,o=st.orders[k];
+    const ax=x1+ux*sa,ay=y1+uy*sa,bx2=x2-ux*sb,by2=y2-uy*sb,nx=-uy,ny=ux;
+    const offs=o===1?[0]:o===2?[-3.4,3.4]:[-5.2,0,5.2];
+    offs.forEach(d=>{s+=`<line class="lw-bond" x1="${f(ax+nx*d)}" y1="${f(ay+ny*d)}" x2="${f(bx2+nx*d)}" y2="${f(by2+ny*d)}"/>`});
+    if(edit)s+=`<line class="hitb" data-b="${k}" x1="${f(ax)}" y1="${f(ay)}" x2="${f(bx2)}" y2="${f(by2)}"/>`;
+  });
+  g.atoms.forEach((a,i)=>{
+    const [x,y]=pts[i],r=dr(a.el)+3;
+    lpAng[i].forEach(an=>{const px=x+r*Math.cos(an*R),py=y-r*Math.sin(an*R),nx=Math.sin(an*R)*3.7,ny=Math.cos(an*R)*3.7;s+=`<circle class="dot" cx="${f(px+nx)}" cy="${f(py+ny)}" r="2.6"/><circle class="dot" cx="${f(px-nx)}" cy="${f(py-ny)}" r="2.6"/>`});
+    if(edit&&i===sel)s+=`<circle class="selr" cx="${f(x)}" cy="${f(y)}" r="21"/>`;
+    if(bad.has(i))s+=`<circle class="badr" cx="${f(x)}" cy="${f(y)}" r="21"/>`;
+    s+=`<text x="${f(x)}" y="${f(y)}" text-anchor="middle" dominant-baseline="central" font-size="20">${a.el}</text>`;
+    if(edit)s+=`<circle class="hita" data-a="${i}" cx="${f(x)}" cy="${f(y)}" r="19"/>`;
+  });
+  if(counts){
+    const e=atomElectrons(g,st);
+    g.atoms.forEach((a,i)=>{const [x,y]=pts[i];s+=`<text class="ecount" x="${f(x+15)}" y="${f(y-15)}" text-anchor="middle" font-size="10.5">${e[i]}</text>`});
+  }
+  let x0=bx[0],x1=bx[1],y0=by[0],y1=by[1];
+  if(st.bracket){
+    s+=`<path class="br" d="M${f(x0+8)} ${f(y0)}H${f(x0)}V${f(y1)}H${f(x0+8)}"/><path class="br" d="M${f(x1-8)} ${f(y0)}H${f(x1)}V${f(y1)}H${f(x1-8)}"/>`;
+    if(g.charge)s+=`<text x="${f(x1+4)}" y="${f(y0+9)}" font-size="16">${chargeStr(g.charge)}</text>`;
+    x1+=g.charge?22:4;
+  }
+  x0-=8;y0-=8;x1+=8;y1+=8;
+  const vw=x1-x0,vh=y1-y0;
+  return `<svg class="lewis${edit?' ed':''}" viewBox="${f(x0)} ${f(y0)} ${f(vw)} ${f(vh)}" style="max-width:${Math.min(maxW,Math.round(vw*1.3))}px" role="img" aria-label="${label||'Lewis structure of '+g.id}">${s}</svg>`;
+}
+function atomElectrons(g,st){
+  const e=g.atoms.map((a,i)=>2*st.lp[i]);
+  g.bonds.forEach((b,k)=>{e[b.a]+=2*st.orders[k];e[b.b]+=2*st.orders[k]});
+  return e;
+}
+const elName=s=>EL[s]?EL[s].name:s;
+function validateLewis(g,st){
+  const n=g.atoms.length,bo=new Array(n).fill(0),nb=new Array(n).fill(0);
+  g.bonds.forEach((b,k)=>{bo[b.a]+=st.orders[k];bo[b.b]+=st.orders[k];nb[b.a]++;nb[b.b]++});
+  const e=atomElectrons(g,st),errs=[],bad=new Set();let expanded=false;
+  const total=g.bonds.reduce((s,b,k)=>s+2*st.orders[k],0)+st.lp.reduce((s,x)=>s+2*x,0);
+  if(total!==g.ve)errs.push(`You’ve drawn ${total} electrons, but ${g.html} has ${g.ve} valence electrons.`);
+  g.atoms.forEach((a,i)=>{
+    const el=a.el,P=EL[el].p,E=e[i];let m=null;
+    if(el==='H'){if(bo[i]!==1)m='H can only make one single bond.';else if(st.lp[i])m='H never gets lone pairs. It’s full with 2 electrons.'}
+    else if(el==='Be'){if(E!==4)m=`Be stays at 4 electrons (it has ${E}).`}
+    else if(el==='B'||el==='Al'){if(E!==6)m=`${el} stays at 6 electrons (it has ${E}). Don’t give it a double bond or a lone pair.`}
+    else if(E<8)m=`${el} only has ${E} electrons. It needs 8.`;
+    else if(E>8){
+      const max=el==='P'?10:12;
+      if(P<=2)m=`${el} has ${E} electrons, but period 2 atoms can’t go over 8.`;
+      else if(nb[i]<2)m=`This ${el} has ${E} electrons. An outer atom stops at 8.`;
+      else if(E>max)m=`${el} has ${E} electrons, which is more than it can hold (${max}).`;
+      else expanded=true;
+    }
+    if(m){errs.push(m);bad.add(i)}
+  });
+  if(g.charge&&!st.bracket)errs.push(`${g.html} is an ion, so draw it in square brackets with the charge outside.`);
+  if(!g.charge&&st.bracket)errs.push(`${g.html} is a neutral molecule, so it doesn’t need brackets.`);
+  let note='';
+  const m=g.mol;
+  if(!errs.length&&expanded&&(!m||m.kase!=='expanded'))note='This expanded version also follows the rules, but there’s an octet version too. Ms. James’s rule is not to exceed an atom’s valence unless you have to.';
+  return {ok:!errs.length,errs:uniq(errs),bad,note,total};
+}
+
+/* ================= draw-it-yourself ================= */
+function mountDraw(el,id,{lesson=false,onNext}={}){
+  const src=anyMol(id),g=molGraph(src),single=!g.multi,m=g.mol;
+  const steps=['ve'];
+  if(single&&uniq(m.atoms).length>1)steps.push('center');
+  steps.push('draw');
+  if(single)steps.push('axe','shape');
+  let si=0,tries=0,checks=0,sel=-1,showCounts=true,log=[],badSet=null;
+  const st={orders:g.bonds.map(()=>1),lp:g.atoms.map(()=>0),bracket:false};
+  const centerOpts=single?shuffle(uniq(m.atoms)):[];
+  const axeOpts=single?shuffle([m.axe,...axeDistract(m.axe)]):[];
+  el.innerHTML='<div class="dmain"></div><div class="bai dai"></div>';
+  const main=$('.dmain',el),dai=$('.dai',el);let aiStep=null,lastErrs=[],wrongTries=[];
+  const DSTEP={ve:'counting valence electrons',center:'picking the central atom',draw:'drawing the Lewis structure',axe:'picking the AXE notation',shape:'finding the shape on the VSEPR chart'};
+  function nudgeCtx(step){
+    const base=`${single?molFacts(m)+' ':''}${graphFacts(g)} Current step: ${DSTEP[step]}.`;
+    if(step==='draw')return `${base} ${drawingFacts(g,st)} The site's checker says: ${lastErrs.length?lastErrs.map(stripH).join(' '):'(not checked yet)'} Help with the checker's problems without giving the finished structure.`;
+    const ans={ve:g.ve,center:single?m.center:'',axe:single?m.axe:'',shape:single?chartName(m.X+m.cLP,m.cLP):''}[step];
+    return `${base} The answer to this step is ${ans}. Never say it. Student's wrong tries so far: ${wrongTries.length?wrongTries.join(', '):'none'}.`;
+  }
+  function aiRow(step){
+    if(step===aiStep)return;
+    aiStep=step;dai.innerHTML='';
+    if(!DSTEP[step]||!TUTOR_CONFIG.url)return;
+    dai.innerHTML=aiBtn('Nudge me','dnudge');
+    $('.dnudge',dai).addEventListener('click',()=>{
+      const old=$('.ai-frame',dai);if(old)old.remove();
+      const b=$('.dnudge',dai);b.querySelector('span').textContent='Nudge me again';
+      mountThread(dai,{mode:step==='draw'?'draw':step==='shape'?'chart':'nudge',context:nudgeCtx(step),ask:{text:step==='draw'?`Give me a nudge on my drawing of ${g.id}.`:`Give me a nudge for this step: ${DSTEP[step]}.`}});
+    });
+  }
+  function render(){
+    const step=steps[si];
+    let body='';
+    const head=`<div class="row" style="justify-content:space-between"><span class="h2">Draw ${g.html}</span>${g.name?`<span class="eyebrow">${g.name}</span>`:''}</div>`;
+    const lines=log.length?`<div class="nb">${log.map(l=>`<div class="ln"><div class="lt"><span class="ck">✓</span><b>${l[0]}</b><span class="v">${l[1]}</span></div>${l[2]?`<div class="small muted lnote">${l[2]}</div>`:''}</div>`).join('')}</div>`:'';
+    if(step==='ve'){
+      body=`<div class="card flat stack" style="gap:10px"><span class="stepn">Step 1</span><div class="h3">How many valence electrons does ${g.html} have?</div><div class="numrow"><input type="text" inputmode="numeric" autocomplete="off" aria-label="Valence electrons" placeholder="Number"><button class="btn primary dchk">Check</button></div><div class="err" hidden>Type a number first.</div><div class="dfb"></div></div>`;
+    }else if(step==='center'){
+      body=`<div class="card flat stack" style="gap:10px"><span class="stepn">Step 2</span><div class="h3">Which atom goes in the center?</div><div class="opts">${centerOpts.map((o,j)=>`<button class="opt" data-c="${o}"><span class="k">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div><div class="dfb"></div></div>`;
+    }else if(step==='draw'){
+      const e=atomElectrons(g,st),total=g.bonds.reduce((s,b,k)=>s+2*st.orders[k],0)+st.lp.reduce((s,x)=>s+2*x,0);
+      body=`<div class="card flat stack draw-card" style="gap:10px"><span class="stepn">Draw it</span>
+        <p class="small muted">Tap a bond to cycle single → double → triple. Tap an atom, then add or remove lone pairs.</p>
+        <div class="row" style="justify-content:space-between"><span class="pillc${total===g.ve?' okc':''}">Electrons drawn: <b>${total}</b></span><button class="chip dbr" aria-pressed="${st.bracket}">[ ] ${g.charge?'Brackets + charge':'Brackets'}</button></div>
+        <div class="drawpad">${gLewisSVG(g,st,{edit:true,sel,counts:showCounts,bad:badSet||new Set(),maxW:420})}</div>
+        <div class="lpctl" ${sel<0?'hidden':''}><span><b>${sel>=0?elName(g.atoms[sel].el):''}</b> · lone pairs</span><div class="row" style="gap:8px"><button class="btn sm dlm" aria-label="Remove a lone pair">−</button><b class="lpn" style="font-family:var(--f-mono);font-size:20px;min-width:22px;text-align:center">${sel>=0?st.lp[sel]:0}</b><button class="btn sm dlp" aria-label="Add a lone pair">+</button></div></div>
+        <label class="row small muted" style="gap:6px"><input type="checkbox" id="dcount" ${showCounts?'checked':''}> Show electrons around each atom</label>
+        <div class="grid2"><button class="btn dreset">Reset</button><button class="btn primary dcheck">Check my drawing</button></div><div class="dfb"></div></div>`;
+    }else if(step==='axe'){
+      body=`<div class="card flat stack" style="gap:10px"><span class="stepn">VSEPR notation</span><div>${gLewisSVG(g,null,{maxW:240})}</div><div class="h3">Look at ${m.center}. What is the AXE notation?</div><div class="opts">${axeOpts.map((o,j)=>`<button class="opt" data-x="${o}"><span class="k">${'ABCD'[j]}</span><span>${axeHtml(o)}</span></button>`).join('')}</div><div class="dfb"></div></div>`;
+    }else if(step==='shape'){
+      body=`<div class="card flat stack" style="gap:10px"><span class="stepn">Use the chart</span><div class="h3">Tap the cell on the chart that names this shape.</div>${chartHTML({pick:true})}<div class="dfb"></div></div>`;
+    }else{
+      const gr=single?m.X+m.cLP:0;
+      body=`<div class="card flat stack" style="gap:12px"><div class="row" style="justify-content:space-between"><span class="h2">${g.html} done</span><span class="streak">Drawn</span></div>${gLewisSVG(g,null,{maxW:300})}
+        ${single?`<div class="summary3"><div><span class="eyebrow">Notation</span><b>${axeHtml(m.axe)}</b></div><div><span class="eyebrow">Chart</span><b>${gr} · ${m.cLP}</b></div><div><span class="eyebrow">Shape</span><b>${chartName(gr,m.cLP)}</b></div></div><canvas class="mol3d" aria-label="3D model. Drag to rotate."></canvas>`:''}
+        ${lesson?'':`<div class="grid2"><button class="btn dagain">Draw again</button><button class="btn primary dnext">Next molecule</button></div>`}</div>`;
+    }
+    main.innerHTML=`<div class="stack">${head}${lines}${body}</div>`;
+    aiRow(step);
+    bind(step);
+  }
+  const fb=(html,ok)=>{const d=$('.dfb',el);if(d)d.innerHTML=`<div class="fb ${ok?'good':'bad'}">${html}</div>`};
+  function advance(label,value,note,first,topic='lewis'){record(topic,first);log.push([label,value,note]);si++;tries=0;wrongTries=[];lastErrs=[];render()}
+  function bind(step){
+    if(step==='ve'){
+      const inp=$('input',el),go=()=>{const v=parseNum(inp.value);if(Number.isNaN(v)){$('.err',el).hidden=false;return}
+        if(v===g.ve)return advance('Valence electrons',g.ve,single?veBreakdown(m):'',tries===0);
+        tries++;wrongTries.push(String(v));inp.value='';fb(`<b class="v">Not quite.</b>Add each atom’s valence electrons from its group${g.charge?', then adjust for the charge':''}.${tries>=2?'<br><button class="btn sm dshow" style="margin-top:8px">Show me</button>':''}`,false);
+        const sb=$('.dshow',el);if(sb)sb.addEventListener('click',()=>advance('Valence electrons',g.ve,single?veBreakdown(m):'',false))};
+      $('.dchk',el).addEventListener('click',go);inp.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+    }else if(step==='center'){
+      $$('.opt',el).forEach(b=>b.addEventListener('click',()=>{if(b.dataset.c===m.center)return advance('Central atom',m.center,centerWhy(m),tries===0);tries++;wrongTries.push(b.dataset.c);b.classList.add('wrong');b.disabled=true;fb(`<b class="v">Not that one.</b>H can never be in the middle, and the central atom is usually the least electronegative one there’s only one of.`,false)}));
+    }else if(step==='draw'){
+      const pad=$('.drawpad',el);
+      pad.addEventListener('click',e=>{
+        const b=e.target.closest('[data-b]'),a=e.target.closest('[data-a]');
+        if(b){const k=+b.dataset.b;st.orders[k]=st.orders[k]%3+1;badSet=null;render();return}
+        if(a){const i=+a.dataset.a;sel=sel===i?-1:i;render()}
+      });
+      const ch=d=>{if(sel<0)return;st.lp[sel]=Math.max(0,Math.min(4,st.lp[sel]+d));badSet=null;render()};
+      const lm=$('.dlm',el),lp=$('.dlp',el);if(lm)lm.addEventListener('click',()=>ch(-1));if(lp)lp.addEventListener('click',()=>ch(1));
+      $('.dbr',el).addEventListener('click',()=>{st.bracket=!st.bracket;render()});
+      $('#dcount',el).addEventListener('change',e=>{showCounts=e.target.checked;render()});
+      $('.dreset',el).addEventListener('click',()=>{st.orders=g.bonds.map(()=>1);st.lp=g.atoms.map(()=>0);st.bracket=false;sel=-1;badSet=null;render()});
+      $('.dcheck',el).addEventListener('click',()=>{
+        const v=validateLewis(g,st);checks++;
+        if(v.ok){badSet=null;record('lewis',checks===1);log.push(['Lewis structure','✓',v.note||'Every atom has a full shell and the electron count matches.']);si++;sel=-1;lastErrs=[];render();return}
+        badSet=v.bad;lastErrs=v.errs;render();
+        fb(`<b class="v">Not yet.</b><ul style="margin:4px 0 0;padding-left:18px">${v.errs.map(x=>`<li>${x}</li>`).join('')}</ul>${checks>=2?'<button class="btn sm dshow" style="margin-top:10px">Show me the answer</button>':''}`,false);
+        const sb=$('.dshow',el);if(sb)sb.addEventListener('click',()=>{Object.assign(st,answerState(g));record('lewis',false);log.push(['Lewis structure','shown','Compare this with what you drew.']);si++;sel=-1;badSet=null;lastErrs=[];render()});
+      });
+    }else if(step==='axe'){
+      $$('.opt',el).forEach(b=>b.addEventListener('click',()=>{if(b.dataset.x===m.axe)return advance('Notation',axeHtml(m.axe),`${m.X} bonded atom${m.X>1?'s':''} + ${m.cLP} lone pair${m.cLP===1?'':'s'} on ${m.center}`,tries===0,'vsepr');tries++;wrongTries.push(b.dataset.x);b.classList.add('wrong');b.disabled=true;fb(`<b class="v">Not quite.</b>Count only what’s attached to ${m.center}: each bonded atom is one X (double bonds still count once), and each lone pair on ${m.center} is one E.`,false)}));
+    }else if(step==='shape'){
+      const gr=m.X+m.cLP;
+      $$('.vc[data-g]',el).forEach(c=>c.addEventListener('click',()=>{
+        if(+c.dataset.g===gr&&+c.dataset.e===m.cLP)return advance('Shape (chart)',chartName(gr,m.cLP),`Row ${gr} (electron groups), column ${m.cLP} (lone pairs)`,tries===0,'vsepr');
+        tries++;wrongTries.push(`${chartName(+c.dataset.g,+c.dataset.e)} (row ${c.dataset.g}, column ${c.dataset.e})`);c.classList.add('wrong');fb(`<b class="v">Not that cell.</b>Row = all electron groups on ${m.center} (bonded atoms + lone pairs). Column = lone pairs only.`,false);
+      }));
+    }else{
+      const cv=$('canvas',el);if(cv)mount3D(cv,molSpec(m));
+      const a=$('.dagain',el),n=$('.dnext',el);
+      if(a)a.addEventListener('click',()=>{si=0;tries=0;checks=0;log=[];wrongTries=[];lastErrs=[];st.orders=g.bonds.map(()=>1);st.lp=g.atoms.map(()=>0);st.bracket=false;render()});
+      if(n)n.addEventListener('click',()=>onNext&&onNext());
+      S.drawn=S.drawn||{};S.drawn[g.id]=true;save();
+    }
+  }
+  render();
+}
+
+/* ================= ionic compounds ================= */
+function ionPiece(sym,q,dots,brackets){
+  const w=brackets?(dots?64:44):(dots?50:34);let s='';const cx=w/2,cy=40;
+  s+=`<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="20">${sym}</text>`;
+  const r=sym.length>1?16:13;
+  const sides=[0,0,0,0];for(let i=0;i<dots;i++)sides[i%4]++;
+  sides.forEach((nn,k)=>{const off=nn===2?[-4,4]:nn===1?[0]:[];off.forEach(o=>{const [x,y]=k===0?[cx+o,cy-r-3]:k===1?[cx+r+4,cy+o]:k===2?[cx+o,cy+r+3]:[cx-r-4,cy+o];s+=`<circle class="dot" cx="${x}" cy="${y}" r="2.6"/>`})});
+  if(brackets)s+=`<path class="br" d="M7 14H2V66H7"/><path class="br" d="M${w-7} 14H${w-2}V66H${w-7}"/>`;
+  if(q)s+=`<text x="${w+1}" y="20" font-size="14">${chargeStr(q)}</text>`;
+  return {s,w:w+(q?(Math.abs(q)>1?18:11):4)};
+}
+function ionicSVG(c,variant='ok'){
+  const M={sym:c.m,q:c.mq},N={sym:c.n,q:c.nq};
+  let mn=c.mn,nn=c.nn;
+  if(variant==='count'){mn=1;nn=1}
+  let order=[];
+  if(mn===1){const half=Math.floor(nn/2);order=[...Array(half).fill(N),M,...Array(nn-half).fill(N)]}
+  else{for(let i=0;i<Math.max(mn,nn);i++){if(i<mn)order.push(M);if(i<nn)order.push(N)}}
+  let x=0,s='';
+  order.forEach(ion=>{
+    const isM=ion===M;let dots,q,br;
+    if(variant==='atoms'){dots=EL[ion.sym].val;q=0;br=false}
+    else if(variant==='metaldots'){dots=isM?EL[ion.sym].val:8;q=ion.q;br=true}
+    else if(variant==='nocharge'){dots=isM?0:8;q=0;br=true}
+    else{dots=isM?0:8;q=ion.q;br=true}
+    const p=ionPiece(ion.sym,q,dots,br);s+=`<g transform="translate(${x} 0)">${p.s}</g>`;x+=p.w+4;
+  });
+  return `<svg class="lewis" viewBox="-4 0 ${x+6} 80" style="max-width:${Math.round((x+6)*1.15)}px" role="img" aria-label="Lewis structure of ${c.id}">${s}</svg>`;
+}
+const ionStr=(s,q)=>s+chargeStr(q);
+function ionicVariants(c){const v=['atoms','metaldots','nocharge'];if(!(c.mn===1&&c.nn===1))v.push('count');return v}
+function wIonic(el,id){const c=IONIC[id];el.innerHTML=`${ionicSVG(c)}<p class="cap">${c.html}: ${c.mn>1?c.mn+' ':''}${ionStr(c.m,c.mq)} ion${c.mn>1?'s':''} and ${c.nn>1?c.nn+' ':''}${ionStr(c.n,c.nq)} ion${c.nn>1?'s':''}. The charges add up to zero.</p>`}
+function mountIonic(el,id,{lesson=false,onNext}={}){
+  const c=IONIC[id];let i=0,tries=0,wrongs=[];const log=[];
+  const steps=[
+    {q:`What ion does ${elName(c.m).toLowerCase()} (${c.m}) form?`,opts:shuffle([1,2,3].map(n=>ionStr(c.m,n))),ans:ionStr(c.m,c.mq),label:`${c.m} ion`,why:`${c.m} is in group ${EL[c.m].g}, so it loses ${c.mq} electron${c.mq>1?'s':''}.`},
+    {q:`What ion does ${elName(c.n).toLowerCase()} (${c.n}) form?`,opts:shuffle([-1,-2,-3].map(n=>ionStr(c.n,n))),ans:ionStr(c.n,c.nq),label:`${c.n} ion`,why:`${c.n} has ${EL[c.n].val} valence electrons, so it gains ${-c.nq} to reach 8.`},
+    {q:`How many ${ionStr(c.m,c.mq)} and ${ionStr(c.n,c.nq)} ions make the charges cancel?`,opts:shuffle(uniq([`${c.mn} : ${c.nn}`,`1 : 1`,`${c.nn} : ${c.mn}`,`1 : ${c.nn+1}`,`2 : 1`])).slice(0,4),ans:`${c.mn} : ${c.nn}`,label:'Ratio',why:`${c.mn} × (${c.mq}+) and ${c.nn} × (${-c.nq}−) cancel out: ${c.html}.`},
+  ];
+  const varOpts=shuffle(['ok',...shuffle(ionicVariants(c)).slice(0,2)]);
+  function render(){
+    let body;
+    if(i<steps.length){const s=steps[i];body=`<div class="card flat stack" style="gap:10px"><span class="stepn">Step ${i+1} of 4</span><div class="h3">${s.q}</div><div class="opts">${s.opts.map((o,j)=>`<button class="opt" data-j="${j}"><span class="k">${'ABCD'[j]}</span><span>${o}</span></button>`).join('')}</div><div class="ifb"></div><div class="bai">${aiBtn('Nudge me','inudge')}</div></div>`}
+    else if(i===steps.length){body=`<div class="card flat stack" style="gap:10px"><span class="stepn">Step 4 of 4</span><div class="h3">Which is the correct Lewis structure of ${c.html}?</div><div class="opts">${varOpts.map((v,j)=>`<button class="opt" data-v="${v}"><span class="k">${'ABC'[j]}</span><span style="flex:1;min-width:0">${ionicSVG(c,v)}</span></button>`).join('')}</div><div class="ifb"></div><div class="bai">${aiBtn('Nudge me','inudge')}</div></div>`}
+    else body=`<div class="card flat stack" style="gap:12px"><div class="row" style="justify-content:space-between"><span class="h2">${c.html} done</span><span class="streak">Built</span></div>${ionicSVG(c)}${lesson?'':`<div class="grid2"><button class="btn iagain">Build again</button><button class="btn primary inext">Next compound</button></div>`}</div>`;
+    el.innerHTML=`<div class="stack"><div class="row" style="justify-content:space-between"><span class="h2">Build ${c.html}</span><span class="eyebrow">Ionic</span></div>${log.length?`<div class="nb">${log.map(l=>`<div class="ln"><div class="lt"><span class="ck">✓</span><b>${l[0]}</b><span class="v">${l[1]}</span></div><div class="small muted lnote">${l[2]}</div></div>`).join('')}</div>`:''}${body}</div>`;
+    const fb=h=>{$('.ifb',el).innerHTML=`<div class="fb bad">${h}</div>`};
+    const nb=$('.inudge',el);
+    if(nb)nb.addEventListener('click',()=>{
+      nb.remove();
+      const s=steps[i],facts=`Ionic compound ${c.id}: metal ${c.m} (group ${EL[c.m].g}, ${EL[c.m].val} valence electrons), nonmetal ${c.n} (${EL[c.n].val} valence electrons).`;
+      const ctx=i<steps.length
+        ?`${facts} Step ${i+1} of 4: ${stripH(s.q)} Choices: ${s.opts.map(stripH).join(' | ')}. The answer to this step is ${stripH(s.ans)}. Never say it. Student's wrong picks so far: ${wrongs.length?wrongs.map(stripH).join(', '):'none'}.`
+        :`${facts} Step 4 of 4: pick the correct Lewis structure from pictures. The pictures show: ${varOpts.map((v,j)=>`${'ABC'[j]}) ${IONIC_PICS[v]}`).join('; ')}. Never say which letter is right. Student's wrong picks so far: ${wrongs.length?wrongs.map(v=>IONIC_PICS[v]).join('; '):'none'}.`;
+      mountThread($('.bai',el),{mode:'ionic',context:ctx,ask:{text:`Give me a nudge for step ${i+1} of building ${c.id}.`}});
+    });
+    if(i<steps.length){const s=steps[i];$$('.opt',el).forEach(b=>b.addEventListener('click',()=>{const o=s.opts[+b.dataset.j];if(o===s.ans){record('ionic',tries===0);log.push([s.label,s.ans,s.why]);i++;tries=0;wrongs=[];render()}else{tries++;wrongs.push(o);b.classList.add('wrong');b.disabled=true;fb(`<b class="v">Not quite.</b>${i===2?'Total positive charge has to equal total negative charge.':'Metals lose their valence electrons; nonmetals gain enough to reach 8.'}`)}}))}
+    else if(i===steps.length){$$('.opt',el).forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.v;if(v==='ok'){record('ionic',tries===0);i++;wrongs=[];render()}else{tries++;wrongs.push(v);b.classList.add('wrong');b.disabled=true;fb(`<b class="v">Not that one.</b>${{atoms:'That shows neutral atoms, not ions. The metal gives its electrons away.',metaldots:'The metal ion has given away all its valence electrons, so it has no dots.',nocharge:'Each ion needs its charge outside the brackets.',count:'Check the number of each ion. The charges have to cancel.'}[v]}`)}}))}
+    else{const a=$('.iagain',el),n=$('.inext',el);if(a)a.addEventListener('click',()=>{i=0;tries=0;wrongs=[];log.length=0;render()});if(n)n.addEventListener('click',()=>onNext&&onNext())}
+  }
+  render();
+}
+
+/* ================= VSEPR chart ================= */
+function chartHTML({pick=false,hi=null}={}){
+  let r='';
+  for(let g=2;g<=6;g++){
+    r+=`<tr><th class="vrh">${g}</th>`;
+    for(let e=0;e<=4;e++){const n=chartName(g,e);r+=n?`<td><button class="vc${hi&&hi[0]===g&&hi[1]===e?' hi':''}" data-g="${g}" data-e="${e}" type="button">${n}</button></td>`:`<td class="vx"></td>`}
+    r+='</tr>';
+  }
+  return `<div class="tbl-wrap vchart-wrap"><table class="vchart"><tr><th class="vcorner"></th><th colspan="5" class="vtitle">VSEPR Nomenclature</th></tr><tr><th class="vcorner"><span>groups ↓ / lone pairs →</span></th>${[0,1,2,3,4].map(e=>`<th>${e} lone pair${e===1?'':'s'}</th>`).join('')}</tr>${r}</table></div>`;
+}
+function wChart(el){
+  el.innerHTML=`${chartHTML()}<p class="cap">Rows: number of electron groups around the central atom. Columns: lone pairs on the central atom. Tap a cell.</p><div class="ci"></div>`;
+  let v=null;
+  $$('.vc',el).forEach(c=>c.addEventListener('click',()=>{
+    $$('.vc',el).forEach(x=>x.classList.toggle('hi',x===c));
+    const g=+c.dataset.g,e=+c.dataset.e,k=axeKey(g-e,e),s=SHAPES[k];
+    const ci=$('.ci',el);
+    ci.innerHTML=`<div class="fb info"><b>${chartName(g,e)}</b> · ${axeHtml(k)}<br><span class="small">${g} electron groups: ${g-e} bonded atom${g-e>1?'s':''} and ${e} lone pair${e===1?'':'s'} on the central atom.${s?` Example: ${s.ex}. Bond angle ${s.angle}.`:' This one is rare, so you won’t see examples of it.'}</span></div>${s?'<canvas class="mol3d sm" aria-label="3D model"></canvas>':''}`;
+    if(s){const cv=$('canvas',ci);v=mount3D(cv,{axe:k})}
+  }));
+}
+function wChartTrainer(el){
+  const pool=MOL_LIST.filter(m=>m.X>=2);let m=null,streak=0,n=0,c=0;
+  function next(){
+    let mm;do{mm=pick(pool)}while(m&&mm.id===m.id);m=mm;
+    el.innerHTML=`<div class="row" style="justify-content:space-between"><span class="h3">What shape is ${m.html}?</span><span class="streak">Streak ${streak}</span></div>${lewisSVG(m)}${chartHTML({pick:true})}<div class="tfb"></div><div class="bai">${aiBtn('Nudge me','cnudge')}</div>`;
+    let done=false;
+    const cn=$('.cnudge',el);
+    if(cn)cn.addEventListener('click',()=>{cn.remove();mountThread($('.bai',el),{mode:'chart',context:`${molFacts(m)} The student must tap the chart cell for this molecule: row ${m.X+m.cLP}, column ${m.cLP}. Never say the row, the column or the shape.`,ask:{text:`Give me a nudge on finding ${m.id} on the chart.`}})});
+    $$('.vc',el).forEach(b=>b.addEventListener('click',()=>{
+      if(done)return;done=true;n++;
+      const g=m.X+m.cLP,ok=+b.dataset.g===g&&+b.dataset.e===m.cLP;
+      if(ok){c++;streak++}else streak=0;record('vsepr',ok);
+      b.classList.add(ok?'right':'wrong');$(`.vc[data-g="${g}"][data-e="${m.cLP}"]`,el).classList.add('right');
+      $('.tfb',el).innerHTML=`<div class="fb ${ok?'good':'bad'}"><b class="v">${ok?pick(PRAISE):'Not quite.'}</b>${m.center} has ${m.X} bonded atom${m.X>1?'s':''} + ${m.cLP} lone pair${m.cLP===1?'':'s'} = ${g} groups. Row ${g}, column ${m.cLP}: <b>${chartName(g,m.cLP)}</b>.</div><button class="btn primary block" style="margin-top:10px">Next molecule</button>`;
+      $('.tfb .btn',el).addEventListener('click',next);
+      const ai=$('.bai',el);if(ai)ai.innerHTML='';
+      if(!ok&&TUTOR_CONFIG.url&&ai){
+        ai.innerHTML=aiBtn('Why was I wrong?','cwhy');
+        $('.cwhy',ai).addEventListener('click',()=>{ai.innerHTML='';mountThread(ai,{mode:'why',context:`Topic: VSEPR chart. ${molFacts(m)} Student tapped: ${chartName(+b.dataset.g,+b.dataset.e)} (row ${b.dataset.g} electron groups, column ${b.dataset.e} lone pairs). Correct cell: ${chartName(g,m.cLP)} (row ${g}, column ${m.cLP}). Course explanation: ${m.center} has ${m.X} bonded atoms + ${m.cLP} lone pairs = ${g} groups.`,ask:{text:'Why was my answer wrong?'}})});
+      }
+    }));
+  }
+  next();
+}
+
+/* ================= shielding ================= */
+function wShield(el){
+  const sets={group:['H','Li','Na','K','Rb'],period:['Li','Be','B','C','N','O','F']};let mode='group',cur='Na';
+  el.innerHTML=`<div class="chips"><button class="chip" data-m="group">Down group 1</button><button class="chip" data-m="period">Across period 2</button></div><div class="chips sel"></div><svg viewBox="0 0 260 240" style="width:100%;max-width:300px;display:block;margin:0 auto" role="img" aria-label="Atom with shells"><g class="sv"></g></svg><div class="summary3 sm3"></div><p class="cap scap"></p>`;
+  const draw=()=>{
+    $$('[data-m]',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===mode));
+    $('.sel',el).innerHTML=sets[mode].map(s=>`<button class="chip" data-s="${s}" aria-pressed="${s===cur}">${s}</button>`).join('');
+    $$('[data-s]',el).forEach(b=>b.addEventListener('click',()=>{cur=b.dataset.s;draw()}));
+    const e=EL[cur],shells=e.p,rad=RADV[cur],R=Math.max(26,rad*0.48),core=e.z-e.val;
+    let s='';
+    for(let k=1;k<=shells;k++){const r=k===shells?R:Math.max(14,R*(k/shells)*0.82);s+=`<circle cx="130" cy="120" r="${r.toFixed(1)}" fill="none" stroke="${k===shells?'var(--accent)':'var(--ink-3)'}" stroke-width="${k===shells?2:1.3}" ${k===shells?'':'stroke-dasharray="3 3"'}/>`;
+      if(k<shells)s+=`<circle cx="${(130+r).toFixed(1)}" cy="120" r="3" fill="var(--ink-3)"/><circle cx="${(130-r).toFixed(1)}" cy="120" r="3" fill="var(--ink-3)"/>`}
+    for(let v=0;v<e.val;v++){const a=-Math.PI/2+v*2*Math.PI/e.val;s+=`<circle cx="${(130+R*Math.cos(a)).toFixed(1)}" cy="${(120+R*Math.sin(a)).toFixed(1)}" r="4.5" fill="var(--accent)"/>`}
+    s+=`<circle cx="130" cy="120" r="11" fill="var(--u3)"/><text x="130" y="121" text-anchor="middle" dominant-baseline="central" font-size="9.5" font-weight="700" fill="#fff">+${e.z}</text>`;
+    $('.sv',el).innerHTML=s;
+    $('.sm3',el).innerHTML=`<div><span class="eyebrow">Protons</span><b>${e.z}</b></div><div><span class="eyebrow">Core e⁻</span><b>${core}</b></div><div><span class="eyebrow">Radius</span><b>${rad} pm</b></div>`;
+    $('.scap',el).innerHTML=mode==='group'?`${e.name}: ${shells} shell${shells>1?'s':''}. Each step down adds a shell of core electrons that shields the valence electron, so the atom grows.`:`${e.name}: still ${shells} shells and the same 2 core electrons, but ${e.z} protons pulling. More pull, same shielding, so the atom shrinks.`;
+  };
+  $$('[data-m]',el).forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.m;cur=sets[mode][mode==='group'?2:0];draw()}));
+  draw();
+}
+
+/* ================= bond energy curve ================= */
+function wBondCurve(el){
+  const re=74,De=436,a=0.0193,E=r=>De*Math.pow(1-Math.exp(-a*(r-re)),2)-De;
+  const X=r=>20+(r-40)/(300-40)*230,Y=e=>20+(400-Math.min(400,e))/(850)*150;
+  let path='';for(let r=44;r<=300;r+=2)path+=(r===44?'M':'L')+X(r).toFixed(1)+' '+Y(E(r)).toFixed(1);
+  el.innerHTML=`<svg viewBox="0 0 260 260" style="width:100%;max-width:340px;display:block;margin:0 auto" role="img" aria-label="Energy as two hydrogen atoms approach">
+    <g class="hh"></g>
+    <g transform="translate(0 90)"><line x1="20" y1="${Y(0).toFixed(1)}" x2="252" y2="${Y(0).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 3"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round"/><circle class="bm" r="6" fill="var(--u3)" stroke="var(--surface)" stroke-width="2"/>
+    <text x="22" y="16" font-size="10" fill="var(--ink-3)">energy ↑</text><text x="250" y="${(Y(0)-6).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-3)">distance between nuclei →</text></g></svg>
+    <input type="range" min="50" max="290" step="1" value="260" id="bc-r" aria-label="Distance between the hydrogen nuclei"><p class="cap bcap"></p>`;
+  const rng=$('input',el);
+  const draw=()=>{
+    const r=+rng.value,e=E(r);
+    const m=$('.bm',el);m.setAttribute('cx',X(r).toFixed(1));m.setAttribute('cy',Y(e).toFixed(1));
+    const sep=Math.min(200,(r/300)*200),cx=130;
+    $('.hh',el).innerHTML=`<circle cx="${cx-sep/2}" cy="45" r="30" fill="var(--accent)" opacity=".16"/><circle cx="${cx+sep/2}" cy="45" r="30" fill="var(--accent)" opacity=".16"/><circle cx="${cx-sep/2}" cy="45" r="5" fill="var(--u3)"/><circle cx="${cx+sep/2}" cy="45" r="5" fill="var(--u3)"/><text x="${cx-sep/2}" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">H</text><text x="${cx+sep/2}" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">H</text>`;
+    $('.bcap',el).innerHTML=r>200?'Far apart: the atoms barely notice each other.':r>95?'Getting closer: each electron cloud is pulled toward the other nucleus. The atoms speed up and the energy drops.':r>=60?`<b>${r} pm: the bottom of the curve.</b> Attraction and repulsion balance. This is the bond length (74 pm for H₂), and the energy released here is stored as the bond.`:'Too close: the two nuclei and electron clouds repel, and the energy shoots up. The atoms slow down and get pushed back.';
+  };
+  rng.addEventListener('input',draw);draw();
+}
+
+/* ================= dipoles ================= */
+function wDipole(el){
+  const ids=['H2O','CO2','CF4','CH3Cl','NH3','BF3','BCl3','SO2','CCl4','COCl2','OF2'];let cur='H2O',yaw=1.57;
+  el.innerHTML=`<div class="chips">${ids.map(i=>`<button class="chip" data-i="${i}">${MOLS[i].html}</button>`).join('')}</div><svg viewBox="0 0 260 220" style="width:100%;max-width:320px;display:block;margin:0 auto" role="img" aria-label="Bond dipoles and net dipole"><defs><marker id="dpa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--u3)"/></marker><marker id="dpn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs><g class="dv"></g></svg><label class="row small muted" style="gap:8px">Rotate<input type="range" min="0" max="628" value="157" id="dp-rot" style="flex:1"></label><div class="fb info dw"></div>`;
+  const draw=()=>{
+    $$('[data-i]',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.i===cur));
+    const m=MOLS[cur],sh=SHAPES[m.axe],pos=GEOM[sh.g].filter((_,i)=>!sh.lp.includes(i)),pitch=-.35;
+    const rot=([x,y,z])=>{const c=Math.cos(yaw),s=Math.sin(yaw),x1=x*c+z*s,z1=-x*s+z*c,cp=Math.cos(pitch),sp=Math.sin(pitch);return [x1,y*cp-z1*sp,y*sp+z1*cp]};
+    const P=p=>{const r=rot(p),f=1/(1-r[2]*.15);return [130+r[0]*72*f,110-r[1]*72*f,r[2]]};
+    const net=[0,0,0];let s='';
+    const items=pos.map((p,i)=>{const o=m.outers[i],d=ENV[o.el]-ENV[m.center];net[0]+=p[0]*d;net[1]+=p[1]*d;net[2]+=p[2]*d;return {p,o,d,P:P(p)}}).sort((a,b)=>a.P[2]-b.P[2]);
+    items.forEach(it=>{s+=`<line x1="130" y1="110" x2="${it.P[0].toFixed(1)}" y2="${it.P[1].toFixed(1)}" stroke="var(--bond)" stroke-width="6" stroke-linecap="round"/>`});
+    items.forEach(it=>{
+      if(Math.abs(it.d)>=0.4){const dx=it.P[0]-130,dy=it.P[1]-110,L=Math.hypot(dx,dy)||1,nx=-dy/L*11,ny=dx/L*11,k=it.d>0;
+        const a0=[130+dx*.25+nx,110+dy*.25+ny],a1=[130+dx*.8+nx,110+dy*.8+ny];const [p0,p1]=k?[a0,a1]:[a1,a0];
+        s+=`<line x1="${p0[0].toFixed(1)}" y1="${p0[1].toFixed(1)}" x2="${p1[0].toFixed(1)}" y2="${p1[1].toFixed(1)}" stroke="var(--u3)" stroke-width="2.2" marker-end="url(#dpa)"/>`}
+      s+=`<circle cx="${it.P[0].toFixed(1)}" cy="${it.P[1].toFixed(1)}" r="${it.o.el==='H'?11:14}" fill="${CPK[it.o.el]||'#888'}"/><text x="${it.P[0].toFixed(1)}" y="${(it.P[1]+1).toFixed(1)}" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="700" fill="${hexLum(CPK[it.o.el]||'#888')>.6?'#151726':'#fff'}">${it.o.el}</text>`;
+    });
+    s+=`<circle cx="130" cy="110" r="17" fill="${CPK[m.center]||'#888'}"/><text x="130" y="111" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="${hexLum(CPK[m.center]||'#888')>.6?'#151726':'#fff'}">${m.center}</text>`;
+    const mag=Math.hypot(...net);
+    if(mag>0.05){const n2=P(net.map(v=>v/Math.max(mag,1e-9)*0.9));const dx=n2[0]-130,dy=n2[1]-110;s+=`<line x1="${(130-dx*.15).toFixed(1)}" y1="${(110-dy*.15).toFixed(1)}" x2="${(130+dx*1.05).toFixed(1)}" y2="${(110+dy*1.05).toFixed(1)}" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" marker-end="url(#dpn)" opacity=".85"/>`}
+    $('.dv',el).innerHTML=s;
+    $('.dw',el).innerHTML=`<b>${m.html}: ${m.pol.polar?'polar':'nonpolar'}</b> · ${SHAPES[m.axe].name.toLowerCase()}<br><span class="small">${m.pol.why} ${mag>0.05?'The purple arrow is the net dipole.':''}</span>`;
+  };
+  $$('[data-i]',el).forEach(b=>b.addEventListener('click',()=>{cur=b.dataset.i;draw()}));
+  $('#dp-rot',el).addEventListener('input',e=>{yaw=+e.target.value/100;draw()});
+  draw();
+}
+
+/* ================= IMF checker ================= */
+function imfInfo(id){
+  const s=anyMol(id),pol=s.pol||{};
+  return {html:s.html,polar:!!pol.polar,hb:!!pol.hb,big:s.atoms?Object.entries(s.counts).reduce((t,[e,n])=>t+EL[e].z*n,0):0};
+}
+const strongestIMF=i=>i.hb?'Hydrogen bonds':i.polar?'Dipole-dipole':'London forces';
+function wIMF(el){
+  const ids=['H2','CH4','CO2','I2','C3H8','HCl','CH3Cl','SO2','H2O','NH3','HF','CH3OH'];let cur='HCl';
+  el.innerHTML=`<div class="chips">${ids.map(i=>`<button class="chip" data-i="${i}">${anyMol(i).html}</button>`).join('')}</div><div class="imfl"></div>`;
+  const draw=()=>{
+    $$('[data-i]',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.i===cur));
+    const i=imfInfo(cur),row=(on,name,why)=>`<div class="imfr${on?' on':''}"><span class="imfk">${on?'✓':'✗'}</span><div><b>${name}</b><div class="small muted">${why}</div></div></div>`;
+    $('.imfl',el).innerHTML=row(true,'London forces',`Every molecule has them. ${i.html} has ${i.big} electrons.`)+
+      row(i.polar,'Dipole-dipole',i.polar?`${i.html} is polar, so it has permanent dipoles.`:`${i.html} is nonpolar, so no permanent dipoles.`)+
+      row(i.hb,'Hydrogen bonds',i.hb?'It has H bonded directly to N, O, or F.':'No H bonded to N, O, or F.')+
+      `<div class="fb info" style="margin-top:6px">Strongest force between ${i.html} molecules: <b>${strongestIMF(i)}</b></div>`;
+  };
+  $$('[data-i]',el).forEach(b=>b.addEventListener('click',()=>{cur=b.dataset.i;draw()}));
+  draw();
+}
+
+/* ================= generators for the new material ================= */
+function gTransVal(){
+  const z=pick([21,22,23,24,25,26,27,28,29,30,39]),e=ELZ[z],core=z<37?18:36,gas=z<37?'Ar':'Kr',a=confArr(z,z);
+  const tail=confStr(a,true);
+  if(Math.random()<.35)return {t:'num',topic:'elec',q:`${e.name} (${e.sym}) is ${tail}. How many core electrons does it have, by Ms. James’s definition?`,a:core,ex:`For a transition element the core is the previous noble gas, [${gas}], which has ${core} electrons.`};
+  return {t:'num',topic:'elec',q:`${e.name} (${e.sym}) is ${tail}. How many valence electrons does it have, by Ms. James’s definition?`,a:z-core,ex:`Everything after [${gas}] counts as valence: ${z} − ${core} = ${z-core}.`};
+}
+function gCore(){
+  const e=pick(ELZ.filter(e=>e&&e.main&&e.z>2&&e.p<=5));
+  return {t:'num',topic:'elec',q:`How many core electrons does ${e.name.toLowerCase()} (${e.sym}, ${e.z} electrons) have?`,a:e.z-e.val,ex:`${conf(e.z,false)}. The highest level is ${e.p}, which holds ${e.val} valence electron${e.val>1?'s':''}. The other ${e.z-e.val} are core.`};
+}
+const IONIC_PAIRS=BPP.filter(x=>x[2]==='mp'&&!/Diamond|H₂O/.test(x[0]+x[1]));
+function gIonicStrength(){
+  const [h,l,,why]=pick(IONIC_PAIRS),low=Math.random()<.4;
+  return mk('ionic',`Which has the ${low?'lower melting point':'stronger ionic bond'}: ${h} or ${l}?`,low?[l,h]:[h,l],why);
+}
+function gIonicFormula(){
+  const c=pick(IONIC_LIST),o=uniq([c.html,sub(`${c.m}${c.nn>1?c.nn:''}${c.n}${c.mn>1?c.mn:''}`),`${c.m}${c.n}`,sub(`${c.m}${c.n}2`),sub(`${c.m}2${c.n}`),sub(`${c.m}3${c.n}2`)]).filter((x,i)=>i===0||x!==c.html);
+  return mk('ionic',`What is the formula of the ionic compound formed by ${elName(c.m).toLowerCase()} and ${elName(c.n).toLowerCase()}?`,o,`${c.m} forms ${ionStr(c.m,c.mq)} and ${c.n} forms ${ionStr(c.n,c.nq)}. To cancel the charges you need ${c.mn} : ${c.nn}, so ${c.html}.`);
+}
+function gIonDots(){
+  const [s,q]=pick(IONS),name=s+chargeStr(q);
+  return {t:'num',topic:'ionic',q:`How many dots go inside the brackets in the Lewis structure of ${name}?`,a:q>0?0:8,ex:q>0?`${s} gave away all its valence electrons, so [${s}]${chargeStr(q)} has no dots.`:`${s} gained electrons to complete its octet, so it has 8 dots.`};
+}
+function gIonCharge(){
+  const [s,q]=pick(IONS),o=uniq([s+chargeStr(q),...shuffle([1,2,3,-1,-2,-3].filter(x=>x!==q)).map(x=>s+chargeStr(x))]).slice(0,4);
+  return mk('ionic',`What ion does ${elName(s).toLowerCase()} (${s}) form?`,o,`${s} is in group ${EL[s].g}. It ${q>0?`loses ${q} electron${q>1?'s':''}`:`gains ${-q} electron${q<-1?'s':''}`} to match the nearest noble gas.`);
+}
+function gIonicPick(){
+  const c=pick(IONIC_LIST),vs=shuffle(ionicVariants(c)).slice(0,3);
+  return mk('ionic',`Which is the correct Lewis structure of ${c.html}?`,[ionicSVG(c),...vs.map(v=>ionicSVG(c,v))],`Metal ions show no dots, nonmetal ions have 8 dots, every ion is in brackets with its charge, and there are enough ions for the charges to cancel (${c.mn} : ${c.nn}).`);
+}
+const COMB={Li:1,Na:1,K:1,Rb:1,Mg:2,Ca:2,Sr:2,Ba:2,Al:3,Ga:3,B:3,Si:4,N:3,P:3,O:2,S:2,Se:2,F:1,Cl:1,Br:1,I:1};
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function gFormulaPair(){
+  for(let t=0;t<200;t++){
+    const a=pick(['Li','Na','K','Rb','Mg','Ca','Sr','Ba','Al','Ga','B','Si']),b=pick(['N','P','O','S','Se','F','Cl','Br','I']);
+    const d=dEN(a,b);if(d===0.4||d===1.7||(a==='Si'&&b==='F'))continue;
+    const ca=COMB[a],cb=COMB[b],k=gcd(ca,cb),na=cb/k,nb=ca/k,f=n=>n>1?n:'';
+    const right=sub(`${a}${f(na)}${b}${f(nb)}`);
+    const wrong=uniq([sub(`${a}${f(nb)}${b}${f(na)}`),`${a}${b}`,sub(`${a}${b}${ca}`),sub(`${a}2${b}3`)]).filter(x=>x!==right);
+    const type=d>1.7?'ionic':d>=0.4?'polar covalent':'mostly covalent';
+    return mk('bond',`${a} and ${b} combine. Using their valences, what is the formula?`,[right,...shuffle(wrong).slice(0,3)],`${a} combines with ${ca} and ${b} with ${cb}, so it takes ${na} ${a} for every ${nb} ${b}: ${right}. ΔEN = ${fmt1(d)}, so the bond is ${type}.`);
+  }
+}
+function gGraphVE(){const g=pick(GMOL_LIST);return {t:'num',topic:'lewis',q:`How many valence electrons are in ${g.html} (${g.name})?`,a:g.ve,ex:Object.entries(g.counts).map(([e,n])=>`${e} ${EL[e].val}${n>1?' × '+n:''}`).join(' + ')+` = ${g.ve}.`}}
+function gDiatomic(){
+  const g=pick(['N2','O2','CO','F2','Cl2','HCl','I2'].map(i=>GMOLS[i])),o=g.bonds[0].o,nm={1:'A single bond',2:'A double bond',3:'A triple bond'};
+  return mk('lewis',`In the Lewis structure of ${g.html}, what joins the two atoms?`,[nm[o],...Object.values(nm).filter(x=>x!==nm[o])],`${g.html} has ${g.ve} valence electrons. ${o===3?'Only a triple bond gives both atoms an octet.':o===2?'A double bond plus 2 lone pairs on each atom gives both an octet.':'One shared pair plus lone pairs completes every octet.'}`);
+}
+function perturb(g){
+  const st=answerState(g),opts=[];
+  g.atoms.forEach((a,i)=>{if(a.el!=='H'&&st.lp[i]>0)opts.push(['lp-',i])});
+  g.bonds.forEach((b,k)=>{if(st.orders[k]>1)opts.push(['bond-',k]);else if(g.atoms[b.a].el!=='H'&&g.atoms[b.b].el!=='H')opts.push(['bond+',k])});
+  g.atoms.forEach((a,i)=>{if(a.el!=='H')opts.push(['lp+',i])});
+  if(g.charge)opts.push(['nobr']);
+  for(const [k,i] of shuffle(opts)){
+    const s={orders:st.orders.slice(),lp:st.lp.slice(),bracket:st.bracket};
+    if(k==='lp-')s.lp[i]--;if(k==='lp+')s.lp[i]++;if(k==='bond-')s.orders[i]--;if(k==='bond+')s.orders[i]++;if(k==='nobr')s.bracket=false;
+    if(validateLewis(g,s).ok)continue;
+    const isC=!g.multi&&i===0;
+    const desc={'lp-':isC?'The central atom is missing a lone pair':'An outer atom is missing a lone pair','lp+':isC?'The central atom has an extra lone pair':'An outer atom has an extra lone pair','bond-':'A double or triple bond was drawn too small','bond+':'There’s an extra double bond','nobr':'It needs brackets and a charge'}[k];
+    return {st:s,desc};
+  }
+  return null;
+}
+function lewisPool(){return [...MOL_LIST.filter(m=>m.kase!=='expanded'),...GMOL_LIST.filter(g=>g.atoms.length<=6)]}
+function gLewisError(){
+  for(let t=0;t<40;t++){
+    const g=molGraph(pick(lewisPool())),p=perturb(g);if(!p)continue;
+    const clean=Math.random()<.2,all=['The central atom is missing a lone pair','An outer atom is missing a lone pair','There’s an extra double bond','A double or triple bond was drawn too small','The central atom has an extra lone pair','Nothing is wrong'];
+    const ans=clean?'Nothing is wrong':p.desc;
+    return {t:'mcq',topic:'lewis',q:`What, if anything, is wrong with this Lewis structure of ${g.html}?<div style="margin-top:8px">${gLewisSVG(g,clean?null:p.st,{maxW:240})}</div>`,o:[ans,...shuffle(all.filter(x=>x!==ans)).slice(0,3)],ex:clean?`It’s correct: ${g.ve} electrons, and every atom has a full shell.`:`${validateLewis(g,p.st).errs[0]}`};
+  }
+}
+function gLewisPick(){
+  for(let t=0;t<40;t++){
+    const g=molGraph(pick(lewisPool())),wr=[],seen=new Set();
+    for(let k=0;k<12&&wr.length<3;k++){const p=perturb(g);if(!p)break;const key=JSON.stringify(p.st);if(seen.has(key))continue;seen.add(key);wr.push(p.st)}
+    if(wr.length<2)continue;
+    return mk('lewis',`Which is the correct Lewis structure of ${g.html}?`,[gLewisSVG(g,null,{maxW:180}),...wr.map(s=>gLewisSVG(g,s,{maxW:180}))],`The correct one uses all ${g.ve} electrons and gives every atom a full shell (H 2, most atoms 8).`);
+  }
+}
+function gChartCell(){
+  const g=2+rnd(5),es=Object.keys(CHART[g]).map(Number),e=pick(es),n=chartName(g,e);
+  const o=uniq([n,...shuffle(Object.values(CHART).flatMap(r=>Object.values(r)))]).slice(0,4);
+  return mk('vsepr',`Using the VSEPR chart: ${g} electron groups around the central atom, ${e} of them lone pairs. What’s the shape?`,o,`Row ${g}, column ${e}: ${n}.`);
+}
+function gChartMol(){
+  const m=pick(MOL_LIST.filter(m=>m.X>=2)),g=m.X+m.cLP,n=chartName(g,m.cLP);
+  const o=uniq([n,...shuffle(uniq(Object.values(CHART).flatMap(r=>Object.values(r))))]).slice(0,4);
+  return mk('vsepr',`Use the chart: what shape is this molecule?<div style="margin-top:8px">${lewisSVG(m)}</div>`,o,`${m.center} has ${m.X} bonded atom${m.X>1?'s':''} and ${m.cLP} lone pair${m.cLP===1?'':'s'}: row ${g}, column ${m.cLP}, ${n}.`);
+}
+const polPool=()=>[...MOL_LIST.filter(m=>m.pol&&m.pol.polar!==null),...GMOL_LIST.filter(g=>g.pol.polar!==null)];
+function polWhy(s){return s.pol.why||(s.pol.polar?`${s.html} has polar bonds arranged so the dipoles don’t cancel.`:`${s.html}’s bonds are nonpolar, or arranged symmetrically so they cancel.`)}
+function gMolPolar(){const s=pick(polPool());return mk('polar',`Is ${s.html} a polar or nonpolar molecule?${!s.multi&&Math.random()<.5?`<div style="margin-top:8px">${lewisSVG(s)}</div>`:''}`,s.pol.polar?['Polar','Nonpolar']:['Nonpolar','Polar'],polWhy(s))}
+function gBondDipole(){
+  const p=bondPair('p'),hi=ENV[p.a]>=ENV[p.b]?p.a:p.b,lo=hi===p.a?p.b:p.a;
+  return mk('polar',`In a ${p.a}–${p.b} bond, which way does the bond dipole arrow point?`,[`Toward ${hi}`,`Toward ${lo}`,'It has no direction'],`${hi} is more electronegative (${enS(hi)} vs ${enS(lo)}), so it becomes δ− and the arrow points to it.`);
+}
+function gIMFStrongest(){
+  const s=pick(polPool().filter(x=>!x.charge)),i=imfInfo(s.id),a=strongestIMF(i);
+  return mk('imf',`What is the strongest intermolecular force between ${s.html} molecules?`,[a,...['Hydrogen bonds','Dipole-dipole','London forces','Covalent bonds'].filter(x=>x!==a)],`${i.hb?'It has H bonded to N, O, or F, so it hydrogen bonds.':i.polar?`${s.html} is polar, but has no H on N, O, or F, so dipole-dipole is its strongest.`:`${s.html} is nonpolar, so London forces are all it has.`} Covalent bonds are inside molecules, not between them.`);
+}
+function gHBcan(){
+  const pool=polPool().filter(x=>!x.charge),yes=pick(pool.filter(x=>x.pol.hb)),no=shuffle(pool.filter(x=>!x.pol.hb)).slice(0,3);
+  return mk('imf','Which of these can form hydrogen bonds?',[yes.html,...no.map(x=>x.html)],`Only ${yes.html} has H bonded directly to N, O, or F.`);
+}
+function gBP(){
+  const [h,l,k,why]=pick(BPP),low=Math.random()<.35,w=k==='bp'?'boiling':'melting';
+  return mk('imf',`Which has the ${low?'lower':'higher'} ${w} point: ${Math.random()<.5?h+' or '+l:l+' or '+h}?`,low?[l,h]:[h,l],why);
 }
 /* ================= router ================= */
 const main=$('#main');
@@ -1842,7 +2829,7 @@ const GAMES={
   rush:{name:'Shape Rush',time:60,penalty:3,desc:'A molecule flashes up. Pick its shape before the clock runs out. Every 3 in a row raises your multiplier.',
     round(prev){let m;do{m=pick(MOL_LIST)}while(prev&&m.id===prev);const s=SHAPES[m.axe];return {key:m.id,prompt:`<span class="eyebrow">What shape?</span><div class="big">${m.html}</div>`,opts:shuffle(shapeOpts(s.name)),ans:s.name,why:`${m.html} is ${axeHtml(m.axe)} → ${s.name}`}}},
   battle:{name:'Bond Battle',time:45,penalty:3,desc:'Two elements and their electronegativities. Call the bond: nonpolar, polar, or ionic.',
-    round(){const p=bondPair(pick(['np','p','i']));return {key:p.a+p.b,prompt:`<div class="row" style="justify-content:center;gap:14px"><div class="etile">${p.a}<small>${enS(p.a)}</small></div><div class="etile">${p.b}<small>${enS(p.b)}</small></div></div>`,opts:['Nonpolar','Polar','Ionic'],ans:{np:'Nonpolar',p:'Polar',i:'Ionic'}[p.c],why:`ΔEN = ${fmt2(p.d)} → ${BT[p.c]}`,fixed:true}}},
+    round(){const p=bondPair(pick(['np','p','i']));return {key:p.a+p.b,prompt:`<div class="row" style="justify-content:center;gap:14px"><div class="etile">${p.a}<small>${enS(p.a)}</small></div><div class="etile">${p.b}<small>${enS(p.b)}</small></div></div>`,opts:['Nonpolar','Polar','Ionic'],ans:{np:'Nonpolar',p:'Polar',i:'Ionic'}[p.c],why:`ΔEN = ${fmt1(p.d)} → ${BT[p.c]}`,fixed:true}}},
   count:{name:'Electron Count',time:75,penalty:3,desc:'Fast counting on a keypad: valence electrons, electron totals, lone pairs, bonds, and electron groups.',
     round(){
       const k=pick(['val','ve','ve','clp','groups','bonds']);
@@ -1874,7 +2861,10 @@ VIEWS.play.game=(el,k)=>{
     r=G.round(r&&r.key);entry='';lock=false;
     const p=$('.gp',el);p.className='prompt gp';p.innerHTML=r.prompt;
     const a=$('.ga',el);
-    if(r.pad){
+    if(r.chart){
+      a.innerHTML=chartHTML({pick:true});
+      $$('.vc',a).forEach(b=>b.addEventListener('click',()=>{if(lock)return;const v=b.dataset.g+'-'+b.dataset.e;b.classList.add(v===r.ans?'right':'wrong');if(v!==r.ans){const c=$(`.vc[data-g="${r.ans.split('-')[0]}"][data-e="${r.ans.split('-')[1]}"]`,a);if(c)c.classList.add('right')}answer(v)}));
+    }else if(r.pad){
       a.innerHTML=`<div class="stack" style="gap:10px"><div class="prompt" style="padding:10px"><div class="entry">&nbsp;</div></div><div class="keypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-n="${n}">${n}</button>`).join('')}<button data-n="del" aria-label="Delete">⌫</button><button data-n="0">0</button><button class="go" data-n="ok">Enter</button></div></div>`;
       $$('.keypad button',a).forEach(b=>b.addEventListener('click',()=>{if(lock)return;const n=b.dataset.n;if(n==='del')entry=entry.slice(0,-1);else if(n==='ok'){if(entry)answer(entry);return}else if(entry.length<3)entry+=n;$('.entry',a).innerHTML=entry||'&nbsp;'}));
     }else{
@@ -1885,7 +2875,7 @@ VIEWS.play.game=(el,k)=>{
   const answer=v=>{
     lock=true;total++;const ok=v===r.ans;const p=$('.gp',el);
     if(ok){right++;streak++;best=Math.max(best,streak);score+=10*mult();p.classList.add('flash-good');hud();timers.push(setTimeout(next,REDUCE?150:320))}
-    else{streak=0;bonus-=G.penalty;misses.push(r);p.classList.add('flash-bad');p.insertAdjacentHTML('beforeend',`<div class="small"><b>Answer: ${r.ans}</b><br>${r.why}</div>`);hud();timers.push(setTimeout(next,1400))}
+    else{streak=0;bonus-=G.penalty;misses.push(r);p.classList.add('flash-bad');p.insertAdjacentHTML('beforeend',`<div class="small"><b>Answer: ${r.label||r.ans}</b><br>${r.why}</div>`);hud();timers.push(setTimeout(next,1400))}
   };
   const tick=()=>{
     left=Math.max(0,G.time-(Date.now()-t0)/1000+bonus);
@@ -1898,7 +2888,7 @@ VIEWS.play.game=(el,k)=>{
     el.innerHTML=`<div class="stack lg">${backBtn('play','Games')}
       <div class="card stack" style="text-align:center;gap:8px"><span class="eyebrow">${G.name} · time’s up</span><div class="stat">${score}</div>${newBest?'<span class="streak" style="align-self:center">New best</span>':`<p class="small muted">Best: ${S.best[k]}</p>`}
         <div class="summary3" style="margin-top:6px"><div><span class="eyebrow">Right</span><b>${right}/${total}</b></div><div><span class="eyebrow">Best streak</span><b>${best}</b></div><div><span class="eyebrow">Accuracy</span><b>${pct(right,total)}%</b></div></div></div>
-      ${misses.length?`<div class="card flat stack" style="gap:8px"><span class="h3">Review your misses</span>${misses.slice(-8).map(m=>`<div class="fb info"><b>${m.ans}</b><br><span class="small">${m.why}</span></div>`).join('')}</div>`:''}
+      ${misses.length?`<div class="card flat stack" style="gap:8px"><span class="h3">Review your misses</span>${misses.slice(-8).map(m=>`<div class="fb info"><b>${m.label||m.ans}</b><br><span class="small">${m.why}</span></div>`).join('')}</div>`:''}
       <div class="grid2"><button class="btn" data-go="play">All games</button><button class="btn primary" data-go="play/game/${k}">Play again</button></div></div>${footer()}`;
   };
   timers.push(setInterval(tick,100));
@@ -1957,9 +2947,9 @@ VIEWS.test.run=el=>{
   const submit=()=>{
     clearTimers();
     const results=TS.qs.map((q,j)=>{const a=TS.ans[j];const ok=q.t==='num'?(answeredT(a)&&Math.abs(parseNum(a.val)-q.a)<=(q.tol||0)+1e-9):a.sel===q.o[0];return {q,a,ok}});
-    results.forEach(r=>record(r.q.topic,r.ok));
+    results.forEach(r=>{record(r.q.topic,r.ok);if(!r.ok)addReview(r.q)});
     const s=results.filter(r=>r.ok).length;
-    S.tests.push({d:Date.now(),s,n:results.length});S.tests=S.tests.slice(-8);save();
+    S.tests.push({d:Date.now(),s,n:results.length,name:TS.name||'Mock test'});S.tests=S.tests.slice(-8);save();
     TS.results=results;go('test','results');
   };
   timers.push(setInterval(tick,1000));
@@ -1990,6 +2980,187 @@ VIEWS.test.results=el=>{
   draw();
 };
 
+/* ================= review queue: missed questions come back ================= */
+function addReview(q){
+  if(!q||!(q.t==='mcq'||q.t==='num')||!q.topic)return;
+  const c={t:q.t,topic:q.topic,q:q.q,o:q.o,a:q.a,tol:q.tol,ex:q.ex};
+  S.review=(S.review||[]).filter(r=>r.q!==c.q);S.review.push(c);S.review=S.review.slice(-40);save();
+}
+function dropReview(q){S.review=(S.review||[]).filter(r=>r.q!==q.q);save()}
+function reviewFor(topics){const r=(S.review||[]).filter(x=>topics.includes(x.topic));return r.length?Object.assign({},pick(r),{_review:true}):null}
+
+/* ================= LEARN (by booklet) ================= */
+VIEWS.learn.home=el=>{
+  const done=LESSONS.filter(l=>S.done[l.id]).length,next=LESSONS.find(l=>!S.done[l.id]);
+  el.innerHTML=`<div class="stack lg">
+    <div class="stack" style="gap:8px;padding-top:6px">
+      <span class="eyebrow">Chemistry 11 · Unit 1: Atoms and Molecules</span>
+      <h1 class="h1">Three booklets, one unit test</h1>
+      <p class="muted">${LESSONS.length} short lessons with questions built in. Then practice that gets harder as you improve, games, flashcards, and a full mock test.</p>
+    </div>
+    <div class="card stack" style="gap:12px">
+      <div class="row" style="justify-content:space-between"><span class="h3">${done} of ${LESSONS.length} lessons done</span><span class="eyebrow">${pct(done,LESSONS.length)}%</span></div>
+      <div class="bar"><i style="width:${pct(done,LESSONS.length)}%"></i></div>
+      ${next?`<button class="btn primary block" data-go="learn/lesson/${next.id}">${done?'Continue':'Start'}: ${next.title}</button>`:`<button class="btn primary block" data-go="test">All lessons done. Take the big test</button>`}
+    </div>
+    <div class="booknav">${UNITS.map(u=>{const ls=LESSONS.filter(l=>l.unit===u.n),d=ls.filter(l=>S.done[l.id]).length;return `<a class="bookchip ${u.u}" href="#book-${u.code}"><b>${u.short}</b><span>${d}/${ls.length}</span></a>`}).join('')}</div>
+    ${UNITS.map(u=>`<div class="section" id="book-${u.code}" style="scroll-margin-top:70px"><div class="bookhead ${u.u}"><span class="eyebrow">${u.short}</span><span class="h2">${u.name}</span></div>${LESSONS.map((l,i)=>l.unit===u.n?lessonTile(l,i):'').join('')}</div>`).join('')}
+    <div class="card flat stack" style="gap:10px"><span class="eyebrow">Your accuracy by topic</span>${topicBars()}</div>
+    <div class="grid2">
+      <button class="card stack" style="gap:6px;text-align:left" data-go="practice/draw"><span class="h3">Draw Lewis structures</span><span class="small muted">The main skill on the test</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="learn/lesson/chart"><span class="h3">The VSEPR chart</span><span class="small muted">The one you’ll be given</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="memorize"><span class="h3">Memorize</span><span class="small muted">Every highlighted fact, plus flashcards</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="test"><span class="h3">Big unit test</span><span class="small muted">40 questions, 50 minutes</span></button>
+    </div>
+    <div class="card sunk small"><mark class="hl">Highlighted</mark> text means memorize this. <mark class="hl pink">Pink</mark> marks exceptions and the lone pairs (E) you have to watch for.</div>
+  </div>${footer()}`;
+  $$('.bookchip',el).forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=$(a.getAttribute('href'),el);if(t)t.scrollIntoView({behavior:REDUCE?'auto':'smooth'})}));
+};
+
+/* ================= MEMORIZE ================= */
+const _memHome=VIEWS.memorize.home;
+VIEWS.memorize.home=el=>{
+  _memHome(el);
+  const first=$('.section',el);
+  if(first)first.insertAdjacentHTML('beforebegin',`<div class="section"><span class="h2">The chart you’ll get on the test</span><div class="wid memchart"></div></div>`);
+  const w=$('.memchart',el);if(w)wChart(w);
+  $$('.section .eyebrow',el).forEach(e=>{const m=e.textContent.match(/^Part (\d)$/);if(m)e.textContent=UNITS[+m[1]-1].short});
+};
+
+/* ================= PRACTICE ================= */
+const LEVELS=['','Warm-up','Core','Hard'];
+const ladder=b=>S.ladder[b]||(S.ladder[b]={unlocked:1,passed:{}});
+VIEWS.practice.home=el=>{
+  const rv=(S.review||[]).length;
+  el.innerHTML=`<div class="stack lg">
+    <div class="stack" style="gap:8px;padding-top:6px"><span class="eyebrow">Practice zone</span><h1 class="h1">Reps until it’s easy</h1><p class="muted">Every question is generated fresh. Pass a level to unlock the next one, and anything you miss comes back later.</p></div>
+    <button class="card stack drawcta" style="gap:8px;text-align:left" data-go="practice/draw"><span class="eyebrow" style="color:var(--u3)">Test skill #1</span><span class="h2">Draw Lewis structures</span><span class="small muted">Tap bonds and add lone pairs yourself, get checked, then name the shape with the chart. ${Object.keys(S.drawn||{}).length} drawn so far.</span></button>
+    ${rv?`<button class="card stack" style="gap:6px;text-align:left;border-color:var(--lp)" data-go="practice/drill/review"><span class="h3">Review your misses</span><span class="small muted">${rv} question${rv>1?'s':''} you got wrong. Get each one right to clear it.</span></button>`:''}
+    ${UNITS.map(u=>{const L=ladder(u.n);return `<div class="card stack" style="gap:10px"><div class="bookhead ${u.u}" style="padding:0"><span class="eyebrow">${u.short}</span><span class="h2">${u.name}</span></div>
+      <div class="ladder">${[1,2,3].map(l=>{const open=l<=L.unlocked,pass=L.passed[l];return `<button class="lstep${open?'':' locked'}${pass?' passed':''}" ${open?`data-go="practice/drill/b${u.n}-${l}"`:'aria-disabled="true"'}><span class="eyebrow">Level ${l}</span><b>${LEVELS[l]}</b><span class="small">${pass?'✓ Passed':open?'Play':'🔒 Pass level '+(l-1)}</span></button>`}).join('')}</div>
+      <div class="chips">${bookTopics(u.n).map(k=>`<button class="chip" data-go="practice/drill/${k}">${TOPICS[k].name}</button>`).join('')}</div></div>`}).join('')}
+    <button class="card stack" style="gap:6px;text-align:left" data-go="practice/drill/boss"><span class="h3">Whole-unit challenge</span><span class="small muted">The hardest questions from all three booklets, mixed together.</span></button>
+    <div class="section"><span class="h2">Tools</span><div class="grid2">
+      <button class="card stack" style="gap:6px;text-align:left" data-go="practice/ionic"><span class="h3">Ionic builder</span><span class="small muted">KBr, MgO, K₃P…</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="practice/chart"><span class="h3">Chart trainer</span><span class="small muted">Lewis → shape, fast</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="practice/builder"><span class="h3">Guided builder</span><span class="small muted">One step at a time</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="practice/quiz"><span class="h3">Quick quiz</span><span class="small muted">10 mixed questions</span></button>
+    </div></div>
+  </div>${footer()}`;
+};
+VIEWS.practice.drill=(el,arg)=>{
+  arg=arg||'all';
+  let topics,level=0,title,book=0;
+  const m=arg.match(/^b(\d)-(\d)$/);
+  if(m){book=+m[1];level=+m[2];topics=bookTopics(book);title=`${UNITS[book-1].short} · Level ${level}: ${LEVELS[level]}`}
+  else if(arg==='boss'){topics=Object.keys(TOPICS);level=3;title='Whole-unit challenge'}
+  else if(arg==='review'){topics=Object.keys(TOPICS);title='Review your misses'}
+  else if(TOPICS[arg]){topics=[arg];title=TOPICS[arg].name}
+  else{topics=Object.keys(TOPICS);title='Everything mixed'}
+  const need=6;let streak=0,c=0,n=0,hist=[];
+  const L=book?ladder(book):null;
+  el.innerHTML=`<div class="stack lg">${backBtn('practice','Practice')}
+    <div class="stack" style="gap:10px"><h1 class="h1" style="font-size:clamp(21px,6vw,26px)">${title}</h1>
+      ${book?`<div class="stack" style="gap:6px"><div class="bar"><i class="lvb" style="width:0%"></i></div><span class="small muted lvt"></span></div>`:''}</div>
+    <div class="row" style="justify-content:space-between"><span class="streak ds">Streak 0</span><span class="eyebrow dacc">0 answered</span></div>
+    <div class="card dq"></div><div class="dnext"></div></div>${footer()}`;
+  const lvText=()=>{if(!book)return;const goal=Math.min(1,streak/need),last=hist.slice(-10).filter(Boolean).length;$('.lvb',el).style.width=Math.max(goal,last/8)*100+'%';
+    $('.lvt',el).textContent=L.passed[level]?'Level passed. Keep going, or move up.':`Get ${need} in a row, or 8 of your last 10, to pass this level.`};
+  lvText();
+  const next=()=>{
+    $('.dnext',el).innerHTML='';
+    let q=null;
+    if(arg==='review'){q=reviewFor(topics);if(!q){$('.dq',el).innerHTML=`<div class="stack" style="text-align:center;gap:8px"><span class="h2">All cleared</span><p class="muted">You’ve fixed every question you missed. Nice.</p><button class="btn primary" data-go="practice">Back to practice</button></div>`;return}}
+    else if(Math.random()<.22)q=reviewFor(topics);
+    if(!q)q=genQ(pick(topics),level);
+    mountQ($('.dq',el),q,{onAnswer:ok=>{
+      record(q.topic,ok);n++;hist.push(ok);if(ok){c++;streak++}else streak=0;
+      $('.ds',el).textContent=`Streak ${streak}`;$('.dacc',el).textContent=`${c} / ${n} right`;
+      let msg='';
+      if(book&&!L.passed[level]&&(streak>=need||hist.slice(-10).filter(Boolean).length>=8)){L.passed[level]=true;if(level<3)L.unlocked=Math.max(L.unlocked,level+1);save();msg=level<3?`<div class="fb good"><b class="v">Level ${level} passed.</b>Level ${level+1}: ${LEVELS[level+1]} is unlocked.</div>`:`<div class="fb good"><b class="v">${UNITS[book-1].short} mastered.</b>Try the whole-unit challenge next.</div>`}
+      lvText();
+      $('.dnext',el).innerHTML=`${msg}<div class="${msg?'grid2':''}">${msg&&level<3?`<button class="btn" data-go="practice/drill/b${book}-${level+1}">Go to level ${level+1}</button>`:''}<button class="btn primary block dnx">Next question</button></div>`;
+      $('.dnx',el).addEventListener('click',()=>{next();$('.dq',el).scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'nearest'})});
+    }});
+  };
+  next();
+};
+const DRAW_GROUPS=[
+  ['Booklet 1c practice (Q9)',['CO','PBr3','CH4','SeF2','C2H4','H2O','N2','O2','N2Br4','SeCl2','H2S','C3H8','SO3-2','SiS2','SO3','CCl4']],
+  ['Your VSEPR hand-in',WS_ORDER],
+  ['Book 3 molecules',['HCl','CF4','CH3OH','H2CO','C2H2','CH3Cl','SCl2','BCl3','HF','H2O2']],
+  ['Exceptions & expanded octets',['BF3','BeH2','BeCl2','PCl5','SF4','SF6','ClF3','XeF2','XeF4','BrF5','I3-','ICl4-','H2SO4']],
+  ['Ions',['NH4+','H3O+','NO3-','NO2-','CO3-2','SO4-2','PO4-3','ClO3-','ClO4-','SCN-']],
+];
+VIEWS.practice.draw=el=>{
+  const dn=S.drawn||{};
+  el.innerHTML=`<div class="stack lg">${backBtn('practice','Practice')}
+    <div class="stack" style="gap:8px"><h1 class="h1">Draw Lewis structures</h1><p class="muted">On the test you draw the Lewis structure, then name the VSEPR shape from it. Here you do both, and the site checks every atom.</p></div>
+    <div class="grid2"><button class="btn primary" id="dr-rand">Random molecule</button><button class="btn" id="dr-hard">Random hard one</button></div>
+    ${DRAW_GROUPS.map(([n,ids])=>`<div class="section"><span class="h3">${n}</span><div class="molchips">${ids.filter(anyMol).map(id=>`<button class="molchip${dn[id]?' done':''}" data-go="practice/drawrun/${encodeURIComponent(id)}">${anyMol(id).html}</button>`).join('')}</div></div>`).join('')}
+  </div>${footer()}`;
+  const all=DRAW_GROUPS.flatMap(g=>g[1]).filter(anyMol),hard=DRAW_GROUPS.slice(3).flatMap(g=>g[1]).concat(['N2Br4','C3H8','SO3','CO','SO3-2']);
+  $('#dr-rand',el).addEventListener('click',()=>go('practice','drawrun',pick(all)));
+  $('#dr-hard',el).addEventListener('click',()=>go('practice','drawrun',pick(hard)));
+};
+VIEWS.practice.drawrun=(el,id)=>{
+  id=decodeURIComponent(id||'');if(!anyMol(id))id='H2O';
+  el.innerHTML=`<div class="stack lg">${backBtn('practice/draw','All molecules')}<div class="dwrap"></div></div>${footer()}`;
+  const grp=DRAW_GROUPS.find(g=>g[1].includes(id)),list=(grp?grp[1]:DRAW_GROUPS[0][1]).filter(anyMol);
+  mountDraw($('.dwrap',el),id,{onNext:()=>go('practice','drawrun',list[(list.indexOf(id)+1)%list.length])});
+};
+VIEWS.practice.ionic=el=>{
+  el.innerHTML=`<div class="stack lg">${backBtn('practice','Practice')}<div class="stack" style="gap:8px"><h1 class="h1">Ionic builder</h1><p class="muted">Work out each ion’s charge, the ratio, and then pick the right Lewis structure.</p></div>
+    <button class="btn primary block" id="io-rand">Random compound</button>
+    <div class="molchips">${IONIC_LIST.map(c=>`<button class="molchip" data-go="practice/ionicrun/${c.id}">${c.html}</button>`).join('')}</div></div>${footer()}`;
+  $('#io-rand',el).addEventListener('click',()=>go('practice','ionicrun',pick(IONIC_LIST).id));
+};
+VIEWS.practice.ionicrun=(el,id)=>{
+  if(!IONIC[id])id='KBr';
+  el.innerHTML=`<div class="stack lg">${backBtn('practice/ionic','All compounds')}<div class="iwrap"></div></div>${footer()}`;
+  const i=IONIC_LIST.findIndex(c=>c.id===id);
+  mountIonic($('.iwrap',el),id,{onNext:()=>go('practice','ionicrun',IONIC_LIST[(i+1)%IONIC_LIST.length].id)});
+};
+VIEWS.practice.chart=el=>{
+  el.innerHTML=`<div class="stack lg">${backBtn('practice','Practice')}<div class="stack" style="gap:8px"><h1 class="h1">Chart trainer</h1><p class="muted">Count the groups on the central atom (row) and its lone pairs (column), then tap the cell.</p></div><div class="wid ctw"></div></div>${footer()}`;
+  wChartTrainer($('.ctw',el));
+};
+
+/* ================= PLAY ================= */
+Object.assign(GAMES,{
+  chartdash:{name:'Chart Dash',time:60,penalty:3,book:2,desc:'A Lewis structure appears. Tap its shape on the VSEPR chart before time runs out.',
+    round(prev){let m;do{m=pick(MOL_LIST.filter(x=>x.X>=2))}while(prev&&m.id===prev);const g=m.X+m.cLP;return {key:m.id,prompt:`<span class="eyebrow">Tap the shape on the chart</span>${lewisSVG(m)}`,chart:true,ans:`${g}-${m.cLP}`,label:chartName(g,m.cLP),why:`${m.center}: ${m.X} bonded + ${m.cLP} lone pair${m.cLP===1?'':'s'} = row ${g}, column ${m.cLP}`}}},
+  polsort:{name:'Polarity Sort',time:45,penalty:3,book:3,desc:'Polar or nonpolar? Look at the bonds and the shape, and decide fast.',
+    round(prev){let s;do{s=pick(polPool())}while(prev&&s.id===prev);return {key:s.id,prompt:`<span class="eyebrow">Polar or nonpolar?</span>${s.multi?gLewisSVG(s,null,{maxW:220}):lewisSVG(s)}`,opts:['Polar','Nonpolar'],ans:s.pol.polar?'Polar':'Nonpolar',why:polWhy(s)}}},
+  boil:{name:'Boiling Point Battle',time:60,penalty:3,book:3,desc:'Two substances. Tap the one with the higher boiling or melting point.',
+    round(prev){let p;do{p=pick(BPP)}while(prev&&p[0]+p[1]===prev);const [x,y]=Math.random()<.5?[p[0],p[1]]:[p[1],p[0]];return {key:p[0]+p[1],prompt:`<span class="eyebrow">Higher ${p[2]==='bp'?'boiling':'melting'} point?</span><div class="big" style="font-size:clamp(22px,7vw,30px)">${x} <span class="muted" style="font-size:.6em">vs</span> ${y}</div>`,opts:[x,y],ans:p[0],why:p[3]}}},
+});
+GAMES.rush.book=2;GAMES.battle.book=1;GAMES.count.book=1;
+VIEWS.play.home=el=>{
+  el.innerHTML=`<div class="stack lg">
+    <div class="stack" style="gap:8px;padding-top:6px"><span class="eyebrow">Game mode</span><h1 class="h1">Beat your best</h1><p class="muted">Short timed rounds. A wrong answer costs 3 seconds and resets your streak.</p></div>
+    ${UNITS.map(u=>`<div class="section"><div class="bookhead ${u.u}"><span class="eyebrow">${u.short}</span><span class="h2">${u.name}</span></div>
+      ${Object.entries(GAMES).filter(([,g])=>g.book===u.n).map(([k,g])=>`<div class="card stack" style="gap:10px"><div class="row" style="justify-content:space-between"><span class="h2">${g.name}</span><span class="streak">Best ${S.best[k]||0}</span></div><p class="small muted">${g.desc}</p><button class="btn primary block" data-go="play/game/${k}">Play · ${g.time} seconds</button></div>`).join('')}</div>`).join('')}
+  </div>${footer()}`;
+};
+
+/* ================= TEST ================= */
+const TESTS={
+  big:{name:'Big unit test',min:50,plan:[['elec',5],['trend',4],['bond',4],['ionic',3],['lewis',9],['vsepr',6],['polar',4],['imf',5]],desc:'All three booklets, weighted toward Lewis structures and the chart.'},
+  b1:{name:'Book 1b test',min:20,plan:[['elec',5],['trend',4],['bond',4],['ionic',2]],desc:'Electron structure, trends, electronegativity, ionic bonds.'},
+  b2:{name:'Book 1c test',min:20,plan:[['lewis',8],['vsepr',7]],desc:'Covalent bonds, Lewis structures, VSEPR and the chart.'},
+  b3:{name:'Book 3 test',min:20,plan:[['polar',6],['imf',7],['bond',2]],desc:'Polarity, intermolecular forces, boiling points.'},
+};
+VIEWS.test.home=el=>{
+  const resume=TS&&!TS.results&&TS.end>Date.now();
+  el.innerHTML=`<div class="stack lg">
+    <div class="stack" style="gap:8px;padding-top:6px"><span class="eyebrow">Mock tests</span><h1 class="h1">Test yourself like it’s Wednesday</h1><p class="muted">A new set of questions every time, and no feedback until you hand it in. Have your periodic table out. EN values are given when you need them.</p></div>
+    ${resume?`<button class="btn primary block" data-go="test/run">Resume: ${TS.name}</button>`:''}
+    ${Object.entries(TESTS).map(([k,t])=>{const n=t.plan.reduce((s,p)=>s+p[1],0);return `<div class="card stack" style="gap:10px${k==='big'?';border:2px solid var(--accent)':''}"><div class="row" style="justify-content:space-between"><span class="h2">${t.name}</span><span class="eyebrow">${n} Qs · ${t.min} min</span></div><p class="small muted">${t.desc}</p><button class="btn ${k==='big'?'primary':''} block" data-t="${k}">Start</button></div>`}).join('')}
+    ${S.tests.length?`<div class="card flat stack" style="gap:8px"><span class="h3">Past attempts</span>${S.tests.slice().reverse().map(t=>`<div class="row" style="justify-content:space-between"><span class="small muted">${t.name||'Mock test'} · ${new Date(t.d).toLocaleDateString(undefined,{month:'short',day:'numeric'})}</span><b style="font-family:var(--f-mono)">${t.s}/${t.n} · ${pct(t.s,t.n)}%</b></div>`).join('')}</div>`:''}
+  </div>${footer()}`;
+  $$('[data-t]',el).forEach(b=>b.addEventListener('click',()=>{const t=TESTS[b.dataset.t];TS={name:t.name,qs:shuffle(genSet(t.plan)),flags:[],i:0,end:Date.now()+t.min*60000};TS.ans=TS.qs.map(()=>({}));go('test','run')}));
+};
 /* ================= boot ================= */
 const sp=$('#splash');
 $('.top .lg').innerHTML=logoSVG(30);
@@ -1998,6 +3169,16 @@ sp.insertAdjacentHTML('afterbegin',logoSVG(170));
 const hideSplash=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),500)};
 sp.addEventListener('click',hideSplash);
 setTimeout(hideSplash,REDUCE?500:1700);
-startTutor();
-go('learn');
+document.body.classList.add('locked');
+const gate=$('#gate'),gin=$('#gate-in'),gerr=$('#gate-err');
+const gateDraw=()=>{const v=gin.value.replace(/\D/g,'').slice(0,10);gin.value=v;$$('.gd',gate).forEach((d,i)=>{d.textContent=v[i]||'';d.classList.toggle('on',i<v.length);d.classList.toggle('cur',i===v.length)})};
+const unlock=()=>{gate.classList.add('out');document.body.classList.remove('locked');setTimeout(()=>gate.remove(),450);startTutor();go('learn')};
+gin.addEventListener('input',()=>{gerr.hidden=true;gate.classList.remove('shake');gateDraw()});
+$('#gate-form').addEventListener('submit',e=>{e.preventDefault();const v=gin.value.replace(/\D/g,'');
+  if(v.length<10){gerr.textContent='Enter all 10 digits.';gerr.hidden=false;return}
+  if(ACCESS_CODES.includes(v)){unlock();return}
+  gerr.textContent='That code isn’t right. Check it and try again.';gerr.hidden=false;gate.classList.remove('shake');void gate.offsetWidth;gate.classList.add('shake');gin.select()});
+$('.gate-logo').innerHTML=logoSVG(64);
+gateDraw();
+setTimeout(()=>{try{gin.focus({preventScroll:true})}catch(e){}},REDUCE?600:1800);
 </script>
