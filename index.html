@@ -370,6 +370,7 @@ body:not(.ai-live) .ai-only{display:none!important}
 .lpctl{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--accent-soft);border-radius:12px;padding:8px 12px}
 .lpctl .btn{min-width:44px;font-size:20px}
 .lpctl[hidden]{display:none}
+body.sim-on .ai-only,body.sim-on #orb{display:none!important}
 .pillc{font-size:14px;padding:6px 12px;border-radius:999px;background:var(--sunk)}
 .pillc.okc{background:var(--good-soft);color:var(--good)}
 .opt svg.lewis{max-height:150px}
@@ -408,6 +409,11 @@ body.locked .app,body.locked .nav{visibility:hidden}
 @media (max-width:360px){.gd{height:38px;font-size:16px}}
 .prompt svg.lewis{max-height:130px;width:auto;max-width:100%}
 .vchart{min-width:0}
+.simbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:15;display:flex;justify-content:space-between;align-items:center;padding:8px 0;background:var(--paper)}
+.simq{display:flex;flex-direction:column;gap:10px}
+.simta{width:100%;min-height:120px;border-radius:13px;border:1.5px solid var(--line);background:var(--surface);padding:12px;font:inherit;font-size:16px;line-height:1.5;resize:vertical}
+.simta:focus{outline:none;border-color:var(--accent)}
+.simlock .opts,.simlock input{pointer-events:none}
 </style>
 <div class="splash" id="splash" aria-hidden="true"><div class="wm">SCODE</div><div class="tl">Atoms &amp; Molecules Lab</div></div>
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t"><form class="gate-card" id="gate-form" autocomplete="off"><span class="gate-logo" aria-hidden="true"></span><h1 class="h2" id="gate-t">Atoms &amp; Molecules Lab</h1><p class="small muted">Enter your 10-digit access code.</p><div class="gate-digits"><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><span class="gd" aria-hidden="true"></span><input id="gate-in" class="gate-in" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="10" autocomplete="one-time-code" aria-label="Access code"></div><div class="err" id="gate-err" hidden></div><button class="btn primary block" type="submit">Enter</button><p class="note">Chem 11 · Unit 1 study site</p></form></div>
@@ -1678,12 +1684,13 @@ function closedNow(){
   const [a,b]=TUTOR_CONFIG.closedHours;return h>=a&&h<b;
 }
 const TSTATUS={live:'Live · General Ultra',offline:'Offline right now',closed:'Asleep from 12 to 6 AM',checking:'Connecting…'};
+const tstatus=s=>s==='live'&&Tutor.warm==='warming'?'Warming up · General Ultra':(TSTATUS[s]||'');
 function setTutorState(s){
   Tutor.state=s;
   document.body.classList.toggle('ai-live',s==='live');
   const o=$('#orb');
-  if(o){o.hidden=s==='off';o.dataset.state=s;o.setAttribute('aria-label',`SCODE Tutor: ${TSTATUS[s]||''}`)}
-  const st=$('.sheet .sh-status');if(st)st.textContent=TSTATUS[s]||'';
+  if(o){o.hidden=s==='off';o.dataset.state=s;o.setAttribute('aria-label',`SCODE Tutor: ${tstatus(s)}`)}
+  const st=$('.sheet .sh-status');if(st)st.textContent=tstatus(s);
   if(Tutor.sheetOpen)renderSheetBody();
 }
 /* The tunnel link changes every time the server restarts. With url:'auto' we read it
@@ -1701,6 +1708,28 @@ async function tutorBase(fresh){
   }catch(e){}
   return Tutor.base||'';
 }
+/* The first reply after a quiet spell used to take 2+ minutes while the laptop loaded the model.
+   As soon as the site opens, ask the server to load SCODE Tutor and read the course rules,
+   so the first question is answered about as fast as the rest. Repeats every 15 min while open. */
+async function tutorWarm(){
+  if(Tutor.warmBusy||closedNow())return;
+  if(Tutor.warmAt&&Date.now()-Tutor.warmAt<15*60000)return;
+  Tutor.warmBusy=true;
+  try{
+    for(let i=0;i<60;i++){
+      const base=await tutorBase();if(!base)break;
+      const r=await fetch(base+'/warm',{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','X-SCODE-Device':tutorDevice()},
+        body:JSON.stringify({app:TUTOR_CONFIG.app,tier:TUTOR_CONFIG.tier,extra_context:TUTOR_RULES})});
+      let j={};try{j=await r.json()}catch(e){}
+      const was=Tutor.warm;Tutor.warm=j.state==='warming'?'warming':'ready';
+      if(was!==Tutor.warm&&Tutor.state==='live')setTutorState('live');
+      if(j.state!=='warming')break;
+      await new Promise(ok=>setTimeout(ok,5000));
+    }
+    Tutor.warmAt=Date.now();
+  }catch(e){}
+  finally{Tutor.warmBusy=false;if(Tutor.warm==='warming'){Tutor.warm='ready';if(Tutor.state==='live')setTutorState('live')}}
+}
 async function pingOnce(base){
   try{
     const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),8000);
@@ -1712,10 +1741,10 @@ async function pingTutor(){
   if(!TUTOR_CONFIG.url){setTutorState('off');return}
   if(closedNow()){setTutorState('closed');return}
   let base=await tutorBase();
-  if(base&&await pingOnce(base)){setTutorState('live');return}
+  if(base&&await pingOnce(base)){setTutorState('live');tutorWarm();return}
   if(TUTOR_CONFIG.url==='auto'){       // maybe the tunnel restarted with a new link
     const nb=await tutorBase(true);
-    if(nb&&nb!==base&&await pingOnce(nb)){setTutorState('live');return}
+    if(nb&&nb!==base&&await pingOnce(nb)){setTutorState('live');tutorWarm();return}
   }
   setTutorState('offline');
 }
@@ -1729,6 +1758,8 @@ const TUTOR_MODES={
   draw:'The student is drawing a Lewis structure on the site and the checker found problems. Give ONE hint of one or two sentences about the most important problem: which atom to look at and what kind of change helps (a lone pair, a double bond, brackets). Never give the finished structure, a full list of bond orders, or the exact number of lone pairs on any atom.',
   ionic:'The student is building an ionic compound step by step (ion charges, the ratio, then the Lewis structure). Give ONE hint of one or two sentences that points at how to work out this step. Never state the answer to the step.',
   chart:'The student is using the VSEPR chart (rows are electron groups on the central atom, columns are lone pairs on it). Give ONE hint of one or two sentences about how to count the row or the column for this molecule. Never name the shape or the cell.',
+  mark:'Mark the student\'s written test answer against the marking key. For each key point, write one short line saying Got it or Missing. Give the point if the idea is there in different words. Then give a mark out of the total and one sentence on how to make the answer complete.',
+  simplan:'The student just finished a full unit test simulation. Using the questions they lost marks on, name their two weakest skills, then give a plan of at most 3 bullet points of what to redo on this site (lessons by name, Draw Lewis structures, the ionic builder, flashcards, the level drills, or the test simulation again).',
   quiz:'Quiz the student on this lesson. Ask ONE short question at a time. When they answer, say whether they are right, explain in one or two sentences, then ask the next question. Only ask about the facts below.',
   plan:'The student just finished a 25-question mock test. Using their missed questions, name their two weakest skills, then give a plan of at most 3 bullet points of what to redo on this site (lessons by name, the Lewis builder, flashcards, or a practice topic).',
   chat:'Answer the student\'s question about this unit. For a homework-style question, walk them through the steps and let them do the last one, unless they ask you for the answer again.',
@@ -1838,7 +1869,7 @@ function mountThread(host,{mode='chat',context='',ask=null,showAsk=false,closabl
     const bub=box.lastElementChild,lt=$('.ai-lt',bub),t0=Date.now();
     wrap.classList.add('busy');form.hidden=true;err.hidden=true;
     let rush=false;
-    const tick=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(lt)lt.textContent=rush?'Rush Hour \u00b7 waiting for a turn':s<4?'Thinking':`Thinking · ${s}s`},500);
+    const tick=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);if(lt)lt.textContent=rush?'Rush Hour \u00b7 waiting for a turn':Tutor.warm==='warming'?`Warming up SCODE Tutor · ${s}s`:s<4?'Thinking':`Thinking · ${s}s`},500);
     let acc='',raf=0;
     const paint=()=>{raf=0;bub.innerHTML=mdLite(acc)+'<span class="ai-caret"></span>';scroll()};
     ctl=new AbortController();
@@ -1862,6 +1893,12 @@ function mountThread(host,{mode='chat',context='',ask=null,showAsk=false,closabl
   if(ask)send(ask.text,ask.visible!==false);
   return {send};
 }
+function simAI(host,label,mode,context,ask){
+  if(!TUTOR_CONFIG.url||!host)return;
+  host.insertAdjacentHTML('beforeend',`<div class="ai-row">${aiBtn(label)}</div>`);
+  const row=host.lastElementChild;
+  $('.aibtn',row).addEventListener('click',()=>{row.remove();mountThread(host,{mode,context,ask:{text:ask}})});
+}
 const aiBtn=(label,cls='')=>`<button class="aibtn ai-only ${cls}" type="button">${logoSVG(18)}<span>${label}</span></button>`;
 
 /* ---- the sheet (opened from the header orb) ---- */
@@ -1873,6 +1910,8 @@ function sheetContext(){
   if(r.tab==='practice'&&r.view==='ionicrun'&&IONIC[r.arg]){const c=IONIC[r.arg];return {label:`Building ${c.html}`,ctx:`The student is building the ionic compound ${c.id} (metal ${c.m}, nonmetal ${c.n}). Help them reason it out instead of handing over the answers.`,tips:['How do I know what charge an ion has?','How do I get the ratio?','How do I draw an ionic Lewis structure?']}}
   if(r.tab==='practice'&&r.view==='chart')return {label:'Chart trainer',ctx:'The student is practising the VSEPR chart: rows are electron groups on the central atom, columns are lone pairs on it.',tips:['How do I find the row?','Do double bonds count as one group?','What is the difference between bent and trigonal pyramidal?']};
   const names={learn:'the lesson list',memorize:'the memorize page',practice:'the practice zone',play:'the games',test:'the mock test page'};
+  if(r.tab==='test'&&r.view==='sim'&&SIM&&SIM.done)return {label:'Unit test results',ctx:'The student just handed in the unit test simulation. Help them understand the questions they missed and how to get them right next time.',tips:['Which part should I study first?','Explain polar vs nonpolar again','How do I rank boiling points?']};
+  if(r.tab==='test'&&r.view==='sim')return {label:'Unit test in progress',ctx:'The student is in the middle of the unit test simulation. Do not answer test questions or confirm answers. Offer to help after they hand it in.',tips:['How much time should I spend per question?']};
   if(r.tab==='test'&&r.view==='run')return {label:'Mock test in progress',ctx:'The student is in the middle of the mock test. Do not answer test questions or confirm answers. Offer to help after they hand it in.',tips:['How much time should I spend per question?']};
   return {label:`Whole unit · ${names[r.tab]||'this site'}`,ctx:'',tips:['How do I find lone pairs on the center?','What’s the difference between AX₃ and AX₃E?','Quiz me on the whole unit']};
 }
@@ -1892,7 +1931,7 @@ function renderSheetBody(){
 }
 function openSheet(){
   if(!$('.sheet')){
-    document.body.insertAdjacentHTML('beforeend',`<div class="sheet-bg"></div><section class="sheet" role="dialog" aria-modal="true" aria-label="SCODE Tutor"><div class="sh-grab" aria-hidden="true"></div><div class="sh-head">${logoSVG(36)}<div style="flex:1;min-width:0"><div class="h3" style="font-family:var(--f-display);font-size:16px">SCODE Tutor</div><div class="small muted sh-status">${TSTATUS[Tutor.state]}</div></div><button class="ai-x sh-close" type="button" aria-label="Close">×</button></div><div class="sh-body"></div></section>`);
+    document.body.insertAdjacentHTML('beforeend',`<div class="sheet-bg"></div><section class="sheet" role="dialog" aria-modal="true" aria-label="SCODE Tutor"><div class="sh-grab" aria-hidden="true"></div><div class="sh-head">${logoSVG(36)}<div style="flex:1;min-width:0"><div class="h3" style="font-family:var(--f-display);font-size:16px">SCODE Tutor</div><div class="small muted sh-status">${tstatus(Tutor.state)}</div></div><button class="ai-x sh-close" type="button" aria-label="Close">×</button></div><div class="sh-body"></div></section>`);
     $('.sheet-bg').addEventListener('click',closeSheet);$('.sh-close').addEventListener('click',closeSheet);
   }
   Tutor.sheetOpen=true;renderSheetBody();
@@ -2195,7 +2234,8 @@ function validateLewis(g,st){
 }
 
 /* ================= draw-it-yourself ================= */
-function mountDraw(el,id,{lesson=false,onNext}={}){
+function mountDraw(el,id,{lesson=false,onNext,onFinish,testMode=false}={}){
+  const scores={};let finished=false;
   const src=anyMol(id),g=molGraph(src),single=!g.multi,m=g.mol;
   const steps=['ve'];
   if(single&&uniq(m.atoms).length>1)steps.push('center');
@@ -2217,7 +2257,7 @@ function mountDraw(el,id,{lesson=false,onNext}={}){
   function aiRow(step){
     if(step===aiStep)return;
     aiStep=step;dai.innerHTML='';
-    if(!DSTEP[step]||!TUTOR_CONFIG.url)return;
+    if(!DSTEP[step]||!TUTOR_CONFIG.url||testMode)return;
     dai.innerHTML=aiBtn('Nudge me','dnudge');
     $('.dnudge',dai).addEventListener('click',()=>{
       const old=$('.ai-frame',dai);if(old)old.remove();
@@ -2258,7 +2298,7 @@ function mountDraw(el,id,{lesson=false,onNext}={}){
     bind(step);
   }
   const fb=(html,ok)=>{const d=$('.dfb',el);if(d)d.innerHTML=`<div class="fb ${ok?'good':'bad'}">${html}</div>`};
-  function advance(label,value,note,first,topic='lewis'){record(topic,first);log.push([label,value,note]);si++;tries=0;wrongTries=[];lastErrs=[];render()}
+  function advance(label,value,note,first,topic='lewis'){record(topic,first);scores[label]=first;log.push([label,value,note]);si++;tries=0;wrongTries=[];lastErrs=[];render()}
   function bind(step){
     if(step==='ve'){
       const inp=$('input',el),go=()=>{const v=parseNum(inp.value);if(Number.isNaN(v)){$('.err',el).hidden=false;return}
@@ -2282,10 +2322,10 @@ function mountDraw(el,id,{lesson=false,onNext}={}){
       $('.dreset',el).addEventListener('click',()=>{st.orders=g.bonds.map(()=>1);st.lp=g.atoms.map(()=>0);st.bracket=false;sel=-1;badSet=null;render()});
       $('.dcheck',el).addEventListener('click',()=>{
         const v=validateLewis(g,st);checks++;
-        if(v.ok){badSet=null;record('lewis',checks===1);log.push(['Lewis structure','✓',v.note||'Every atom has a full shell and the electron count matches.']);si++;sel=-1;lastErrs=[];render();return}
+        if(v.ok){badSet=null;record('lewis',checks===1);scores.Lewis=checks===1;log.push(['Lewis structure','✓',v.note||'Every atom has a full shell and the electron count matches.']);si++;sel=-1;lastErrs=[];render();return}
         badSet=v.bad;lastErrs=v.errs;render();
         fb(`<b class="v">Not yet.</b><ul style="margin:4px 0 0;padding-left:18px">${v.errs.map(x=>`<li>${x}</li>`).join('')}</ul>${checks>=2?'<button class="btn sm dshow" style="margin-top:10px">Show me the answer</button>':''}`,false);
-        const sb=$('.dshow',el);if(sb)sb.addEventListener('click',()=>{Object.assign(st,answerState(g));record('lewis',false);log.push(['Lewis structure','shown','Compare this with what you drew.']);si++;sel=-1;badSet=null;lastErrs=[];render()});
+        const sb=$('.dshow',el);if(sb)sb.addEventListener('click',()=>{Object.assign(st,answerState(g));record('lewis',false);scores.Lewis=false;log.push(['Lewis structure','shown','Compare this with what you drew.']);si++;sel=-1;badSet=null;lastErrs=[];render()});
       });
     }else if(step==='axe'){
       $$('.opt',el).forEach(b=>b.addEventListener('click',()=>{if(b.dataset.x===m.axe)return advance('Notation',axeHtml(m.axe),`${m.X} bonded atom${m.X>1?'s':''} + ${m.cLP} lone pair${m.cLP===1?'':'s'} on ${m.center}`,tries===0,'vsepr');tries++;wrongTries.push(b.dataset.x);b.classList.add('wrong');b.disabled=true;fb(`<b class="v">Not quite.</b>Count only what’s attached to ${m.center}: each bonded atom is one X (double bonds still count once), and each lone pair on ${m.center} is one E.`,false)}));
@@ -2300,7 +2340,7 @@ function mountDraw(el,id,{lesson=false,onNext}={}){
       const a=$('.dagain',el),n=$('.dnext',el);
       if(a)a.addEventListener('click',()=>{si=0;tries=0;checks=0;log=[];wrongTries=[];lastErrs=[];st.orders=g.bonds.map(()=>1);st.lp=g.atoms.map(()=>0);st.bracket=false;render()});
       if(n)n.addEventListener('click',()=>onNext&&onNext());
-      S.drawn=S.drawn||{};S.drawn[g.id]=true;save();
+      S.drawn=S.drawn||{};S.drawn[g.id]=true;save();if(onFinish&&!finished){finished=true;onFinish(scores)}
     }
   }
   render();
@@ -2627,7 +2667,7 @@ let route={tab:'learn',view:'home',arg:null};
 let timers=[];
 function clearTimers(){timers.forEach(t=>{clearInterval(t);clearTimeout(t)});timers=[]}
 function go(tab,view='home',arg=null){
-  clearTimers();
+  clearTimers();document.body.classList.remove('sim-on');
   route={tab,view,arg};
   $$('.nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.tab===tab?'page':'false'));
   main.innerHTML='';
@@ -3011,7 +3051,7 @@ VIEWS.learn.home=el=>{
       <button class="card stack" style="gap:6px;text-align:left" data-go="practice/draw"><span class="h3">Draw Lewis structures</span><span class="small muted">The main skill on the test</span></button>
       <button class="card stack" style="gap:6px;text-align:left" data-go="learn/lesson/chart"><span class="h3">The VSEPR chart</span><span class="small muted">The one you’ll be given</span></button>
       <button class="card stack" style="gap:6px;text-align:left" data-go="memorize"><span class="h3">Memorize</span><span class="small muted">Every highlighted fact, plus flashcards</span></button>
-      <button class="card stack" style="gap:6px;text-align:left" data-go="test"><span class="h3">Big unit test</span><span class="small muted">40 questions, 50 minutes</span></button>
+      <button class="card stack" style="gap:6px;text-align:left" data-go="test/sim"><span class="h3">Test simulation</span><span class="small muted">Built from Ms. James’s review</span></button>
     </div>
     <div class="card sunk small"><mark class="hl">Highlighted</mark> text means memorize this. <mark class="hl pink">Pink</mark> marks exceptions and the lone pairs (E) you have to watch for.</div>
   </div>${footer()}`;
@@ -3162,6 +3202,131 @@ VIEWS.test.home=el=>{
   </div>${footer()}`;
   $$('[data-t]',el).forEach(b=>b.addEventListener('click',()=>{const t=TESTS[b.dataset.t];TS={name:t.name,qs:shuffle(genSet(t.plan)),flags:[],i:0,end:Date.now()+t.min*60000};TS.ans=TS.qs.map(()=>({}));go('test','run')}));
 };
+/* ================= Unit test simulation (built from Ms. James's review) ================= */
+const IMF_OPTS={L:'London forces only',LD:'London forces and dipole-dipole forces',LDH:'London forces, dipole-dipole forces, and hydrogen bonds',H:'Hydrogen bonds only'};
+const POL_OPTS={P:'Polar: it has polar bonds in an asymmetric shape, so there’s a net dipole',Pw:'Polar: any molecule with polar bonds is polar',N:'Nonpolar: its polar bonds are arranged symmetrically and cancel out',Nb:'Nonpolar: all of its bonds are nonpolar'};
+function simMolItems(id){
+  const m=MOLS[id]||GMOLS[id],items=[{k:'draw',id,marks:m.multi?2:3,label:`Draw the Lewis structure of ${m.html}${m.multi?'':', then use the chart to name its shape'}.`}];
+  if(m.charge)return items;
+  const pol=m.pol;
+  if(!m.multi&&pol.polar!==null){
+    const ans=pol.polar?POL_OPTS.P:(m.outers.some(o=>dEN(m.center,o.el)>0.4)?POL_OPTS.N:POL_OPTS.Nb);
+    items.push({k:'mcq',marks:1,q:{t:'mcq',topic:'polar',q:`Is ${m.html} polar or nonpolar? Choose the answer with the right reason.`,o:[ans,...Object.values(POL_OPTS).filter(x=>x!==ans)],ex:pol.why}});
+  }
+  const i=imfInfo(id),key=i.hb?'LDH':i.polar?'LD':'L';
+  items.push({k:'mcq',marks:1,q:{t:'mcq',topic:'imf',q:`Which intermolecular forces exist between ${m.html} molecules?`,o:[IMF_OPTS[key],...Object.values(IMF_OPTS).filter(x=>x!==IMF_OPTS[key])],ex:`Every molecule has London forces.${i.polar?` ${m.html} is polar, so it also has dipole-dipole forces.`:` ${m.html} is nonpolar, so that’s all it has.`}${i.hb?' It has H bonded to N, O, or F, so it hydrogen bonds too.':''}`}});
+  return items;
+}
+function buildSim(){
+  const mc=(q,o,ex,topic='elec',marks=1)=>({k:'mcq',marks,q:{t:'mcq',topic,q,o,ex}});
+  const num=(q,a,ex,tol=0,topic='elec',marks=1)=>({k:'num',marks,q:{t:'num',topic,q,a,ex,tol}});
+  return [
+  {title:'Part A · Book 1b',note:'Core notation, electronegativity, atomic radius, shielding, atomic mass.',items:[
+    mc('Write selenium (Se, 34 electrons) in core notation.',['[Ar] 4s² 3d¹⁰ 4p⁴','[Ar] 4s² 4p⁴','[Kr] 4p⁴','[Ar] 3d¹⁰ 4p⁶'],'After [Ar] (18) come 4s² (20), 3d¹⁰ (30), then 4p⁴ (34). Don’t forget the 3d.'),
+    mc('Write manganese (Mn, 25 electrons) in core notation.',['[Ar] 4s² 3d⁵','[Ar] 3d⁷','[Ar] 4s² 4p⁵','[Kr] 4s² 3d⁵'],'[Ar] covers 18, 4s takes 2, and the last 5 go into 3d.'),
+    num('An ion with a 2− charge has the core notation [Ne] 3s² 3p⁶. What is the atomic number of the element?',16,'The ion has 18 electrons. It gained 2, so the neutral atom has 16: sulfur (S²⁻).'),
+    {k:'write',marks:4,q:'Describe the trend in electronegativity across a period and down a group. Explain why each happens.',key:['Across a period (left to right), electronegativity increases.','Reason: more protons (greater nuclear charge) pull on the same shell, with about the same shielding.','Down a group, electronegativity decreases.','Reason: more shells and more shielding put the valence shell farther from the nucleus, so the pull is weaker.']},
+    num('Al has an EN of 1.5 and Cl has 3.0. What is ΔEN for an Al–Cl bond?',1.5,'3.0 − 1.5 = 1.5.',0.05,'bond'),
+    mc('So what kind of bond is Al–Cl?',['Polar covalent','Ionic','Nonpolar covalent','Mostly covalent'],'1.5 is between 0.4 and 1.7, so polar covalent, even though Al is a metal. Go by the ΔEN.','bond'),
+    mc('H–F has ΔEN = 4.0 − 2.1 = 1.9. What kind of bond is it?',['Polar covalent','Ionic','Nonpolar covalent','Mostly covalent'],'It’s the exception: over 1.7, but H–F is polar covalent.','bond'),
+    mc('Which atom is larger, Mg or S, and why?',['Mg: same number of shells, but S has more protons pulling the electrons in closer','S: it has more electrons, so it takes up more space','Mg: it has more shells than S','S: it has less shielding'],'Both are in period 3. Across a period the shielding stays about the same while the nuclear charge grows, so S is smaller.','trend'),
+    mc('Which atom is larger, Ca or Mg, and why?',['Ca: it has an extra shell, and more core electrons shielding the valence electrons','Mg: it has fewer protons','Ca: it has fewer protons','Mg: its electrons are more shielded'],'Ca is below Mg in group 2. Each step down a group adds a shell and more shielding.','trend'),
+    {k:'write',marks:4,q:'Sketch a shielding-effect diagram for a sodium atom (or describe it in words), and explain how shielding affects its atomic radius.',key:['Nucleus shown with 11 protons (+11).','Two inner shells with 10 core electrons (2 + 8), and 1 valence electron in the outer (third) shell.','The core electrons repel the valence electron and block some of the nucleus’s pull (shielding).','More shielding means the valence electron is held less tightly and sits farther out, so the atom is larger.']},
+    num('Boron is 19.9% boron-10 (10.01 u) and 80.1% boron-11 (11.01 u). What is boron’s average atomic mass? (2 decimals)',10.81,'(0.199 × 10.01) + (0.801 × 11.01) = 1.99 + 8.82 = 10.81 u.',0.02,'elec',2),
+  ]},
+  {title:'Part B · Lewis, VSEPR, polarity, IMFs',note:'Draw each structure perfectly. Only your first “Check my drawing” counts. You can use the VSEPR chart.',items:[
+    ...simMolItems('PCl3'),...simMolItems('H2CO'),...simMolItems('NH3'),...simMolItems('CO2'),...simMolItems('SF4'),...simMolItems('SO3-2'),...simMolItems('C2H4'),
+  ]},
+  {title:'Part C · Ranking & predicting',note:'Rank, predict, and explain.',items:[
+    {k:'order',marks:1,q:{t:'order',topic:'imf',q:'Rank from lowest to highest boiling point.',o:['CH₄','C₂H₆','CH₃Cl','CH₃OH'],ex:'CH₄ and C₂H₆ only have London forces (C₂H₆ is bigger). CH₃Cl adds dipole-dipole forces. CH₃OH hydrogen bonds.'}},
+    {k:'order',marks:1,q:{t:'order',topic:'imf',q:'Rank from lowest to highest boiling point.',o:['F₂','Cl₂','Br₂','I₂'],ex:'All nonpolar, so only London forces, which get stronger as the atomic number increases.'}},
+    {k:'order',marks:1,q:{t:'order',topic:'polar',q:'Rank these bonds from least polar to most polar.',o:['C–H','N–H','O–H','H–F'],ex:'ΔEN: 0.4, 0.9, 1.4, 1.9.'}},
+    {k:'sort',marks:2,q:{t:'sort',topic:'polar',q:'Predict whether each molecule is polar or nonpolar.',buckets:['Polar','Nonpolar'],items:[['CH₂Cl₂',0],['SCl₂',0],['OF₂',0],['CCl₄',1],['BF₃',1],['SiS₂',1]],ex:'CH₂Cl₂ (mixed outer atoms), SCl₂ and OF₂ (bent) have net dipoles. CCl₄, BF₃, and linear SiS₂ are symmetric, so their dipoles cancel.'}},
+    mc('When solid iodine (I₂) melts, what is overcome?',['London forces between I₂ molecules','The covalent I–I bonds','Hydrogen bonds','Ionic bonds'],'Melting a molecular substance breaks intermolecular forces, not the covalent bonds inside the molecules.','imf'),
+    mc('Which has the higher boiling point, HF or HCl, and why?',['HF, because it hydrogen bonds','HCl, because Cl is bigger','HF, because it’s ionic','They are the same'],'H bonded to F means hydrogen bonding, which is much stronger than HCl’s dipole-dipole forces.','imf'),
+    {k:'write',marks:3,q:'Explain why water (H₂O) has a much higher boiling point than hydrogen sulfide (H₂S), even though H₂S is a bigger molecule.',key:['H₂O has H bonded to O, so it forms hydrogen bonds between molecules.','H₂S can’t hydrogen bond (S isn’t N, O, or F); it only has dipole-dipole and London forces.','Hydrogen bonds are much stronger, so more energy is needed to separate H₂O molecules.']},
+  ]}];
+}
+let SIM=null;
+VIEWS.test.sim=el=>{
+  if(!SIM||SIM.done){SIM={parts:buildSim(),state:{},end:Date.now()+45*60000,done:false}}
+  const P=SIM.parts;let n=0;const all=[];
+  P.forEach(p=>p.items.forEach(it=>{it.n=++n;all.push(it)}));
+  const total=all.reduce((s,i)=>s+i.marks,0);
+  el.innerHTML=`<div class="stack lg">${backBtn('test','Mock tests')}
+    <div class="stack" style="gap:8px"><span class="eyebrow">Wednesday simulation</span><h1 class="h1">Unit 1 test, as close to the real one as possible</h1><p class="muted">${total} marks · 45 minutes · periodic table and VSEPR chart allowed. Built from Ms. James’s review, and a little harder than the real thing.</p></div>
+    <div class="simbar"><span class="clock simclock">45:00</span><span class="small muted simprog"></span></div>
+    <div class="simres"></div>
+    ${P.map((p,pi)=>`<div class="section"><div class="bookhead ${['u1','u3','u5'][pi]}"><span class="eyebrow">${p.title.split(' · ')[0]}</span><span class="h2">${p.title.split(' · ')[1]}</span></div><p class="small muted">${p.note}</p>${p.items.map(it=>`<div class="card simq" data-n="${it.n}"><div class="row" style="justify-content:space-between"><span class="eyebrow">Question ${it.n}</span><span class="eyebrow">${it.marks} mark${it.marks>1?'s':''}</span></div><div class="simbody"></div><div class="simkey"></div></div>`).join('')}</div>`).join('')}
+    <div class="simfoot"><button class="btn primary block" id="sim-hand">Hand it in</button><div class="simconf"></div></div>
+  </div>${footer()}`;
+  const st=SIM.state;
+  document.body.classList.toggle('sim-on',!SIM.done);if(!SIM.done&&Tutor.sheetOpen)closeSheet();
+  all.forEach(it=>{
+    const box=$(`.simq[data-n="${it.n}"] .simbody`,el);st[it.n]=st[it.n]||{};const s=st[it.n];
+    if(it.k==='mcq'||it.k==='num'){it.q._o=it.q._o||null;mountQ(box,it.q,{mode:'test',saved:s,onAnswer:prog})}
+    else if(it.k==='write'){box.innerHTML=`<div class="q"><div class="qt">${it.q}</div><textarea class="simta" rows="5" placeholder="Write your answer like you would on the test" aria-label="Your answer">${s.text||''}</textarea></div>`;$('textarea',box).addEventListener('input',e=>{s.text=e.target.value;prog()})}
+    else if(it.k==='draw'){box.innerHTML=`<p class="qt" style="font-weight:700;margin-bottom:10px">${it.label}</p><div></div>`;if(s.scores)box.lastElementChild.innerHTML=`<div class="fb info">Done. Marks are counted when you hand it in.</div>`;else mountDraw(box.lastElementChild,it.id,{lesson:true,testMode:true,onFinish:sc=>{s.scores=sc;prog()}})}
+    else{const q=Object.assign({},it.q,{_o:null,_done:false});mountQ(box,q,{onAnswer:ok=>{s.ok=ok;s.done=true;prog()}})}
+  });
+  function prog(){const d=all.filter(it=>{const s=st[it.n];return s.sel!=null||(s.val!=null&&s.val!=='')||(s.text&&s.text.trim())||s.scores||s.done}).length;const pr=$('.simprog',el);if(pr)pr.textContent=`${d} of ${all.length} answered`}
+  prog();
+  const tick=()=>{const ms=Math.max(0,SIM.end-Date.now()),m=Math.floor(ms/60000),s=Math.floor(ms%60000/1000),c=$('.simclock',el);if(c){c.textContent=`${m}:${String(s).padStart(2,'0')}`;c.classList.toggle('low',ms<5*60000)}if(ms<=0&&!SIM.done)grade(true)};
+  timers.push(setInterval(tick,1000));tick();
+  $('#sim-hand',el).addEventListener('click',()=>{
+    const left=all.filter(it=>{const s=st[it.n];return !(s.sel!=null||(s.val!=null&&s.val!=='')||(s.text&&s.text.trim())||s.scores||s.done)}).length;
+    $('.simconf',el).innerHTML=`<div class="card stack" style="gap:10px;border-color:var(--accent);margin-top:10px"><b>Hand in the test?</b><p class="small muted">${left?`${left} question${left>1?'s are':' is'} still blank.`:'Every question has an answer.'}</p><div class="grid2"><button class="btn" id="sim-keep">Keep working</button><button class="btn primary" id="sim-go">Hand it in</button></div></div>`;
+    $('#sim-keep',el).addEventListener('click',()=>{$('.simconf',el).innerHTML=''});$('#sim-go',el).addEventListener('click',()=>grade(false));
+  });
+  function grade(timeUp){
+    SIM.done=true;clearTimers();document.body.classList.remove('sim-on');
+    const marks={};
+    all.forEach(it=>{
+      const s=st[it.n],card=$(`.simq[data-n="${it.n}"]`,el),key=$('.simkey',card);let got=0;
+      if(it.k==='mcq'||it.k==='num'){
+        const q=it.q,ok=q.t==='num'?(s.val!=null&&Math.abs(parseNum(s.val)-q.a)<=(q.tol||0)+1e-9):s.sel===q.o[0];got=ok?it.marks:0;
+        card.classList.add('simlock');
+        $$('.opt',card).forEach(b=>{const t=b.querySelector('span:last-child').innerHTML;if(t===q.o[0])b.classList.add('right');else if(t===s.sel)b.classList.add('wrong')});
+        key.innerHTML=`<div class="fb ${ok?'good':'bad'}"><b class="v">${ok?'Correct':'Not quite'} · ${got}/${it.marks}</b>Answer: <b>${q.t==='num'?q.a:q.o[0]}</b>. ${q.ex}</div>`;
+        if(!ok)addReview(q);record(q.topic,ok);
+        if(!ok)simAI(key,'Why was I wrong?','why',`Topic: ${TOPICS[q.topic]?TOPICS[q.topic].name:q.topic}. Unit test question: ${stripH(q.q)} Student's answer: ${q.t==='num'?(s.val==null||s.val===''?'(blank)':s.val):(s.sel?stripH(s.sel):'(blank)')}. Correct answer: ${q.t==='num'?q.a:stripH(q.o[0])}. Course explanation: ${stripH(q.ex)}`,'Why was my answer wrong?');
+      }else if(it.k==='draw'){
+        const sc=s.scores||{},m=anyMol(it.id);got=(sc.Lewis?2:0)+(!m.multi&&sc['Shape (chart)']?1:0);
+        key.innerHTML=`<div class="fb ${got===it.marks?'good':'bad'}"><b class="v">${got}/${it.marks}</b>${s.scores?`Lewis structure ${sc.Lewis?'correct on the first check (2/2)':'needed more than one check (0/2)'}${m.multi?'':`. Shape ${sc['Shape (chart)']?'right first try (1/1)':'not right first try (0/1)'}`}.`:'Not finished.'}<div style="margin-top:8px">${m.multi?gLewisSVG(m,null,{maxW:240}):lewisSVG(m)}</div>${m.multi?'':`<span class="small">${axeHtml(m.axe)} · ${chartName(m.X+m.cLP,m.cLP)}</span>`}</div>`;
+        if(got<it.marks){const g=molGraph(m);simAI(key,'Show me how to get this right','why',`Unit test question: ${stripH(it.label)} (${it.marks} marks: 2 for the Lewis structure on the first check${m.multi?'':', 1 for naming the shape from the chart first try'}). ${m.multi?graphFacts(g):molFacts(m)} The student ${s.scores?(sc.Lewis?'drew the Lewis structure right but missed the shape':'needed more than one check to get the Lewis structure right'):'did not finish this question'}. Walk them through the course method step by step.`,`How do I get ${m.id} right?`)}
+      }else if(it.k==='write'){
+        key.innerHTML=`<div class="fb info"><b class="v">Mark yourself honestly · <span class="wm">0</span>/${it.marks}</b>${it.key.map((k,j)=>`<label class="row small" style="gap:8px;align-items:flex-start;margin-top:6px"><input type="checkbox" data-j="${j}"> <span>${k}</span></label>`).join('')}</div>`;
+        $$('input[type=checkbox]',key).forEach(c=>c.addEventListener('change',()=>{s.self=$$('input:checked',key).length;$('.wm',key).textContent=s.self;summary()}));
+        got=s.self||0;card.classList.add('simlock-w');
+        if(s.text&&s.text.trim().length>=10)simAI(key,'Mark my answer with SCODE','mark',`Unit test question (${it.marks} marks): ${stripH(it.q)} Marking key, one mark per point: ${it.key.map((k,j)=>`${j+1}) ${stripH(k)}`).join(' ')} Student's written answer: ${s.text.trim().slice(0,1500)}`,'Mark my answer.');
+      }else{got=s.ok?it.marks:0;key.innerHTML=s.done?'':`<div class="fb bad">Not answered. ${it.q.ex}</div>`}
+      s.got=got;
+    });
+    $('#sim-hand',el).remove();$('.simconf',el).innerHTML='';
+    summary(timeUp);
+    const lost=all.filter(it=>(it.k==='write'?false:(st[it.n].got||0)<it.marks));
+    if(TUTOR_CONFIG.url&&lost.length){
+      $('.simres',el).insertAdjacentHTML('afterend',`<div class="card stack ai-only ai-plan" style="gap:10px"><span class="h3">Study plan from SCODE</span><p class="small muted">SCODE Tutor looks at the ${lost.length} question${lost.length>1?'s':''} you lost marks on and tells you what to redo before the real test.</p><div class="sp"></div></div>`);
+      const host=$('.ai-plan .sp',el);
+      simAI(host,'Make my study plan','simplan',`Unit test simulation score: ${all.reduce((a,it)=>a+(it.k==='write'?(st[it.n].self||0):(st[it.n].got||0)),0)} out of ${total}. Questions they lost marks on: ${lost.slice(0,14).map(it=>`[${P.find(p=>p.items.includes(it)).title.split(' · ')[0]}] ${stripH(it.k==='draw'?it.label:(it.q.q||it.q)).slice(0,110)}`).join(' | ')}`,'Make me a study plan from this test.');
+    }
+    $('.simres',el).scrollIntoView({behavior:REDUCE?'auto':'smooth'});
+  }
+  function summary(timeUp){
+    let got=0;const by=P.map(p=>{let g=0,t=0;p.items.forEach(it=>{const s=st[it.n];const v=it.k==='write'?(s.self||0):(s.got||0);g+=v;t+=it.marks});got+=g;return [p.title,g,t]});
+    const r=$('.simres',el);if(!r)return;
+    r.innerHTML=`<div class="card stack" style="text-align:center;gap:8px"><span class="eyebrow">${timeUp?'Time’s up · ':''}Your score</span><div class="stat">${got}/${total}</div><p class="muted">${pct(got,total)}% · ${pct(got,total)>=86?'You’re ready for tomorrow.':pct(got,total)>=70?'Solid. Go over the misses below.':'Redo the lessons for the parts you lost marks on, then try again.'}</p>
+      <div class="stack" style="gap:8px;text-align:left">${by.map(([n,g,t],i)=>`<div class="tbar ${['u1','u3','u5'][i]}"><span>${n.split(' · ')[0]}</span><div class="bar"><i style="width:${pct(g,t)}%"></i></div><span>${g}/${t}</span></div>`).join('')}</div>
+      <p class="small muted">Written questions count once you tick the points you got. Scroll down to see every answer.</p><button class="btn block" id="sim-new">Start a fresh attempt</button></div>`;
+    $('#sim-new',el).addEventListener('click',()=>{SIM=null;go('test','sim')});
+    if(!SIM.logged){SIM.logged=true;S.tests.push({d:Date.now(),s:got,n:total,name:'Wednesday simulation'});S.tests=S.tests.slice(-8);save()}
+    else{const t=S.tests[S.tests.length-1];if(t&&t.name==='Wednesday simulation'){t.s=got;save()}}
+  }
+};
+(function(){
+  const _home=VIEWS.test.home;
+  VIEWS.test.home=el=>{_home(el);const h=$('.stack.lg > .stack',el);if(h)h.insertAdjacentHTML('afterend',`<button class="card stack" style="gap:8px;text-align:left;border:2px solid var(--u3);background:var(--u3-soft)" data-go="test/sim"><span class="eyebrow" style="color:var(--u3)">For Wednesday</span><span class="h2">Unit test simulation</span><span class="small muted">Built from Ms. James’s review: core notation, ΔEN, radius, shielding, atomic mass, drawing Lewis → shape → polarity → IMFs, ranking. Written answers with mark keys. 45 minutes.</span></button>`)};
+})();
 /* ================= boot ================= */
 const sp=$('#splash');
 $('.top .lg').innerHTML=logoSVG(30);
